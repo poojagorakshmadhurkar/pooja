@@ -1,0 +1,11 @@
+*** Variables ***
+${addNewQuality}  //button[text() = "NEW"]
+${qualityName}  //input[@id = "quality__label"]
+${qualityTags}  //input[@id='quality__tags']
+${Department}  //div[@id='quality__department']
+${Severity}  //div[@id='quality__severity']
+${Submit}  //button[text() = "Submit"]
+${Edit}  //button[normalize-space()='Edit']
+${back}  //a[@aria-label = "back-button"]
+${allIssues}  //div[@aria-label = "scrollable auto tabs example"]/button[2]
+${deactivate_quality}  //button[@id='quality__deactivate_btn']

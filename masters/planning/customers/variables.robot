@@ -1,0 +1,18 @@
+*** Variables ***
+${addNewCustomer}  //button[@id='Add New Customer']
+${customerName}  //input[@id = "partner__name"]
+#${typeOfPartner}  //div[@id = "partner_type"]
+${typeOfPartner}  //span[text() = "Type"]/../../../div[2]/div/span[2]
+${customerEmail}  //input[@id = "partner__email"]
+${customerAddress}  //input[@id = "partner__address"]
+#${customerSM}  //span[text() = "Sales Manager"]/../../div[2]
+#${customerCountry}  //div[@id = "partner__country"]
+${customerCountry}  //span[text() = "Country"]/../../../div[2]/div/span[2]
+#${customerState}  //div[@id = "partner__state"]
+${customerState}  //span[text() = "State"]/../../../div[2]/div/span[2]
+${customerCity}  //span[text() = "City"]/../../../div[2]/div/span[2]
+${customerGSTN}  //input[@id='partner__gstin']
+${Submit}  //button[text() = "Submit"]
+${newRequest}  //div[text() = "New Request"]/..
+${back}  //*[@id="back_btn"]
+${deactivate_customer}  //button[@id = "customers__deactivate_btn"]

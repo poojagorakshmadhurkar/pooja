@@ -17,16 +17,16 @@ Library    DateTime
 
 
 *** Test Cases ***
-inward request with rack on
-    login
+inward request with rack on      #while running these testcase make sure IQC is Off in Rack Case
+    login                        #So uing Haridware Unit for this
     select site  haridwar_unit
     open warehouse
-    ${A}  item onhand stock  ${itemData1}[0]
-    ${B}  item onhand stock  ${itemData2}[0]
-    ${C}  item onhand stock  ${itemData3}[0]
-    ${save1}  item onhand stock  ${edititemData1}[0]
-    ${save2}  item onhand stock  ${edititemData2}[0]
-    ${save3}  item onhand stock  ${edititemData3}[0]
+    ${A}  item current stock for Rackcase  ${itemData1}[0]
+    ${B}  item current stock for Rackcase  ${itemData2}[0]
+    ${C}  item current stock for Rackcase  ${itemData3}[0]
+    ${save1}  item current stock for Rackcase  ${edititemData1}[0]
+    ${save2}  item current stock for Rackcase  ${edititemData2}[0]
+    ${save3}  item current stock for Rackcase  ${edititemData3}[0]
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material
@@ -34,7 +34,7 @@ inward request with rack on
 #    ${randomGrn}=  generate random string  5-10  [NUMBERS]
 #    press keys  ${grnNumber}  CTRL+BACKSPACE
 #    input  ${grnNumber}  ${randomGrn}
-    select partner  Newvendor_10
+    select partner  Pooja12
     input  ${invoiceNumber}  inv1001
     set ith item in inward  0  ${itemData1}[0]  ${itemData1}[1]
     set ith item in inward  1  ${itemData2}[0]  ${itemData2}[1]
@@ -43,11 +43,11 @@ inward request with rack on
     click  ${newRequest}
     click  ${inventoryDropdown}
     click  ${inventoryTransactions}
-#    reload page
+    reload page
     sleep  2
-    inward tr status no method 2  Pending  1
-    Wait Until Page Contains Element  ${newInwardNote}  10
-    inward tr status no method 2  Pending  1
+#    inward tr status no method 2  Pending  1
+#    Wait Until Page Contains Element  ${newInwardNote}  10
+#    inward tr status no method 2  Pending  1
 #    wait until page contains  ${newInwardNote}
     click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
     click  ${edit}
@@ -72,11 +72,11 @@ inward request with rack on
     reload page
     sleep  2
     open warehouse
-    ${finalvalue1}  item onhand stock  ${edititemData1}[0]
+    ${finalvalue1}  item current stock for Rackcase  ${edititemData1}[0]
     ${finalstock1}  Evaluate  eval("${save1}+${edititemData1}[1]")
-    ${finalvalue2}  item onhand stock  ${edititemData2}[0]
+    ${finalvalue2}  item current stock for Rackcase  ${edititemData2}[0]
     ${finalstock2}  Evaluate  eval("${save2}+${edititemData2}[1]")
-    ${finalvalue3}  item onhand stock  ${edititemData3}[0]
+    ${finalvalue3}  item current stock for Rackcase  ${edititemData3}[0]
     ${finalstock3}  Evaluate  eval("${save3}+${edititemData3}[1]")
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
     Should Be Equal As Integers    ${finalvalue2}    ${finalstock2}

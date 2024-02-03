@@ -20,12 +20,12 @@ inward request with rack off
     login
     select site  testing_site_automation
     open warehouse
-    ${A}  item onhand stock  ${itemData1}[0]
-    ${B}  item onhand stock  ${itemData2}[0]
-    ${C}  item onhand stock  ${itemData3}[0]
-    ${save1}  item onhand stock  ${edititemData1}[0]
-    ${save2}  item onhand stock  ${edititemData2}[0]
-    ${save3}  item onhand stock  ${edititemData3}[0]
+    ${A}  item current stock  ${itemData1}[0]
+    ${B}  item current stock  ${itemData2}[0]
+    ${C}  item current stock  ${itemData3}[0]
+    ${save1}  item current stock  ${edititemData1}[0]
+    ${save2}  item current stock  ${edititemData2}[0]
+    ${save3}  item current stock  ${edititemData3}[0]
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material
@@ -60,13 +60,13 @@ inward request with rack off
     reload page
     sleep  1
     open warehouse
-    ${finalvalue1}  item onhand stock  ${edititemData1}[0]
+    ${finalvalue1}  item current stock  ${edititemData1}[0]
     ${finalstock1}  Evaluate  eval("${save1}+${edititemData1}[1]")
-    ${finalvalue2}  item onhand stock  ${edititemData2}[0]
+    ${finalvalue2}  item current stock  ${edititemData2}[0]
     ${finalstock2}  Evaluate  eval("${save2}+${edititemData2}[1]")
-    ${finalvalue3}  item onhand stock  ${edititemData3}[0]
+    ${finalvalue3}  item current stock  ${edititemData3}[0]
     ${finalstock3}  Evaluate  eval("${save3}+${edititemData3}[1]")
-    Should Be Equal As Integers    ${finalvalue1}    ${finalstock2}
+    Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
     Should Be Equal As Integers    ${finalvalue2}    ${finalstock2}
     Should Be Equal As Integers    ${finalvalue3}    ${finalstock3}
 

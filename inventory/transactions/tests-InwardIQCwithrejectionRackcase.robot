@@ -10,13 +10,13 @@ Library    DateTime
 *** Variables ***
 @{itemData1}  RM0001  49  10
 @{itemData2}  RM0002  60  10
-@{itemData3}  RM0003  510
+@{itemData3}  RM0003  510  10
 #@{edititemData1}  RM0001  56
 #@{edititemData2}  RM0002  32
 #@{edititemData3}  RM0003  65
 
 *** Test Cases ***
-IQC allok rack case
+IQC with rejection rack case
     login
     select site  testingsite_automation3_rackcase
     open warehouse
@@ -39,13 +39,17 @@ IQC allok rack case
     click  ${newRequest}
     open transactions page
     sleep  2
+    inward tr status no method 2  IQC Pending  1
 #    wait until page contains  ${newInwardNote}
     click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
     click  ${qualityChecktab}
     sleep  2
     click  ${inwardEdit}
-    click  ${allOk}
-    wait until element is visible  //span[text() = "No Rejections"]
+    rejection reason  BUBBLES  ${itemData1}[0]  ${itemData1}[2]
+    rejection reason  UNEVEN-SURFACE  ${itemData2}[0]  ${itemData2}[2]
+    rejection reason  Material Issue  ${itemData3}[0]  ${itemData3}[2]
+    click  ${inwardRejSubmit}
+    wait until element is visible  //span[text() = "Rejected"]
     i should see text on page  Transaction Edited SuccesFully
     open transactions page
     wait until element is visible  ${newInwardNote}
@@ -67,15 +71,20 @@ IQC allok rack case
     sleep  2
     open warehouse
     ${finalvalue1}  item current stock for Rackcase  ${itemData1}[0]
-    ${value1}  Set Variable  ${save1}+${itemData1}[1]
+    ${increment1}  Set Variable  ${itemData1}[1]-${itemData1}[2]
+    ${increment_main1}  Evaluate  eval("${increment1}")
+    ${value1}  Set Variable  ${save1}+${increment_main1}
     ${finalstock1}  Evaluate  eval("${value1}")
     ${finalvalue2}  item current stock for Rackcase  ${itemData2}[0]
-    ${value2}  Set Variable  ${save2}+${itemData2}[1]
+    ${increment2}  Set Variable  ${itemData2}[1]-${itemData2}[2]
+    ${increment_main2}  Evaluate  eval("${increment2}")
+    ${value2}  Set Variable  ${save2}+${increment_main2}
     ${finalstock2}  Evaluate  eval("${value2}")
     ${finalvalue3}  item current stock for Rackcase  ${itemData3}[0]
-    ${value3}  Set Variable  ${save3}+${itemData3}[1]
+    ${increment3}  Set Variable  ${itemData3}[1]-${itemData3}[2]
+    ${increment_main3}  Evaluate  eval("${increment3}")
+    ${value3}  Set Variable  ${save3}+${increment_main3}
     ${finalstock3}  Evaluate  eval("${value3}")
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
     Should Be Equal As Integers    ${finalvalue2}    ${finalstock2}
     Should Be Equal As Integers    ${finalvalue3}    ${finalstock3}
-

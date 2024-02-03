@@ -3,6 +3,7 @@ Library  SeleniumLibrary
 Resource  ../../keywords.robot
 Resource  ../../variables.robot
 Resource  ./variables.robot
+Library  DateTime
 
 *** Keywords ***
 open transactions page
@@ -136,11 +137,12 @@ set ith item in multiple Lot case
     #input  (//input[@type = "number"])[${i}]  ${itemData}[2]---lot slot id
 
 rejection reason
-    [Arguments]  ${i}  ${rejReason}  ${rejQuantity}
-    input  //input[@id = "credit__rejections__0__${i}__reason"]  ${rejReason}
-    press keys  //input[@id = "credit__rejections__0__${i}__reason"]  ARROW_DOWN  ENTER
-    sleep  1
-    input  //input[@id = "credit__rejections__0__${i}__quantity"]  ${rejQuantity}
+    [Arguments]  ${rejReason}  ${itemname}  ${rejQuantity}
+    input  //div[contains(@id, 'rejection')and(@role="tabpanel")]//span[text()="${itemname}"]/../../../../div[3]//input[contains(@id, 'reason')and(@type="search")]  ${rejReason}
+    #input  //input[@id = "credit__rejections__0__${i}__reason"]  ${rejReason}
+    press keys  //div[contains(@id, 'rejection')and(@role="tabpanel")]//span[text()="${itemname}"]/../../../../div[3]//input[contains(@id, 'reason')and(@type="search")]  ARROW_DOWN  ENTER
+    sleep  2
+    input  //div[contains(@id, 'rejection')and(@role="tabpanel")]//span[text()="${itemname}"]/../../../../div[3]//input[contains(@id, 'quantity')and(@role="spinbutton")]  ${rejQuantity}
 #    press keys  //input[@id = "credit__rejections__0__${i}__quantity"]  ENTER
 
 select outward to
@@ -296,11 +298,34 @@ open warehouse
     click  ${inventoryWarehouses}
     wait until page contains  Live Inventory
 
+open trasactions page
+    click  ${inventoryDropdown}
+    click  //a[text()="Transactions"]
+
+
 item onhand stock
     [Arguments]  ${itemName}
     search name in warehouse  ${itemName}
     scroll element into view  //span[text() = "${itemName}"]
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[6]
+    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
+    ${integer_value}  Convert To Integer  ${Quantity_number}
+    [Return]  ${integer_value}
+
+item current stock
+    [Arguments]  ${itemName}
+    search name in warehouse  ${itemName}
+    scroll element into view  //span[text() = "${itemName}"]
+    ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[3]
+    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
+    ${integer_value}  Convert To Integer  ${Quantity_number}
+    [Return]  ${integer_value}
+
+item current stock for Rackcase
+    [Arguments]  ${itemName}
+    search name in warehouse  ${itemName}
+    scroll element into view  //span[text() = "${itemName}"]
+    ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[4]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     [Return]  ${integer_value}
@@ -372,8 +397,10 @@ Conversion return
 #    [Return]  ${Quantity_number}
 date entry
     sleep  1
-    ${today1}=  Get Current Date  result_format=%d-%m-%Y
-    sleep  1
+    ${today1}    Get Current Date  result_format=%d-%m-%Y
+#    ${today1}=    Evaluate    datetime.datetime.now().strftime('%d-%m-%Y')
+#    Log To Console    Current Date: ${today1}
+#    BuiltIn.Sleep    1
     click  ${dateOutward}
     input  ${dateOutward}  ${today1}
     sleep  1

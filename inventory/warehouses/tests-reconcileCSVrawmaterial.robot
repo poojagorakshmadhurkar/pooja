@@ -31,8 +31,8 @@ Upload CSV File
     select site  testing_site_automation
     sleep  3
     open warehouse
-    ${item1value}  item onhand stock(Rawmaterial)  ${column1_row1}
-    ${item2value}  item onhand stock(Rawmaterial)  ${column1_row2}
+    ${stockvalue1}  item onhand stock(Rawmaterial)  ${column1_row1}
+    ${stockvalue2}  item onhand stock(Rawmaterial)  ${column1_row2}
     Log    Item 1 value: ${column1_row1}
     Log    Item 2 value: ${column1_row2}
 
@@ -52,69 +52,64 @@ Upload CSV File
 
     reload page
     sleep  2
-    camparison  ${item1value}  ${column4_row1}  ${column1_row1}
-    camparison  ${item2value}  ${column4_row2}  ${column1_row2}
+    camparison  ${stockvalue1}  ${column4_row1}  ${column1_row1}
+    camparison  ${stockvalue2}  ${column4_row2}  ${column1_row2}
     Close Browser
 
 *** Keywords ***
 
 Test keyword 1     #Outward Note will be created
-    [Arguments]    ${K}    ${Name1}  ${name}
-    Log    Running Test keyword 1 with A: ${K} and itemData1: ${Name1}
-    Log   itemname: ${name}
-    ${first_number}    Set Variable  ${K}
-    ${second_number}   Set Variable  ${Name1}
-    ${result1}          Evaluate    ${first_number} - ${second_number}
-    Log                Result of subtraction in Test keyword 1: ${result1}
+    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
+    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
+    ${outwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
     Click  ${outwardtab}
     open outward tr note  1
-    wait until element is visible  //span[text() = "${name}"]
-    ${quantityS}  Get Text  //span[text() = "${name}"]/ancestor::tr/td[1]
+    wait until element is visible  //span[text() = "${itemname}"]
+    ${quantityS}  Get Text  //span[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     Should Be Equal As Numbers    ${result1}    ${integer_value}
+#    ${fetchoutwardADJNote}  Get Text  //button[normalize-space()='Disapprove Request']/../span[2]
+#    return from keyword  ${fetchoutwardADJNote}
     reload page
     sleep  2
     Click  (//div[@id = "item__tabs-panel-debit"]//button[@aria-label='Approve'])[1]
     open warehouse
-    ${item1newvalue}  item onhand stock(Rawmaterial)  ${name}
-    ${finalwarehousevalue}          Evaluate    ${first_number} - ${integer_value}
-    Should Be Equal As Numbers    ${item1newvalue}    ${finalwarehousevalue}
+    ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
+    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
 
 
 
 Test keyword 2    #inward note will be created
-    [Arguments]    ${P}    ${Name2}  ${name}
-    Log    Running Test keyword 2 with A: ${P} and itemData1: ${Name2}
-    Log   itemname: ${name}
-    ${first_number}    Set Variable  ${P}
-    ${second_number}   Set Variable  ${Name2}
-    ${result2}          Evaluate    ${second_number} - ${first_number}
-    Log                Result of subtraction in Test keyword 2: ${result2}
+    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
+    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
+    ${outwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
     Click  ${inwardtab}
     open inward tr note  1
-    wait until element is visible  //a[text() = "${name}"]
-    ${quantityS}  Get Text  //a[text() = "${name}"]/ancestor::tr/td[1]
+    wait until element is visible  //a[text() = "${itemname}"]
+    ${quantityS}  Get Text  //a[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     reload page
     sleep  2
-    Click  (//div[@id = "item__tabs-panel-credit"]//button[@aria-label='Approve'])[1]
+    Click  //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
     open warehouse
-    ${item2newvalue}  item onhand stock(Rawmaterial)  ${name}
-    ${finalwarehousevalue}          Evaluate    ${first_number} + ${integer_value}
-    Should Be Equal As Numbers    ${item2newvalue}    ${finalwarehousevalue}
+    ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
+    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
+
 
 
 Camparison
-    [Arguments]    ${A}    ${b}  ${recievedname}
-    Run Keyword If    ${A} > ${b}  Test keyword 1  ${A}  ${b}  ${recievedname}
-...  ELSE IF  ${A} < ${b}  Test keyword 2  ${A}  ${b}  ${recievedname}
-...  ELSE IF  ${A} == ${b}  Log    This is a log statement for equal
+    [Arguments]    ${stockvalue}    ${reconcilevalue}  ${itemname}
+    Run Keyword If    ${stockvalue} > ${reconcilevalue}  Test keyword 1  ${stockvalue}    ${reconcilevalue}  ${itemname}
+...  ELSE IF  ${stockvalue} < ${reconcilevalue}  Test keyword 2  ${stockvalue}    ${reconcilevalue}  ${itemname}
+...  ELSE IF  ${stockvalue} == ${reconcilevalue}  Log    This is a log statement for equal
     Log    This is a log statement
 
 

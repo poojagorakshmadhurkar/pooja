@@ -20,9 +20,9 @@ IQC allok non rack case
     login
     select site  testing_automation_site2
     open warehouse
-    ${save1}  item onhand stock  ${itemData1}[0]
-    ${save2}  item onhand stock  ${itemData2}[0]
-    ${save3}  item onhand stock  ${itemData3}[0]
+    ${save1}  item current stock  ${itemData1}[0]
+    ${save2}  item current stock  ${itemData2}[0]
+    ${save3}  item current stock  ${itemData3}[0]
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material
@@ -41,7 +41,10 @@ IQC allok non rack case
 #    reload page
     sleep  2
     inward tr status no method 2  IQC Pending  1
-#    wait until page contains  ${newInwardNote}
+# Validation for if IQc enble than without it should not get approved
+    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
+    wait until page contains    perform IQC first
+
     click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
     click  ${qualityChecktab}
     sleep  2
@@ -60,13 +63,13 @@ IQC allok non rack case
     reload page
     sleep  2
     open warehouse
-    ${finalvalue1}  item onhand stock  ${itemData1}[0]
+    ${finalvalue1}  item current stock  ${itemData1}[0]
     ${value1}  Set Variable  ${save1}+${itemData1}[1]
     ${finalstock1}  Evaluate  eval("${value1}")
-    ${finalvalue2}  item onhand stock  ${itemData2}[0]
+    ${finalvalue2}  item current stock  ${itemData2}[0]
     ${value2}  Set Variable  ${save2}+${itemData2}[1]
     ${finalstock2}  Evaluate  eval("${value2}")
-    ${finalvalue3}  item onhand stock  ${itemData3}[0]
+    ${finalvalue3}  item current stock  ${itemData3}[0]
     ${value3}  Set Variable  ${save3}+${itemData3}[1]
     ${finalstock3}  Evaluate  eval("${value3}")
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}

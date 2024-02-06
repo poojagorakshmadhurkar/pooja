@@ -8,14 +8,15 @@ Library  Collections
 Library    DateTime
 
 *** Variables ***
-@{itemData}  RM0003
+@{itemData}  RM0003  100
 
 *** Test Cases ***
 Making a transaction for an item more than the inventory value and partially approving it
     login
     select site  testing_site_automation
+    Search and Check Item Quantity  ${itemData}[0]  ${itemData}[1]  Test_Employee07  Vendor1113
     open warehouse
-    ${save}  item onhand stock  ${itemData}[0]
+    ${save}  item current stock  ${itemData}[0]
     open transactions page
     click  ${outwardTab}
     click  ${newOutwardNote}

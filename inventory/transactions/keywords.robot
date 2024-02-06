@@ -42,7 +42,7 @@ set ith item in inward
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
     click  //input[@id = "credit__details__${i}__sku"]/../../span[2]
     input  //input[@id = "credit__details__${i}__sku"]  ${recievedName}
-    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  10
+    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
     click  //*[text() = "${recievedName}"]
     sleep  1
     input  (//input[@id = "credit__details__${i}__quantity"])  ${recievedQuantity}
@@ -60,15 +60,13 @@ edit inward entry
 
 set ith item in outward
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
-    click  //input[@id = "debit__details__${i}__sku"]/../../span[2]
-    input  //input[@id = "debit__details__${i}__sku"]  ${recievedName}
-    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  10
-    click  //*[text() = "${recievedName}"]
+    press keys  //input[@id = "debit__details__${i}__sku"]/../../span[2]  CTRL+A  BACKSPACE  ${recievedName}
+    Sleep  1
+#    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
+    press keys  //input[@id = "debit__details__${i}__sku"]  ENTER
     sleep  1
-    click  (//input[@id = "debit__details__${i}__quantity"])/..
-    press keys  (//input[@id = "debit__details__${i}__quantity"])  ${recievedQuantity}
+    press keys    (//input[@id = "debit__details__${i}__quantity"])  CTRL+A  BACKSPACE  ${recievedQuantity}
     sleep  1
-    press keys  (//input[@id = "debit__details__${i}__quantity"])  TAB
 
 edit ith item in outward
     [Arguments]  ${i}  ${newItemName}  ${newItemQuantity}
@@ -78,13 +76,17 @@ edit ith item in outward
     sleep  1
     press keys  (//input[@id = "debit__details__${i}__quantity"])  CTRL+A  BACKSPACE  ${newItemQuantity}
     sleep  1
+
 set ith item in Lot case
-    [Arguments]  ${i}  ${itemData}
+    [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
     #click  (//button[@aria-label = "Open"]/../../input)[${i}]
-    input  //input[@id = "credit__details__${i}__sku"]  ${itemData}[0]
+    press keys  //input[@id = "credit__details__${i}__sku"]  CTRL+A  BACKSPACE  ${recievedName}
+    sleep  1
+    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  10
     press keys  //input[@id = "credit__details__${i}__sku"]  ENTER
     sleep  1
-    input  (//input[@id = "credit__details__0__${i}__sku"])  ${itemData}[1]
+    press keys  (//input[@id = "credit__details__0__${i}__sku"])  CTRL+A  BACKSPACE  ${recievedQuantity}
+    sleep  1
     #input  (//input[@type = "number"])[${i}]  ${itemData}[2]---lot slot id
 
 set ith item in costing
@@ -337,16 +339,20 @@ search name in warehouse
     press keys  ${RMitemName}  CTRL+A  BACKSPACE
     input  ${RMitemName}  ${itemName}
     press keys  ${RMitemName}  ENTER
-    wait until page contains element  //span[text() = "${itemName}"]  10
+    wait until page contains element  //span[text() = "${itemName}"]  20
 
 No live inventory check
     [Arguments]  ${itemName}
     click  ${inventoryDropdown}
     click  ${inventoryWarehouses}
-    wait until page contains  Live Inventory
-    search name in warehouse  ${itemName}
-    ${noStock}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[6]
-    Run Keyword If  '${noStock}'  ==  ''
+    click  ${RMItemFilter}
+    click  ${RMitemName}
+    press keys  ${RMitemName}  CTRL+A  BACKSPACE
+    input  ${RMitemName}  ${itemName}
+    press keys  ${RMitemName}  ENTER
+    Wait Until Page Does Not Contain Element  //span[text() = "${itemName}"]
+
+
 
 item current stock for scraps
     [Arguments]  ${itemName}
@@ -479,3 +485,44 @@ return confirmation
    # ${increment1}  Set Variable  ${itemData1}[1]-${itemData1}[2]
    # ${increment_main1}  Evaluate  eval("${increment1}")
    # [RETURN}  ${increment_main1}
+
+
+Inward when item zero
+    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
+    open transactions page
+    click  ${newInwardNote}
+    select item type  Raw Material
+    select inspector  ${inspector}
+    select partner  ${patner}
+    set ith item in inward  0  ${itemname}  ${itemquantity}
+    click  ${submit}
+    sleep  1
+    click  ${inventoryDropdown}
+    click  ${inventoryTransactions}
+    inward approve number  1
+    i should see text on page  MRN approved SuccesFully
+    reload page
+    sleep  2
+
+Search For Item
+    [Arguments]  ${itemName}
+    search name in warehouse for validation  ${itemName}
+    ${item_found}    Run Keyword And Return Status    Page Should Contain Element    //span[text() = "${itemName}"]
+    Run Keyword If    not ${item_found}    Set Variable    ${FALSE}
+    [Return]    ${item_found}
+
+search name in warehouse for validation
+    [Arguments]  ${itemName}
+    click  ${RMItemFilter}
+    click  ${RMitemName}
+    press keys  ${RMitemName}  CTRL+A  BACKSPACE
+    input  ${RMitemName}  ${itemName}
+    press keys  ${RMitemName}  ENTER
+    sleep  1
+
+Search and Check Item Quantity
+    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    open warehouse
+    ${item1_found}    Search For Item    ${itemName}
+    Run Keyword If    not ${item1_found}    Inward when item zero  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    sleep  1

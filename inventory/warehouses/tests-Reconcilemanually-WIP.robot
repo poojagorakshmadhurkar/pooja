@@ -10,10 +10,11 @@ Library  Datadriver
 
 *** Variables ***
 
-@{itemData1}  WIP_194  260             #warehouse value is 240   #20 inward note
-@{itemData2}  WIP_193  180              #warehouse value is 190     #10 outward note
-                                     #issue :When two inward note created than approve button not visible error comes
-
+@{itemData1}  WIP_194  500             #warehouse value is 270   #20 inward note
+@{itemData2}  WIP_193  300              #warehouse value is 170     #10 outward note
+${keyword1_count}    0
+${keyword2_count}    0                                                             #issue :When two inward note created than approve button not visible error comes
+                                     #always ensure 1st option is doing outward and second inward
 *** Test Cases ***
 Manually Reconcile                 #Reconcile with WIP
     login
@@ -21,6 +22,7 @@ Manually Reconcile                 #Reconcile with WIP
     sleep  3
     open warehouse
     ${stockvalue1}  item onhand stock(WIP)  ${itemData1}[0]
+    sleep  2
     ${stockvalue2}  item onhand stock(WIP)  ${itemData2}[0]
     #${b}  Convert To Integer  ${b}
     sleep  2
@@ -40,8 +42,8 @@ Manually Reconcile                 #Reconcile with WIP
 *** Keywords ***
 
 Test keyword 1     #Outward Note will be created
-    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
-    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
+    [Arguments]    ${currentstockvalue}    ${reconcilevalue}  ${itemname}
+    ${result1}          Set Variable    ${currentstockvalue} - ${reconcilevalue}
     ${outwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
@@ -50,24 +52,25 @@ Test keyword 1     #Outward Note will be created
     wait until element is visible  //span[text() = "${itemname}"]
     ${quantityS}  Get Text  //span[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
-    ${integer_value}  Convert To Integer  ${Quantity_number}
-    Should Be Equal As Numbers    ${result1}    ${integer_value}
+    ${notevalue}  Convert To Integer  ${Quantity_number}
+    Should Be Equal As Numbers    ${outwardvalue}    ${notevalue}
 #    ${fetchoutwardADJNote}  Get Text  //button[normalize-space()='Disapprove Request']/../span[2]
 #    return from keyword  ${fetchoutwardADJNote}
     reload page
-    sleep  2
-    Click  (//div[@id = "item__tabs-panel-debit"]//button[@aria-label='Approve'])[1]
+    sleep  5
+    Increment Keyword 1 Count
+    sleep  3
     open warehouse
-    ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
-    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    sleep  2
+    ${finalwarehousevalue}  item onhand stock(WIP)  ${itemname}
+    ${warehouseresult}          Evaluate    ${currentstockvalue} - ${notevalue}
     Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
 
 
-
 Test keyword 2    #inward note will be created
-    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
-    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
-    ${outwardvalue}  Evaluate  eval("${result1}")
+    [Arguments]    ${currentstockvalue}    ${reconcilevalue}  ${itemname}
+    ${result1}          Set Variable    ${reconcilevalue} - ${currentstockvalue}
+    ${inwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
     Click  ${inwardtab}
@@ -75,13 +78,16 @@ Test keyword 2    #inward note will be created
     wait until element is visible  //a[text() = "${itemname}"]
     ${quantityS}  Get Text  //a[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
-    ${integer_value}  Convert To Integer  ${Quantity_number}
+    ${notevalue}  Convert To Integer  ${Quantity_number}
+    Should Be Equal As Numbers    ${inwardvalue}    ${notevalue}
     reload page
-    sleep  2
-    Click  //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    sleep  5
+    Increment Keyword 2 Count
+    sleep  3
     open warehouse
-    ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
-    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    sleep  2
+    ${finalwarehousevalue}  item onhand stock(WIP)  ${itemname}
+    ${warehouseresult}          Evaluate    ${currentstockvalue} + ${notevalue}
     Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
 
 
@@ -106,11 +112,40 @@ item onhand stock(WIP)
 
 search WIPname in warehouse
     [Arguments]  ${itemName}
-    click  //div[text()="WIP"]
+    click  //div[@id="item__tabs-tab-2"]
     click  (//span[@role='button'])[3]
-    press keys  ${warehouseFilterItemName}  CTRL+A  BACKSPACE
-    input  ${warehouseFilterItemName}  ${itemName}
+    Wait Until Element Is Visible  //input[@placeholder="Search Item Details"]  timeout=10s
+    press keys  //input[@placeholder="Search Item Details"]  CTRL+A  BACKSPACE
+    input  //input[@placeholder="Search Item Details"]  ${itemName}
     click  ${searchicon}
     sleep  2
     Wait Until Page Contains Element  //div[@id = "item__tabs-panel-2"]//span[text() = "${itemName}"]    timeout=10s
 
+Click Inward Approval Button
+    [Documentation]    Clicks the inward approval button
+    Scroll Element Into View    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    Wait Until Element Is Visible    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    Capture Page Screenshot    # Optional for debugging
+    Click Element    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+
+Click Outward Approval Button
+    [Documentation]    Clicks the outward approval button
+    Scroll Element Into View    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+    Wait Until Element Is Visible    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+    Capture Page Screenshot    # Optional for debugging
+    Click Element    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+
+Click Approval Button Based on Keyword Count
+    [Documentation]    Clicks the approval button based on the count of Keyword 1 and Keyword 2
+    Run Keyword If    ${keyword1_count} == 2  Click Outward Approval Button
+    Run Keyword If    ${keyword2_count} == 2  Click Inward Approval Button
+
+Increment Keyword 1 Count
+    ${keyword1_count}=    Evaluate    ${keyword1_count} + 1
+    Set Test Variable    ${keyword1_count}
+    Run Keyword If    ${keyword1_count} == 1  Click Outward Approval Button
+
+Increment Keyword 2 Count
+    ${keyword2_count}=    Evaluate    ${keyword2_count} + 1
+    Set Test Variable    ${keyword2_count}
+    Run Keyword If    ${keyword2_count} == 1  Click Inward Approval Button

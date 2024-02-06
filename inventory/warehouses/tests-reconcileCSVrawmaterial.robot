@@ -15,13 +15,14 @@ Library  Evaluate
 ${file_path}  C:\\Users\\user\\PycharmProjects\\automation\\Suite\\inventory\\warehouses\\example.csv
 ${column1_row1}     #warehouse item =RM_001    warhouse =300 reconcile 250 50 outward note
 ${column2_row1}      #warehouse item =RM_002   warhouse =300 reconcile 350 50 inward note
-${column3_row1}
+${column3_row1}        #always ensure 1st option is doing outward and second inward
 ${column4_row1}
 ${column1_row2}
 ${column2_row2}
 ${column3_row2}
 ${column4_row2}
-
+${keyword1_count}    0
+${keyword2_count}    0
 
 *** Test Cases ***
 Upload CSV File
@@ -59,8 +60,8 @@ Upload CSV File
 *** Keywords ***
 
 Test keyword 1     #Outward Note will be created
-    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
-    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
+    [Arguments]    ${currentstockvalue}    ${reconcilevalue}  ${itemname}
+    ${result1}          Set Variable    ${currentstockvalue} - ${reconcilevalue}
     ${outwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
@@ -69,24 +70,25 @@ Test keyword 1     #Outward Note will be created
     wait until element is visible  //span[text() = "${itemname}"]
     ${quantityS}  Get Text  //span[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
-    ${integer_value}  Convert To Integer  ${Quantity_number}
-    Should Be Equal As Numbers    ${result1}    ${integer_value}
+    ${notevalue}  Convert To Integer  ${Quantity_number}
+    Should Be Equal As Numbers    ${outwardvalue}    ${notevalue}
 #    ${fetchoutwardADJNote}  Get Text  //button[normalize-space()='Disapprove Request']/../span[2]
 #    return from keyword  ${fetchoutwardADJNote}
     reload page
-    sleep  2
-    Click  (//div[@id = "item__tabs-panel-debit"]//button[@aria-label='Approve'])[1]
+    sleep  5
+    Increment Keyword 1 Count
+    sleep  3
     open warehouse
+    sleep  2
     ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
-    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    ${warehouseresult}          Evaluate    ${currentstockvalue} - ${notevalue}
     Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
 
 
-
 Test keyword 2    #inward note will be created
-    [Arguments]    ${stockvalue}    ${itemvalue}  ${itemname}
-    ${result1}          Set Variable    ${stockvalue} - ${itemvalue}
-    ${outwardvalue}  Evaluate  eval("${result1}")
+    [Arguments]    ${currentstockvalue}    ${reconcilevalue}  ${itemname}
+    ${result1}          Set Variable    ${reconcilevalue} - ${currentstockvalue}
+    ${inwardvalue}  Evaluate  eval("${result1}")
     Click  ${inventorybutton}
     Click  ${Transactiobutton}
     Click  ${inwardtab}
@@ -94,13 +96,16 @@ Test keyword 2    #inward note will be created
     wait until element is visible  //a[text() = "${itemname}"]
     ${quantityS}  Get Text  //a[text() = "${itemname}"]/ancestor::tr/td[1]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
-    ${integer_value}  Convert To Integer  ${Quantity_number}
+    ${notevalue}  Convert To Integer  ${Quantity_number}
+    Should Be Equal As Numbers    ${inwardvalue}    ${notevalue}
     reload page
-    sleep  2
-    Click  //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    sleep  5
+    Increment Keyword 2 Count
+    sleep  3
     open warehouse
+    sleep  2
     ${finalwarehousevalue}  item onhand stock(Rawmaterial)  ${itemname}
-    ${warehouseresult}          Evaluate    ${stockvalue} - ${integer_value}
+    ${warehouseresult}          Evaluate    ${currentstockvalue} + ${notevalue}
     Should Be Equal As Numbers    ${warehouseresult}    ${finalwarehousevalue}
 
 
@@ -133,3 +138,33 @@ Set Row Variables
     Set Test Variable    ${column2_row_${row_index}}    ${values[1]}
     Set Test Variable    ${column3_row_${row_index}}    ${values[2]}
     Set Test Variable    ${column4_row_${row_index}}    ${values[3]}
+
+Increment Keyword 1 Count
+    ${keyword1_count}=    Evaluate    ${keyword1_count} + 1
+    Set Test Variable    ${keyword1_count}
+    Run Keyword If    ${keyword1_count} == 1  Click Outward Approval Button
+
+Increment Keyword 2 Count
+    ${keyword2_count}=    Evaluate    ${keyword2_count} + 1
+    Set Test Variable    ${keyword2_count}
+    Run Keyword If    ${keyword2_count} == 1  Click Inward Approval Button
+
+
+Click Inward Approval Button
+    [Documentation]    Clicks the inward approval button
+    Scroll Element Into View    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    Wait Until Element Is Visible    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+    Capture Page Screenshot    # Optional for debugging
+    Click Element    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
+
+Click Outward Approval Button
+    [Documentation]    Clicks the outward approval button
+    Scroll Element Into View    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+    Wait Until Element Is Visible    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+    Capture Page Screenshot    # Optional for debugging
+    Click Element    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
+
+Click Approval Button Based on Keyword Count
+    [Documentation]    Clicks the approval button based on the count of Keyword 1 and Keyword 2
+    Run Keyword If    ${keyword1_count} == 2  Click Outward Approval Button
+    Run Keyword If    ${keyword2_count} == 2  Click Inward Approval Button

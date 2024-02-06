@@ -28,8 +28,8 @@ def read_csv_file(file_path):
 csv_file_path = 'example.csv'
 data_to_write = [
     ['Item Code','Item Name','Item Group','Quantity'],
-    ['RM_002','150/0 Polyester Black','Rawmaterial1',250],
-    ['RM_001','150/0 Polyester Cora','Rawmaterial1',350],
+    ['RM_001','150/0 Polyester Black','Rawmaterial1',1000],
+    ['RM_002','150/0 Polyester Cora','Rawmaterial1',450],
 
 ]
 

@@ -19,10 +19,14 @@ Library    DateTime
 IQC allok rack case
     login
     select site  testingsite_automation3_rackcase
+    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Pooja30
+    Search and Check Item Quantity  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Pooja30
+    Search and Check Item Quantity  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Pooja30
     open warehouse
     ${save1}  item current stock for Rackcase  ${itemData1}[0]
     ${save2}  item current stock for Rackcase  ${itemData2}[0]
     ${save3}  item current stock for Rackcase  ${itemData3}[0]
+    sleep  2
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material

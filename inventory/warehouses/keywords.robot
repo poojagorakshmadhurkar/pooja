@@ -14,6 +14,7 @@ open warehouse
 item onhand stock(Rawmaterial)
     [Arguments]  ${itemName}
     search rawmaterailname in warehouse  ${itemName}
+    sleep  2
     scroll element into view  //span[text() = "${itemName}"]
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[3]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
@@ -26,11 +27,14 @@ item onhand stock(Rawmaterial)
 search rawmaterailname in warehouse
     [Arguments]  ${itemName}
     click  ${warehouseFilter}
-    sleep  2
+    sleep  3
     press keys  ${warehouseFilterItemName}  CTRL+A  BACKSPACE
     input  ${warehouseFilterItemName}  ${itemName}
-    click  ${searchicon}
+    press keys  ${searchicon}  ENTER
+    sleep  2
     wait until page contains element  //span[text() = "${itemName}"]  10
+
+
 
 
 open outward tr note

@@ -19,6 +19,9 @@ Library    DateTime
 inward request with rack off
     login
     select site  testing_site_automation
+    Search and Check Item Quantity  ${edititemData1}[0]  ${edititemData1}[1]  Test_Employee07  Vendor1113
+    Search and Check Item Quantity  ${edititemData2}[0]  ${edititemData2}[1]  Test_Employee07  Vendor1113
+    Search and Check Item Quantity  ${edititemData3}[0]  ${edititemData3}[1]  Test_Employee07  Vendor1113
     open warehouse
     ${A}  item current stock  ${itemData1}[0]
     ${B}  item current stock  ${itemData2}[0]
@@ -26,6 +29,7 @@ inward request with rack off
     ${save1}  item current stock  ${edititemData1}[0]
     ${save2}  item current stock  ${edititemData2}[0]
     ${save3}  item current stock  ${edititemData3}[0]
+    sleep  2
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material

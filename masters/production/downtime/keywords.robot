@@ -3,9 +3,10 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{EditDowntimeData}  Powercut34  Admin  High  Material  Electronic    #Change first name
+#*** Variables ***
+#@{EditDowntimeData}  Powercut34  Admin  High  Material  Electronic    #Change first name
 
 *** Keywords ***
 open downtime page

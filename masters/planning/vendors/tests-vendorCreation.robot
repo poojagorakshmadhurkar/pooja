@@ -5,11 +5,12 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collection
+Resource  ../../keywords.robot
 
 
 
-*** Variables ***
-@{VendorData1}  Vendor109  test9@gmail.com  test39address       #change name only detials here
+#*** Variables ***
+#@{VendorData1}  Vendor109  test9@gmail.com  test39address       #change name only detials here
 
 *** Test Cases ***
 vendorCreation
@@ -31,10 +32,9 @@ vendorCreation
     click  ${newRequest}
     click  ${back}
     reload page
-    sleep  4
-    Execute JavaScript  window.scrollTo(0,2500)
-    sleep  4
+    wait until page contains  NEW  15
     vendor should be added  ${VendorData1}[0]
+    sleep  3
 
 vendor edition
     edit random generated vendor  ${VendorData1}[0]

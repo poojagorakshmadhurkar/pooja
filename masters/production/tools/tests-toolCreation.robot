@@ -6,10 +6,11 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 Library    FakerLibrary
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{labelName}  labelName18  1     #change name here
-@{editToolsData}  editLabel19  1  editPart3      #change name here
+#*** Variables ***
+#@{labelName}  labelName18  1     #change name here
+#@{editToolsData}  editLabel19  1  editPart3      #change name here
 
 *** Test Cases ***
 tools creation
@@ -17,6 +18,7 @@ tools creation
     select site  smart_factory
     open tools page
     click  ${addNewTools}
+    sleep  20
 ##    ${randomLabel}=  generate random string  5-10  [LETTERS]
 #    ${randomLabel}  FakerLibrary.Generate Random Data  name
 #    Log    Random Name: ${random_name}
@@ -33,6 +35,7 @@ tools creation
     input  ${partsLabel}  ${randompartsLabel}
     ${randomPartsLifetime}=  generate random string  1  [NUMBERS]
     input  ${partsLifetime}  ${labelName}[1]
+    Sleep  5
     select option  ${toolCTR}
     sleep  5
     select option  ${machineGroupTags}

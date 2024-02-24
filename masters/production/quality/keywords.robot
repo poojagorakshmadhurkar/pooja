@@ -3,6 +3,7 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 #*** Variables ***
 #@{EditQualityData}  edited_issue3  RM Group  Store  Low

@@ -3,11 +3,12 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 
 
-*** Variables ***
-@{VendorData2}  Newvendor106     #change name here
+#*** Variables ***
+#@{VendorData2}  Newvendor106     #change name here
 *** Keywords ***
 open vendor page
     click  ${mastersDropdown}
@@ -15,8 +16,13 @@ open vendor page
 
 vendor should be added
     [Arguments]  ${vendorName}
-    wait until element is visible  //span[text() = "${vendorName}"]  5
-    element should be visible  //span[text() = "${vendorName}"]
+    click  //button[@id="vendors__filterBtn"]
+    sleep  3
+    press keys  //input[@id='name']  CTRL+A  BACKSPACE
+    input  //input[@id='name']  ${vendorName}
+    wait until page contains element  //span[text() = "${vendorName}"]  timeout=20s
+
+
 
 edit random generated vendor
     [Arguments]  ${oldVendorName}
@@ -34,12 +40,12 @@ edit random generated vendor
     press keys  ${vendorGSTN}  CTRL+A  BACKSPACE  ${randomGSTNnew}
     click  ${Submit}
     i should see text on page  Partner edited
-    click  ${back}
+    open vendor page
     reload page
-    sleep  4
-    Execute JavaScript  window.scrollTo(0,2500)
-    sleep  4
+    sleep  2
+    wait until page contains  NEW  15
     vendor should be added  ${VendorData2}[0]
+    sleep  3
 
 delete vendor
     [Arguments]  ${vendorName}

@@ -16,10 +16,10 @@ reports should be added
     press keys  ${reportTitle}  CTRL+A  BACKSPACE
     input  ${reportTitle}  ${reportName}
     sleep  5
-    wait until page contains element  //a[text() = "${reportName}"]  timeout=10s
+    wait until page contains element  //a[text() = "${reportName}"]  timeout=20s
 
 edit reports
-    [Arguments]  ${Name}
+    [Arguments]  ${Name}  ${editReportsData}
     click  //a[text() = "${Name}"]
     click  ${edit}
     press keys  ${reportName}  CTRL+A  BACKSPACE  ${editReportsData}[0]

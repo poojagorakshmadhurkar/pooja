@@ -3,12 +3,13 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 
 
-*** Variables ***
-@{SiteData1}  poojafactory_28  Test28_addresss  test28@gmail.com   gstnumber3  #change name only
-@{newSiteData}  poojafactory_29  edited address  Edited29@gmail.com    #change name    onlyr
+#*** Variables ***
+#@{SiteData1}  poojafactory_28  Test28_addresss  test28@gmail.com   gstnumber3  #change name only
+#@{newSiteData}  poojafactory_29  edited address  Edited29@gmail.com    #change name    onlyr
 
 *** Test Cases ***
 site creation

@@ -3,11 +3,11 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 
-
-*** Variables ***
-@{CustomerData2}  Newpooj8634637      #change name
+#*** Variables ***
+#@{CustomerData2}  Newpooj8634637      #change name
 
 *** Keywords ***
 open customer page

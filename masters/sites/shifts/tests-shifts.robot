@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{shiftData}  shift32  #change data here
-@{editShiftData}  edited_shift33  05:00  07:00  15
+#*** Variables ***
+#@{shiftData}  shift32  #change data here
+#@{editShiftData}  edited_shift33  05:00  07:00  15
 *** Test Cases ***
 shift creation
     login

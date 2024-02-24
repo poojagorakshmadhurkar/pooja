@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{qualityData}  newIssue18  abc  Planning  Medium     #change name here
-@{EditQualityData}  editedIssue19  RM Group  Store  Low      #change name here
+#*** Variables ***
+#@{qualityData}  newIssue18  abc  Planning  Medium     #change name here
+#@{EditQualityData}  editedIssue19  RM Group  Store  Low      #change name here
 
 *** Test Cases ***
 Quality creation

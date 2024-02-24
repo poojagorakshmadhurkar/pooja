@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{itemGroupData}  ItemGroupp15
-@{edititemGroupData}  editItemGroupp15  Raw Material  gram
+#*** Variables ***
+#@{itemGroupData}  ItemGroupp15
+#@{edititemGroupData}  editItemGroupp15  Raw Material  gram
 
 *** Test Cases ***
 itemGroup creation

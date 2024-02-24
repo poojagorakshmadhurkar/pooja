@@ -1,0 +1,19 @@
+site creation
+machine creation
+add optional child machine
+item group creation-4 types of group
+item creation-4 types of item type
+shift creation
+create a rule
+create new employee-super admin or manager
+downtime reason creation
+quality reason creation
+add item group tag on mcahine
+production entry-avaibility,quality
+
+
+Login to the application
+Hover to masters    -----------Machines creation
+click on new machine icon
+enter the machine name and submit
+

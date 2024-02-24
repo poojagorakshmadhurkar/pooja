@@ -8,9 +8,9 @@ Library  Collections
 Library    DateTime
 
 *** Variables ***
-@{itemData1}  RM0001  49  10
-@{itemData2}  RM0002  60  10
-@{itemData3}  RM0003  510
+@{itemData1}  ItemRM-10  49  10
+@{itemData2}  ItemRM-11  60  10
+@{itemData3}  ItemRM-12  510
 #@{edititemData1}  RM0001  56
 #@{edititemData2}  RM0002  32
 #@{edititemData3}  RM0003  65
@@ -19,9 +19,9 @@ Library    DateTime
 IQC allok non rack case
     login
     select site  testing_automation_site2
-    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Vendor1113
-    Search and Check Item Quantity  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Vendor1113
-    Search and Check Item Quantity  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Vendor1113
+    Search and Check Item Quantity with iqc  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Vendor1113
+    Search and Check Item Quantity with iqc  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Vendor1113
+    Search and Check Item Quantity with iqc  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Vendor1113
     open warehouse
     ${save1}  item current stock  ${itemData1}[0]
     ${save2}  item current stock  ${itemData2}[0]
@@ -81,4 +81,8 @@ IQC allok non rack case
     Should Be Equal As Integers    ${finalvalue3}    ${finalstock3}
 
 #
+
+
+
+
 

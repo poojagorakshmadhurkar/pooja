@@ -3,6 +3,7 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 #*** Variables ***
 #${max_attempts}    10
@@ -107,10 +108,15 @@ edit item
 
 delete item
     [Arguments]  ${itemCodeName}
-    click  //a[text() = "${itemCodeName}"]/../../../../../../../../../../td[7]
+#    click  //a[text() = "${itemCodeName}"]/../../../../../../../../../../td[7]
     sleep  1
-    click  ${deactivate_item}
-    i should see text on page  Item deactivated successfully
+    click  //*[name()='path' and contains(@d,'M12 8c1.1 ')]
+    click  //div[normalize-space()='Deactivated items']
+    sleep  3
+    click  (//span[@role='button'])[1]
+    input  //input[@placeholder='Search Item Details']  ${itemCodeName}
+    click  //input[@type="text"]/../..//button[1]
+    i should see text on page  Item deactivated successfully  ${itemCodeName}
 
 edit itemGroup
     [Arguments]  ${labelName}

@@ -3,6 +3,7 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 *** Keywords ***
 open cycleTimeRules page
@@ -11,9 +12,15 @@ open cycleTimeRules page
     click  ${mastersCycleTimeRules}
 
 cycleTimeRules should be added
-    [Arguments]  ${machineGroup}
-    wait until element is visible  //table/tbody/tr/th/span[text() = "${machineGroup}"]  5
-    element should be visible  //table/tbody/tr/th/span[text() = "${machineGroup}"]
+    [Arguments]  ${machineName}  ${itemName}  ${processName}  ${seconds}
+#    wait until element is visible  //span[contains(text(), "${machineName}")]/../../td[contains(text(), "${itemName}")]/../td[contains(text(), "${processName}")]
+    click  ${filterButton}
+    input  ${machineFilter}  ${machineName}
+    input  ${itemFilter}  ${itemName}
+    input  ${processFilter}  ${processName}
+    input  ${valueFilter}  ${seconds}
+    sleep  10
+    i should see row in table  ${cycleTimeRulesData1}[0]  ${cycleTimeRulesData1}[1]  ${cycleTimeRulesData1}[2]
 
 edit cycleTimeRules
     [Arguments]  ${machineGroup}  ${newSeconds}
@@ -24,9 +31,15 @@ edit cycleTimeRules
     click  ${Submit}
 
 i should see row in table
-    [Arguments]  ${machineName}  ${itemName}  ${processName}  ${valueName}
-    wait until element is visible  //span[contains(text(), "${machineName}")]/../../td[contains(text(), "${itemName}")]/../td[contains(text(), "${processName}")]
-
+    [Arguments]  ${machineName}  ${itemName}  ${processName}
+    ${recievedname1}  Set Variable  ${machineName}
+    ${uppermachine}  Evaluate  "${recievedname1}".upper()
+    ${recievedname2}  Set Variable  ${itemName}
+    ${upperitem}  Evaluate  "${recievedname2}".upper()
+    ${recievedname3}  Set Variable  ${processName}
+    ${upperprcoess}  Evaluate  "${recievedname3}".upper()
+#     wait until page contains element  //span[contains(upper-case(text()), "${machineName}")]/../../td[1][contains(upper-case(text()), "${itemName}")]/../td[3][contains(upper-case((text)), "${processName}")]
+    wait until page contains element  //span[text() = "${uppermachine}"]/../../td[1][text() = "${upperitem}"]/../td[3][text() = "${upperprcoess}"]
 
 
 delete cycleTimeRules

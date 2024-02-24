@@ -5,9 +5,10 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{tagsMangementData}  tagsMangement_test7
+#*** Variables ***
+#@{tagsMangementData}  tagsMangement_test7
 
 *** Test Cases ***
 open tagsMangement page
@@ -26,6 +27,6 @@ open tagsMangement page
 #    select site  Haridwar Unit
     open tagsMangement page
     reload page
-    sleep  3
+    sleep  5
     tagsMangement should be added  ${tagsMangementData}[0]
 

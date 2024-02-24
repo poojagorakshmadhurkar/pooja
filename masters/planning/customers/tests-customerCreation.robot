@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
 
-*** Variables ***
-@{CustomerData1}  Pooja908      #change here name
+#*** Variables ***
+#@{CustomerData1}  Pooja908      #change here name
 
 
 *** Test Cases ***

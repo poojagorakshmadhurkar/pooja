@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{itemData}  item-11  pencer10
-@{editItemData}  item11  censor11
+#*** Variables ***
+#@{itemData}  item-11  pencer10
+#@{editItemData}  item11  censor11
 
 *** Test Cases ***
 open item page

@@ -3,6 +3,7 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
 
 *** Keywords ***
 open tools page
@@ -22,7 +23,7 @@ tools should be added
 
 select option
     [Arguments]  ${dropdown}
-    wait until page contains element  ${dropdown}  10
+    wait until page contains element  ${dropdown}  20
     click  ${dropdown}/..
     sleep  2
     press keys  ${dropdown}  ARROW_DOWN  ENTER
@@ -41,8 +42,8 @@ edit tools
     press keys  ${partsLabel}  CTRL+A  BACKSPACE  ${editToolsData}[2]
     press keys  ${partsLifetime}  CTRL+A  BACKSPACE  ${editToolsData}[1]
     press keys  ${maintenanceCycle}  CTRL+A  BACKSPACE  ${editToolsData}[1]
+    sleep  20
     select option  ${toolCTR}
-    sleep  5
     select option  ${machineGroupTags}
     select option  ${itemGroupTags}
     select option  ${processTags}

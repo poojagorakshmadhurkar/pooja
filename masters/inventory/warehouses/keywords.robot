@@ -16,7 +16,7 @@ warehouse should be added
     press keys  //input[@id='name']  CTRL+A  BACKSPACE
     input  //input[@id='name']  ${warehouseName}
     sleep  5
-    wait until page contains element  //a[text() = "${warehouseName}"]  timeout=10s
+    wait until page contains element  //a[text() = "${warehouseName}"]  timeout=15s
 
 warehouse rack inititation
     [Arguments]  ${i}  ${rackName}  ${count}

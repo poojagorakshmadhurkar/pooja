@@ -11,9 +11,9 @@ Library    DateTime
 @{itemData1}  RMItem-7  44
 @{itemData2}  RMItem-6  20
 @{itemData3}  RMItem-5  22
-@{edititemData1}  RM0001  100
-@{edititemData2}  RM0002  8
-@{edititemData3}  RM0003  35
+@{edititemData1}  RM0001  100  2000
+@{edititemData2}  RM0002  8  2000
+@{edititemData3}  RM0003  35  2000
 
 
 *** Test Cases ***
@@ -21,6 +21,7 @@ inward request with rack on      #while running these testcase make sure IQC is 
     login                        #So uing Haridware Unit for this
     select site  haridwar_unit
     open warehouse
+    #validation to check if item is available in inventory
     ${A}  item current stock for Rackcase  ${itemData1}[0]
     ${B}  item current stock for Rackcase  ${itemData2}[0]
     ${C}  item current stock for Rackcase  ${itemData3}[0]

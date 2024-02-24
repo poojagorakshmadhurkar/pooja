@@ -1,0 +1,6 @@
+host location:
+https://dev.manuf.app/masters/sites/22/warehouses/31/jobwork
+
+credentials:
+Sample_Site@swiss.com
+7996235980

@@ -6,10 +6,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{EmployeeName}  Employeee_120  Planning  Supervisor  0809782120  poojaemail20@test.com     #for employee name firstletter is capital and other small
-@{EditEmployeeName}  Employee_48  Admin  Manager  0809782748  test_email48@test.com     #change name emailid Others letter should be small
+#*** Variables ***
+#@{EmployeeName}  Employeee_120  Planning  Supervisor  0809782120  poojaemail20@test.com     #for employee name firstletter is capital and other small
+#@{EditEmployeeName}  Employee_48  Admin  Manager  0809782748  test_email48@test.com     #change name emailid Others letter should be small
 
 *** Test Cases ***
 open Employees page

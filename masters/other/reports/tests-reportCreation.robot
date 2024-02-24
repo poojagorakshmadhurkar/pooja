@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{reportsData}  report27  test06@gmail.com       #change data Here
-@{editReportsData}  edit_reports36  Daily  edit_test07@gmail.com
+
+
+#Varaibles are imported from keyword librabry in masters folder
 
 *** Test Cases ***
 creation of report page

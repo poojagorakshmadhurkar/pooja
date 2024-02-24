@@ -5,11 +5,12 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{actionData}  Production Reports
-@{fieldData}  Text Field  Document Field  Date  System Entity  List Field
-@{editFieldGroupsData}
+#*** Variables ***
+#@{actionData}  Production Reports
+#@{fieldData}  Text Field  Document Field  Date  System Entity  List Field
+#@{editFieldGroupsData}
 
 *** Test Cases ***
 fieldGroups creation

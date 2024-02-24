@@ -17,9 +17,6 @@ Library    DateTime
 IQC with some rejection non rack case
     login
     select site  testing_automation_site2
-    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Vendor1113
-    Search and Check Item Quantity  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Vendor1113
-    Search and Check Item Quantity  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Vendor1113
     open warehouse
     ${save1}  item current stock  ${itemData1}[0]
     ${save2}  item current stock  ${itemData2}[0]

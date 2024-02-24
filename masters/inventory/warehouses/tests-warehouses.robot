@@ -5,11 +5,12 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{warehouseNameData}  mainSite20      #change name here
-@{linkedPartnersData}  Dixit
-@{EditWarehouseData}  EditedMainSite19  Bajaj  Inward  Vendors  Validation of items
+#*** Variables ***
+#@{warehouseNameData}  mainSite20      #change name here
+#@{linkedPartnersData}  Dixit
+#@{EditWarehouseData}  EditedMainSite19  Bajaj  Inward  Vendors  Validation of items
                       #change name here only
 *** Test Cases ***
 open warehouses page

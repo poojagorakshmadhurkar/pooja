@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{MachineData1}  llas01  llasj19       #change name Here
-@{ChildMachineData1}  rtyen1  ksahdj1
+#*** Variables ***
+#@{MachineData1}  llas01  llasj19       #change name Here
+#@{ChildMachineData1}  rtyen1  ksahdj1
 
 *** Test Cases ***
 parent machine creation

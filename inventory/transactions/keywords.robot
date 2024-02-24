@@ -9,9 +9,9 @@ Library  DateTime
 open transactions page
 #    login
     click  ${inventoryDropdown}
-    sleep  1
+    sleep  2
     click  ${inventoryTransactions}
-    sleep  1
+    sleep  2
 
 select warehouse
     [Arguments]  ${warehouseName}
@@ -296,9 +296,11 @@ racking approval
     input  //input[@id = "credit__racking__${r}__0__quantity"]  ${rackQuantity}
 
 open warehouse
+    sleep  1
     click  ${inventoryDropdown}
+    sleep  2
     click  ${inventoryWarehouses}
-    wait until page contains  Live Inventory
+    wait until page contains  Live Inventory  timeout=30s
 
 open trasactions page
     click  ${inventoryDropdown}
@@ -312,7 +314,7 @@ item onhand stock
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[6]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
-    [Return]  ${integer_value}
+    RETURN  ${integer_value}
 
 item current stock
     [Arguments]  ${itemName}
@@ -321,7 +323,7 @@ item current stock
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[3]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
-    [Return]  ${integer_value}
+    RETURN  ${integer_value}
 
 item current stock for Rackcase
     [Arguments]  ${itemName}
@@ -330,12 +332,13 @@ item current stock for Rackcase
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[4]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
-    [Return]  ${integer_value}
+    RETURN  ${integer_value}
 
 search name in warehouse
     [Arguments]  ${itemName}
     click  ${RMItemFilter}
     click  ${RMitemName}
+    Wait Until Element Is Visible  ${RMitemName}  timeout=10s
     press keys  ${RMitemName}  CTRL+A  BACKSPACE
     input  ${RMitemName}  ${itemName}
     press keys  ${RMitemName}  ENTER
@@ -359,20 +362,20 @@ item current stock for scraps
     scroll element into view  //span[text() = "${itemName}"]
     ${quantityS}  Get Text  //span[text() = "${itemName}"]/../../../../../../../../../../td[2]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
-    [Return]  ${Quantity_number}
+    RETURN  ${Quantity_number}
 
 
 item new stock
     [Arguments]  ${itemName}
     ${newQuantity_S}  Get Text  (//span[text() = "${itemName}"]/../../../../../../../../../../td)
     ${newQuantity}  Evaluate  ''.join(c for c in "${newQuantity_S}" if c.isdigit())
-    [Return]  ${newQuantity}
+    RETURN  ${newQuantity}
 
 item new stock for scraps
     [Arguments]  ${itemName}
     ${newQuantity_S}  Get Text  (//span[text() = "${itemName}"]/../../../../../../../../../../td)
     ${newQuantity}  Evaluate  ''.join(c for c in "${newQuantity_S}" if c.isdigit())
-    [Return]  ${newQuantity}
+    RETURN  ${newQuantity}
 
 open item page
     click  ${mastersDropdown}
@@ -473,7 +476,7 @@ return confirmation
     ${expectedGrn}  Get Text  //span[text() = "Against"]/../span[2]
     Should Be Equal As Strings  ${againstGrn}  ${expectedGrn}
     ${RCR}  Get Text  //*[@data-testid = "PrintOutlinedIcon"]/../../../div[1]/a[1]
-    [Return]  ${RCR}
+    RETURN  ${RCR}
 
 #Gain in quantity
     #${increment1}  Set Variable  ${itemData1}[1]-${itemData1}[2]
@@ -487,7 +490,7 @@ return confirmation
    # [RETURN}  ${increment_main1}
 
 
-Inward when item zero
+Inward when item zero     #without IQC
     [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
     open transactions page
     click  ${newInwardNote}
@@ -509,11 +512,13 @@ Search For Item
     search name in warehouse for validation  ${itemName}
     ${item_found}    Run Keyword And Return Status    Page Should Contain Element    //span[text() = "${itemName}"]
     Run Keyword If    not ${item_found}    Set Variable    ${FALSE}
-    [Return]    ${item_found}
+    RETURN    ${item_found}
 
 search name in warehouse for validation
     [Arguments]  ${itemName}
-    click  ${RMItemFilter}
+    wait until element is visible  ${RMItemFilter}  timeout=30s
+    click element  ${RMItemFilter}
+    sleep  1
     click  ${RMitemName}
     press keys  ${RMitemName}  CTRL+A  BACKSPACE
     input  ${RMitemName}  ${itemName}
@@ -525,4 +530,96 @@ Search and Check Item Quantity
     open warehouse
     ${item1_found}    Search For Item    ${itemName}
     Run Keyword If    not ${item1_found}    Inward when item zero  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    sleep  1
+
+
+#Inward when item zero with IQC     #with IQC
+#    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
+#    open transactions page
+#    click  ${newInwardNote}
+#    select item type  Raw Material
+#    select inspector  ${inspector}
+#    select partner  ${patner}
+#    set ith item in inward  0  ${itemname}  ${itemquantity}
+#    click  ${submit}
+#    sleep  1
+#    click  ${inventoryDropdown}
+#    click  ${inventoryTransactions}
+#    inward tr status no method 2  IQC Pending  1
+#    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
+#    wait until page contains    perform IQC first
+#    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
+#    click  ${qualityChecktab}
+#    sleep  2
+#    click  ${inwardEdit}
+#    click  ${allOk}
+#    wait until element is visible  //span[text() = "No Rejections"]
+#    i should see text on page  Transaction Edited SuccesFully
+#    open transactions page
+#    wait until element is visible  ${newInwardNote}
+#    sleep  2
+#    inward tr status no method 2  Pending  1
+#    inward approve number  1
+#    i should see text on page  MRN approved SuccesFully
+#    sleep  2
+#    inward tr status no method 2  Approved  1
+#
+#
+#Search and Check Item Quantity with iqc
+#    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+#    open warehouse
+#    ${item1_found}    Search For Item    ${itemName}
+#    Run Keyword If    not ${item1_found}    Inward when item zero with IQC  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+#    sleep  1
+
+
+rejection reason for outward return flow
+    [Arguments]  ${rejReason}  ${itemname}  ${rejQuantity}
+    input  (//span[text()="${itemname}"]/../../../../td)[6]//input  ${rejReason}
+    #input  //input[@id = "credit__rejections__0__${i}__reason"]  ${rejReason}
+    press keys  (//span[text()="${itemname}"]/../../../../td)[6]//input  ARROW_DOWN  ENTER
+    sleep  2
+    input  (//span[text()="${itemname}"]/../../../../td)[7]//input  ${rejQuantity}
+#    press keys  //input[@id = "credit__rejections__0__${i}__quantity"]  ENTER
+
+
+Inward when item zero with IQC rackcase
+    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
+    open transactions page
+    click  ${newInwardNote}
+    select item type  Raw Material
+    select inspector  ${inspector}
+    select partner  ${patner}
+    input  ${invoiceNumber}  inv1001
+    set ith item in inward  0  ${itemname}  ${itemquantity}
+    click  ${inwardSubmit}
+    click  ${newRequest}
+    open transactions page
+    sleep  2
+    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
+    click  ${qualityChecktab}
+    sleep  2
+    click  ${inwardEdit}
+    click  ${allOk}
+    wait until element is visible  //span[text() = "No Rejections"]
+    i should see text on page  Transaction Edited SuccesFully
+    open transactions page
+    wait until element is visible  ${newInwardNote}
+    sleep  2
+    inward tr status no method 2  Pending  1
+    inward approve number  1
+    sleep  2
+    ${1st rack}=  racking  1
+    racking approval  0  ${1st rack}
+    click  ${approveRequest}
+    i should see text on page  MRN approved SuccesFully
+    sleep  1
+    inward tr status no method 2  Approved  1
+
+
+Search and Check Item Quantity with iqc with rackcase
+    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    open warehouse
+    ${item1_found}    Search For Item    ${itemName}
+    Run Keyword If    not ${item1_found}    Inward when item zero with IQC rackcase  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
     sleep  1

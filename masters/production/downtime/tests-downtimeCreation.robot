@@ -5,9 +5,10 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{DowntimeData}  Main_powerCut09       #change name here
+#*** Variables ***
+#@{DowntimeData}  Main_powerCut09       #change name here
 
 *** Test Cases ***
 downtime creation

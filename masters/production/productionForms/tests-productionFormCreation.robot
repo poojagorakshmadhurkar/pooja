@@ -5,10 +5,11 @@ Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
+Resource  ../../keywords.robot
 
-*** Variables ***
-@{productionFormData}  productionForm13     #change name here
-@{EditProductionFormData}  EditproductionForm14     #change name here
+#*** Variables ***
+#@{productionFormData}  productionForm13     #change name here
+#@{EditProductionFormData}  EditproductionForm14     #change name here
 
 *** Test Cases ***
 tools creation

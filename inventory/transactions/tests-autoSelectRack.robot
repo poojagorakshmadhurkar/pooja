@@ -11,6 +11,7 @@ Library  Collections
 
 *** Test Cases ***
 Auto select rack
+    Set Selenium Speed    ${DELAY}
     login
     click  ${mastersDropdown}
     click  ${mastersItems}

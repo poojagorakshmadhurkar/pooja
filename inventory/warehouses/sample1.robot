@@ -11,29 +11,33 @@ Library  ActionChains
 
 *** Variables ***
 
-@{itemData1}  RawmaterialA  3000             #warehouse value is 700   #20 outward note
-@{itemData2}  RawmaterialB  200              #warehouse value is 850     #20 inward note
+@{itemData1}  RawmaterialA  800             #warehouse value is 700   #20 outward note
+@{itemData2}  RawmaterialB  199              #warehouse value is 850     #20 inward note
 ${keyword1_count}    0
 ${keyword2_count}    0                           #issue :When two inward note created than approve button not visible error comes
                                      #always ensure 1st option is doing outward and second inward
 *** Test Cases ***
 Manually Reconcile                 #Reconcile with Rawmaterial
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
     sleep  3
     open warehouse
     ${stockvalue1}  item onhand stock(Rawmaterial)  ${itemData1}[0]
     sleep  2
     ${stockvalue2}  item onhand stock(Rawmaterial)  ${itemData2}[0]
-    #${b}  Convert To Integer  ${b}
+    #${Salesorder}  Convert To Integer  ${Salesorder}
 
     sleep  2
     click  ${filter}
     click  ${reconcileinventory}
     click  ${formbutton}
 
-    Form row  1  ${itemData1}[0]  ${itemData1}[1]
-    Form row  2  ${itemData2}[0]  ${itemData2}[1]
+    ${quantity_value}=  Form row  1  ${itemData1}[0]  ${itemData1}[1]
+    Should Be Equal As Numbers  ${quantity_value}  ${stockvalue1}
+    click  ${AddnewRow}
+    ${quantity_value}=  Form row  2  ${itemData2}[0]  ${itemData2}[1]
+    Should Be Equal As Numbers  ${quantity_value}  ${stockvalue2}
+
     click  //button[contains(@type,'submit')]
     i should see text on page  Entry Saved SuccesFully
     camparison  ${stockvalue1}  ${itemData1}[1]  ${itemData1}[0]

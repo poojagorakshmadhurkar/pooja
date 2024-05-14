@@ -14,8 +14,9 @@ Library    DateTime
 
 *** Test Cases ***
 Outward to customer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_automation_site2
+    select site  testingautomationsite2
 #validation to check item is present in warehouse if not then inward it
     Search and Check Item Quantity with iqc  ${inwarditem1}[0]  ${inwarditem1}[1]  Test Customer-01  Vendor1113
     open warehouse
@@ -70,7 +71,7 @@ Outward to customer
     click  //input[@placeholder="Search Material Issue Note"]/../button[1]
     sleep   1
     #click on retrun click button
-    click  //a[text()="${shipmentnumber}"]/../../../../td[9]//button[@aria-label="Return"]
+    click  //a[text()="${shipmentnumber}"]/../../../../td[9]//button//*[name()='svg'][@id='transaction_debit_return']
     sleep  1
     #click on converted return heading
     click  //h5[text()="Converted Return Request"]/../../..
@@ -86,7 +87,7 @@ Outward to customer
     press keys  //input[@aria-expanded="true"]  ARROW_DOWN  ENTER
     sleep  1
     #enter quantity in field
-    input text  //td[contains(@class, 'MuiTableCell-root') and contains(@class, 'MuiTableCell-body') and contains(@class, 'MuiTableCell-sizeSmall')]//input[contains(@class, 'ant-input')]  ${itemData1}[2]
+    input text  (//td[contains(@class, 'MuiTableCell-root') and contains(@class, 'MuiTableCell-body') and contains(@class, 'MuiTableCell-sizeSmall')]//input[contains(@class, 'ant-input')])[2]  ${itemData1}[2]
     click  (//button[text()="Submit"])[2]
     i should see text on page  Return request submitted
     #Move to outward table cell should contain
@@ -104,7 +105,7 @@ Outward to customer
     i should see text on page  MRN approved SuccesFully
     sleep  2
     inward tr status no method 2  Approved  1
-    sleep  1
+    sleep  2
 
     #validation of warehouse
     open warehouse

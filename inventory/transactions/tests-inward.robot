@@ -15,10 +15,12 @@ Library    DateTime
 @{edititemData2}  RM0002  8
 @{edititemData3}  RM0003  35
 
+
 *** Test Cases ***
 inward request with rack off
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
     Search and Check Item Quantity  ${edititemData1}[0]  ${edititemData1}[1]  Test_Employee07  Vendor1113
     Search and Check Item Quantity  ${edititemData2}[0]  ${edititemData2}[1]  Test_Employee07  Vendor1113
     Search and Check Item Quantity  ${edititemData3}[0]  ${edititemData3}[1]  Test_Employee07  Vendor1113

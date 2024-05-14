@@ -8,20 +8,21 @@ Library  Collections
 Library    DateTime
 
 *** Variables ***
-@{itemData1}  RM0001  49  10
-@{itemData2}  RM0002  60  10
-@{itemData3}  RM0003  510
+@{itemData1}  RM00010  49  10
+@{itemData2}  RM00012  60  10
+@{itemData3}  RM00013  510
 #@{edititemData1}  RM0001  56
 #@{edititemData2}  RM0002  32
 #@{edititemData3}  RM0003  65
 
 *** Test Cases ***
 IQC allok rack case
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testingsite_automation3_rackcase
-    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Pooja30
-    Search and Check Item Quantity  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Pooja30
-    Search and Check Item Quantity  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Pooja30
+    select site  testingsiteautomation3rackcase
+    Search and Check Item Quantity with iqc with rackcase  ${itemData1}[0]  ${itemData1}[1]  Test_Employee04  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${itemData2}[0]  ${itemData2}[1]  Test_Employee04  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${itemData3}[0]  ${itemData3}[1]  Test_Employee04  Pooja30
     open warehouse
     ${save1}  item current stock for Rackcase  ${itemData1}[0]
     ${save2}  item current stock for Rackcase  ${itemData2}[0]
@@ -30,7 +31,7 @@ IQC allok rack case
     open transactions page
     click  ${newInwardNote}
     select item type  Raw Material
-    select inspector  Testcustomer11
+    select inspector  Test_Employee04
 #    ${randomGrn}=  generate random string  5-10  [NUMBERS]
 #    press keys  ${grnNumber}  CTRL+BACKSPACE
 #    input  ${grnNumber}  ${randomGrn}

@@ -17,7 +17,8 @@ Library    DateTime
 
 
 *** Test Cases ***
-inward request with rack on      #while running these testcase make sure IQC is Off in Rack Case
+inward request with rack on
+    Set Selenium Speed    ${DELAY}     #while running these testcase make sure IQC is Off in Rack Case
     login                        #So uing Haridware Unit for this
     select site  haridwar_unit
     open warehouse

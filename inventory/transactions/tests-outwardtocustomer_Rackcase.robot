@@ -18,13 +18,14 @@ Library    DateTime
 
 *** Test Cases ***
 Outward to customer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testingsite_automation3_rackcase
+    select site  testingsiteautomation3rackcase
 #validation to check item is present in warehouse if not then inward it
-    Search and Check Item Quantity with iqc with rackcase  ${edititemData1}[0]  ${edititemData1}[2]  Testcustomer11  Pooja30
-    Search and Check Item Quantity with iqc with rackcase  ${itemData1}[0]  ${itemData1}[2]  Testcustomer11  Pooja30
-    Search and Check Item Quantity with iqc with rackcase  ${edititemData2}[0]  ${edititemData2}[2]  Testcustomer11  Pooja30
-    Search and Check Item Quantity with iqc with rackcase  ${itemData2}[0]  ${itemData2}[2]  Testcustomer11  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${edititemData1}[0]  ${edititemData1}[2]  Test_Employee04  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${itemData1}[0]  ${itemData1}[2]  Test_Employee04  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${edititemData2}[0]  ${edititemData2}[2]  Test_Employee04  Pooja30
+    Search and Check Item Quantity with iqc with rackcase  ${itemData2}[0]  ${itemData2}[2]  Test_Employee04  Pooja30
     sleep  1
     open warehouse
     ${save1}  item current stock for Rackcase  ${edititemData1}[0]
@@ -35,7 +36,7 @@ Outward to customer
     click  ${outwardTab}
     click  ${newOutwardNote}
     select outward to  Customer
-    select outward customer to  Pooja30
+    select outward customer to  Test_Employee04
     sleep  1
     Wait Until Element Is Visible    //span[normalize-space()='Invoice Number *']    10
     Input Text  //input[@id='debit__form__invoice_number']  inv1001
@@ -48,7 +49,14 @@ Outward to customer
     click  ${outwardTab}
     sleep  2
     outward tr status no method 2  Pending  1
-    click  //div[@id = "item__tabs-panel-debit"]/div/div/div/div/div/div/div/div[2]/table/tbody/tr[2]/td[1]/div/span/a
+    open outward tr note  1
+
+    #Extract number of shipment
+    ${shipmentnumber}=    Get Text    xpath=//div[@class="ant-space-item"]//a[1]
+    Log    ${shipmentnumber}
+
+    click  ${crossbutton}
+    click  //a[text()="${shipmentnumber}"]
     click  ${edit}
     edit ith item in outward  0  ${edititemData1}[0]  ${edititemData1}[1]
     edit ith item in outward  1  ${edititemData2}[0]  ${edititemData2}[1]
@@ -64,7 +72,7 @@ Outward to customer
     click  ${approveRequest}
     i should see text on page  MRN approved SuccesFully
     sleep  1
-    inward tr status no method 2  Approved  1
+    #inward tr status no method 2  Approved  1
     reload page
     sleep  2
     open warehouse

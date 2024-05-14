@@ -6,16 +6,17 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 Library    DateTime
+
 *** Variables ***
 @{itemData1}  ItemRM-11  20  10
-
 @{inwarditem1}  ItemRM-11  2000
 
 
 *** Test Cases ***
 Outward to customer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_automation_site2
+    select site  testingautomationsite2
 #validation to check item is present in warehouse if not then inward it
     Search and Check Item Quantity with iqc  ${inwarditem1}[0]  ${inwarditem1}[1]  Test Customer-01  Vendor1113
     open warehouse
@@ -70,7 +71,7 @@ Outward to customer
     click  //input[@placeholder="Search Material Issue Note"]/../button[1]
     sleep   1
     #click on retrun click button
-    click  //a[text()="${shipmentnumber}"]/../../../../td[9]//button[@aria-label="Return"]
+    click  //a[text()="${shipmentnumber}"]/../../../../td[9]//button//*[name()='svg'][@id='transaction_debit_return']
     sleep  1
     #input good quantity text with rejection
     input text  (//input[@class="ant-input"])[2]  ${outwardnotevalue}

@@ -20,8 +20,9 @@ Library    DateTime
 *** Test Cases ***
 
 outward to prod
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
     open trasactions page
     click  ${outwardTab}
     click  ${newOutwardNote}
@@ -35,7 +36,7 @@ outward to prod
     click  ${outwardTab}
     sleep  2
     outward tr status no method 2  Pending  1
-    click  //div[@id = "item__tabs-panel-debit"]/div/div/div/div/div/div/div/div[2]/table/tbody/tr[2]/td[1]/div/span/a
+    click  //div[@id = "item__tabs-panel-debit"]//tr[2]//td[1]//a
     click  ${edit}
     edit ith item in outward  0  ${edititemData1}[0]  ${edititemData1}[1]
     click  ${submit}

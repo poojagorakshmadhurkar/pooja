@@ -1,8 +1,8 @@
 *** Variables ***
-${filter}  //*[@data-testid="MoreVertIcon"]/..
+${filter}  (//*[name()='svg'][@id='live_inventory_menu'])[1]
 ${reconcileinventory}  //div[text() = "Reconcile Inventory"]
 ${fileupload}  //button[@id="undefined__upload_file_btn"]
-${warehouseFilter}  //span[@role="button"][1]
+${warehouseFilter}  //div[@id="live_inventory_item__tabs-panel-1"]//*[@id="live_inventory_Item Details_search"]
 ${warehouseFilterItemName}  //input[@placeholder='Search Item Details']
 ${searchicon}  //button[@class='ant-btn ant-btn-circle ant-btn-primary ant-btn-sm ant-btn-icon-only']//*[name()='svg']
 ${dateOutward}  //span[text() = "Date *"]/../../div[2]/div/input
@@ -12,3 +12,4 @@ ${outwardtab}  //div[@id='item__tabs-tab-debit']
 ${inwardtab}  //div[@id='item__tabs-tab-credit']
 ${formbutton}  //button[normalize-space()='Form']
 ${uploadbutton}  //button[@id="undefined__upload_file_btn"]
+${AddnewRow}  //button[text()="Add New Rows"]

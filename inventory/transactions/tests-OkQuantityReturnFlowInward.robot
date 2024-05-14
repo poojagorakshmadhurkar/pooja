@@ -7,12 +7,13 @@ Library  String
 Library  Collections
 
 *** Variables ***
-@{itemData1}  RM0001  100
+@{itemData1}  RM0001  100  50
 
 *** Test Cases ***
 Return Inward return only good quantity allOk non rack case
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_automation_site2
+    select site  testingautomationsite2
     open warehouse
     ${save}  item current stock  ${itemData1}[0]
     open transactions page
@@ -54,8 +55,9 @@ Return Inward return only good quantity allOk non rack case
     Should Be Equal As Integers    ${save2}  ${afterCredit}
     open transactions page
     inward transaction search through GRN  ${text}
-    click  //a[text() = "${text}"]/ancestor::tr//button[@aria-label = "Return"]
-
+    click  //a[text()="${text}"]/../../../../td[11]//button//*[name()='svg'][@id='transaction_credit_return']
+    sleep  1
+    input text  //input[@role='spinbutton']  ${itemData1}[2]
 #    Element Should Be Empty  (//span[text() = "${itemData1}[0]"]/ancestor::tr//input[@type = "text"])[2]
     click  ${buttonSubmit}
     i should see text on page  Return request submitted
@@ -70,7 +72,7 @@ Return Inward return only good quantity allOk non rack case
     ${OutQuantity}  Get Text  //span[text() = "${itemData1}[0]"]/ancestor::tr/td[1]
     ${outputValue_number}  Evaluate  ''.join(c for c in "${OutQuantity}" if c.isdigit())
     ${integer_value1}  Convert To Integer  ${outputValue_number}
-    Should Be Equal As Integers    ${integer_value1}    ${itemData1}[1]
+    Should Be Equal As Integers    ${integer_value1}    ${itemData1}[2]
     ${avaibility}  Get Text  //span[text() = "${itemData1}[0]"]/ancestor::tr/td[2]/span
     Should Be Equal As Strings  ${avaibility}  Available
     click  ${cross}

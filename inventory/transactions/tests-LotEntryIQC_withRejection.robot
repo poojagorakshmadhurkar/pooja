@@ -18,8 +18,9 @@ Library  Collections
 *** Test Cases ***
 #Validation lot case with IQC
 Lot inward request for 1 item single lot
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation_l_o_tcase4
+    select site  testingsiteautomationlotcase4
     open warehouse
     ${save}  item LOTforCase current stock  ${itemData1}[0]
     sleep  2
@@ -42,7 +43,7 @@ Lot inward request for 1 item single lot
     sleep  2
     inward tr status no method 2  IQC Pending  1
     # Validation for if IQc enble than without it should not get approved
-    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
+    click  (//div[@id='item__tabs-panel-credit']//button//*[name()='svg'][@id="transaction_credit_approve"])[1]
     wait until page contains    perform IQC first
     click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
     click  ${qualityChecktab}
@@ -84,16 +85,16 @@ item LOTforCase current stock
     [Arguments]  ${itemName}
     search name in warehouse  ${itemName}
     scroll element into view  //span[text() = "${itemName}"]
-    ${quantityS}  Get Text  //div[@id="item__tabs-panel-1"]//tr[2]//span[text()="${itemName}"]/../../../../../../../../../td[4]
+    ${quantityS}  Get Text  //div[@id="live_inventory_item__tabs-panel-1"]//tr[2]//span[text()="${itemName}"]/../../../../../../../../../td[4]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
-    [Return]  ${integer_value}
+    RETURN  ${integer_value}
 
 Get Element Attribute And Log
     [Arguments]  ${j}  ${itemName}
     ${value} =    SeleniumLibrary.Get Element Attribute  //span[text()="${itemData1}[0]"]/../../../../../div[3]//input[@id="credit__details__${j}__0__bundle"]    value
     Log    ${value}
-    [Return]    ${value}
+    RETURN  ${value}
 
 
 search name in warehouse
@@ -112,17 +113,17 @@ Search LotID name in warehouse
     [Arguments]  ${itemName}  ${lotid}
     search name in warehouse  ${itemName}
     scroll element into view  //span[text() = "${itemName}"]
-    click  //div[@id="item__tabs-panel-1"]//tr[2]//span[text()="${itemName}"]/../../../../../../../../../td[1]//button
+    click  //div[@id="live_inventory_item__tabs-panel-1"]//tr[2]//span[text()="${itemName}"]/../../../../../../../../../td[1]//button
     click  (//span[@role='button'])[3]
     Wait Until Element Is Visible  //input[@placeholder="Search Lot Id"]  timeout=10s
     press keys  //input[@placeholder="Search Lot Id"]  CTRL+A  BACKSPACE
     input  //input[@placeholder="Search Lot Id"]  ${lotid}
     press keys  //input[@placeholder="Search Lot Id"]  ENTER
     WAIT UNTIL PAGE CONTAINS  ${lotid}
-    ${quantityS}  Get Text  (//div[@id="item__tabs-panel-1"]//tr[3]//tr[2]//td[text()="${lotid}"])/../td[2]
+    ${quantityS}  Get Text  (//div[@id="live_inventory_item__tabs-panel-1"]//tr[3]//tr[2]//td[text()="${lotid}"])/../td[2]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
-    [Return]  ${integer_value}
+    RETURN  ${integer_value}
 
 
 

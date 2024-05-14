@@ -16,8 +16,9 @@ Library    DateTime
 
 *** Test Cases ***
 Outward to customer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
 #validation to check item is present in warehouse if not then inward it
     Search and Check Item Quantity  ${inwarditem1}[0]  ${inwarditem1}[1]  Test_Employee07  Vendor1113
     Search and Check Item Quantity  ${inwarditem2}[0]  ${inwarditem2}[1]  Test_Employee07  Vendor1113
@@ -39,7 +40,7 @@ Outward to customer
     click  ${outwardTab}
     sleep  2
     outward tr status no method 2  Pending  1
-    click  //div[@id = "item__tabs-panel-debit"]/div/div/div/div/div/div/div/div[2]/table/tbody/tr[2]/td[1]/div/span/a
+    click  //div[@id = "item__tabs-panel-debit"]//tr[2]//td[1]//a
     click  ${edit}
     edit ith item in outward  0  ${edititemData1}[0]  ${edititemData1}[1]
     edit ith item in outward  1  ${edititemData2}[0]  ${edititemData2}[1]

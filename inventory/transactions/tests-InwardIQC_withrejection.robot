@@ -15,9 +15,11 @@ Library    DateTime
 
 *** Test Cases ***
 IQC with some rejection non rack case
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_automation_site2
+    select site  testingautomationsite2
     open warehouse
+    sleep  1
     ${save1}  item current stock  ${itemData1}[0]
     ${save2}  item current stock  ${itemData2}[0]
     ${save3}  item current stock  ${itemData3}[0]

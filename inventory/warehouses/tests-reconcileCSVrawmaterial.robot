@@ -3,11 +3,15 @@ Library  SeleniumLibrary
 Resource  ../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
+Resource  ../../keywords.robot
+Resource  ../../variables.robot
+Resource  ./variables.robot
+Resource  ../../inventory/transactions/keywords.robot
 Library  String
 Library    CSVLibrary
 Library    OperatingSystem
 Library  Collections
-Library  Evaluate
+
 
 
 *** Variables ***
@@ -26,10 +30,10 @@ ${keyword2_count}    0
 
 *** Test Cases ***
 Upload CSV File
+    Set Selenium Speed    0.1
     login
-
     Read Data from CSV
-    select site  testing_site_automation
+    select site  testingsiteautomation
     sleep  3
     open warehouse
     ${stockvalue1}  item onhand stock(Rawmaterial)  ${column1_row1}
@@ -76,7 +80,7 @@ Test keyword 1     #Outward Note will be created
 #    return from keyword  ${fetchoutwardADJNote}
     reload page
     sleep  5
-    Increment Keyword 1 Count
+    Increment Keyword 1 Count  ${keyword1_count}
     sleep  3
     open warehouse
     sleep  2
@@ -100,7 +104,7 @@ Test keyword 2    #inward note will be created
     Should Be Equal As Numbers    ${inwardvalue}    ${notevalue}
     reload page
     sleep  5
-    Increment Keyword 2 Count
+    Increment Keyword 2 Count  ${keyword2_count}
     sleep  3
     open warehouse
     sleep  2
@@ -139,30 +143,8 @@ Set Row Variables
     Set Test Variable    ${column3_row_${row_index}}    ${values[2]}
     Set Test Variable    ${column4_row_${row_index}}    ${values[3]}
 
-Increment Keyword 1 Count
-    ${keyword1_count}=    Evaluate    ${keyword1_count} + 1
-    Set Test Variable    ${keyword1_count}
-    Run Keyword If    ${keyword1_count} == 1  Click Outward Approval Button
-
-Increment Keyword 2 Count
-    ${keyword2_count}=    Evaluate    ${keyword2_count} + 1
-    Set Test Variable    ${keyword2_count}
-    Run Keyword If    ${keyword2_count} == 1  Click Inward Approval Button
 
 
-Click Inward Approval Button
-    [Documentation]    Clicks the inward approval button
-    Scroll Element Into View    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
-    Wait Until Element Is Visible    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
-    Capture Page Screenshot    # Optional for debugging
-    Click Element    //div[@id="item__tabs-panel-credit"]//tbody//tr[2]//td[11]//button[@aria-label="Approve"]
-
-Click Outward Approval Button
-    [Documentation]    Clicks the outward approval button
-    Scroll Element Into View    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
-    Wait Until Element Is Visible    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
-    Capture Page Screenshot    # Optional for debugging
-    Click Element    //div[@id="item__tabs-panel-debit"]//tbody//tr[2]//td[10]//button[@aria-label="Approve"]
 
 Click Approval Button Based on Keyword Count
     [Documentation]    Clicks the approval button based on the count of Keyword 1 and Keyword 2

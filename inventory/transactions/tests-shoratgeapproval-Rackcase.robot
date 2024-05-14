@@ -14,9 +14,10 @@ Library    DateTime
 
 *** Test Cases ***
 Making a transaction for an item more than the inventory value and partially approving it
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testingsite_automation3_rackcase
-    Search and Check Item Quantity with iqc with rackcase  ${itemData1}[0]  ${itemData1}[2]  Testcustomer11  Pooja30
+    select site  testingsiteautomation3rackcase
+    Search and Check Item Quantity with iqc with rackcase  ${itemData1}[0]  ${itemData1}[2]  Test_Employee04  Pooja30
     open warehouse
     ${save}  item current stock for Rackcase  ${itemData1}[0]
     open transactions page
@@ -78,7 +79,7 @@ Making a transaction for an item more than the inventory value and partially app
 #    ${quantityValue2_}  Evaluate  ''.join(c for c in "${quantityValue2}" if c.isdigit())
     Should Be Equal As Strings    ${quantityValue2}    -
     sleep  1
-    open warehouse
+#    open warehouse
     No live inventory check  ${itemData1}[0]
 
 

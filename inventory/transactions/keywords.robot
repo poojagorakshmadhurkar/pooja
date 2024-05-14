@@ -155,6 +155,9 @@ select outward to
 select outward customer to
     [Arguments]  ${outwardCustomerTo}
     click  ${outwardCustomerToDropdown}
+    Input Text  //input[@id='debit__form__recipient']  ${outwardCustomerTo}
+    sleep  1
+    Wait Until Element Is Visible  //div[text() = "${outwardCustomerTo}"]
     click  //div[text() = "${outwardCustomerTo}"]
 
 select recipient warehouse
@@ -171,12 +174,12 @@ site should be added
 
 inward approve number
     [Arguments]  ${i}
-    click  (//div[@id='item__tabs-panel-credit']//button[@aria-label= "Approve"][1])[${i}]
+    click  //div[@id='item__tabs-panel-credit']//button//*[name()='svg'][@id="transaction_credit_approve"][${i}]
     sleep  1
 
 outward approve number
     [Arguments]  ${i}
-    click  (//div[@id='item__tabs-panel-debit']//button[@aria-label= "Approve"][1])[${i}]
+    click  (//div[@id='item__tabs-panel-debit']//button//*[name()='svg'][@id='transaction_debit_approve'][1])[${i}]
     sleep  1
 
 open outward tr note
@@ -336,6 +339,8 @@ item current stock for Rackcase
 
 search name in warehouse
     [Arguments]  ${itemName}
+    Wait Until Element Is Not Visible    css=.ant-spin-spinning    timeout=30s
+    Wait Until Element Is Visible  ${RMItemFilter}  timeout=10s
     click  ${RMItemFilter}
     click  ${RMitemName}
     Wait Until Element Is Visible  ${RMitemName}  timeout=10s
@@ -516,7 +521,8 @@ Search For Item
 
 search name in warehouse for validation
     [Arguments]  ${itemName}
-    wait until element is visible  ${RMItemFilter}  timeout=30s
+    Wait Until Element Is Not Visible    css=.ant-spin-spinning    timeout=30s
+    Wait Until Element Is Clickable  ${RMItemFilter}  timeout=30s
     click element  ${RMItemFilter}
     sleep  1
     click  ${RMitemName}
@@ -533,53 +539,53 @@ Search and Check Item Quantity
     sleep  1
 
 
-#Inward when item zero with IQC     #with IQC
-#    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
-#    open transactions page
-#    click  ${newInwardNote}
-#    select item type  Raw Material
-#    select inspector  ${inspector}
-#    select partner  ${patner}
-#    set ith item in inward  0  ${itemname}  ${itemquantity}
-#    click  ${submit}
-#    sleep  1
-#    click  ${inventoryDropdown}
-#    click  ${inventoryTransactions}
-#    inward tr status no method 2  IQC Pending  1
-#    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
-#    wait until page contains    perform IQC first
-#    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
-#    click  ${qualityChecktab}
-#    sleep  2
-#    click  ${inwardEdit}
-#    click  ${allOk}
-#    wait until element is visible  //span[text() = "No Rejections"]
-#    i should see text on page  Transaction Edited SuccesFully
-#    open transactions page
-#    wait until element is visible  ${newInwardNote}
-#    sleep  2
-#    inward tr status no method 2  Pending  1
-#    inward approve number  1
-#    i should see text on page  MRN approved SuccesFully
-#    sleep  2
-#    inward tr status no method 2  Approved  1
-#
-#
-#Search and Check Item Quantity with iqc
-#    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
-#    open warehouse
-#    ${item1_found}    Search For Item    ${itemName}
-#    Run Keyword If    not ${item1_found}    Inward when item zero with IQC  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
-#    sleep  1
+Inward when item zero with IQC     #with IQC
+    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
+    open transactions page
+    click  ${newInwardNote}
+    select item type  Raw Material
+    select inspector  ${inspector}
+    select partner  ${patner}
+    set ith item in inward  0  ${itemname}  ${itemquantity}
+    click  ${submit}
+    sleep  1
+    click  ${inventoryDropdown}
+    click  ${inventoryTransactions}
+    inward tr status no method 2  IQC Pending  1
+    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
+    wait until page contains    perform IQC first
+    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a
+    click  ${qualityChecktab}
+    sleep  2
+    click  ${inwardEdit}
+    click  ${allOk}
+    wait until element is visible  //span[text() = "No Rejections"]
+    i should see text on page  Transaction Edited SuccesFully
+    open transactions page
+    wait until element is visible  ${newInwardNote}
+    sleep  2
+    inward tr status no method 2  Pending  1
+    inward approve number  1
+    i should see text on page  MRN approved SuccesFully
+    sleep  2
+    inward tr status no method 2  Approved  1
+
+
+Search and Check Item Quantity with iqc
+    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    open warehouse
+    ${item1_found}    Search For Item    ${itemName}
+    Run Keyword If    not ${item1_found}    Inward when item zero with IQC  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    sleep  1
 
 
 rejection reason for outward return flow
     [Arguments]  ${rejReason}  ${itemname}  ${rejQuantity}
-    input  (//span[text()="${itemname}"]/../../../../td)[6]//input  ${rejReason}
+    input  (//span[text()="${itemname}"])[2]/../../../../td[3]//input  ${rejReason}
     #input  //input[@id = "credit__rejections__0__${i}__reason"]  ${rejReason}
-    press keys  (//span[text()="${itemname}"]/../../../../td)[6]//input  ARROW_DOWN  ENTER
+    press keys  (//span[text()="${itemname}"])[2]/../../../../td[3]//input  ARROW_DOWN  ENTER
     sleep  2
-    input  (//span[text()="${itemname}"]/../../../../td)[7]//input  ${rejQuantity}
+    input  (//span[text()="${itemname}"])[2]/../../../../td[4]//input  ${rejQuantity}
 #    press keys  //input[@id = "credit__rejections__0__${i}__quantity"]  ENTER
 
 
@@ -623,3 +629,48 @@ Search and Check Item Quantity with iqc with rackcase
     ${item1_found}    Search For Item    ${itemName}
     Run Keyword If    not ${item1_found}    Inward when item zero with IQC rackcase  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
     sleep  1
+
+Inward when item zero for WIPitem     #without IQC
+    [Arguments]   ${itemname}   ${itemquantity}  ${inspector}  ${patner}
+    open transactions page
+    click  ${newInwardNote}
+    select item type  WIP
+    select inspector  ${inspector}
+    select partner  ${patner}
+    set ith item in inward  0  ${itemname}  ${itemquantity}
+    click  ${submit}
+    sleep  1
+    click  ${inventoryDropdown}
+    click  ${inventoryTransactions}
+    inward approve number  1
+    i should see text on page  MRN approved SuccesFully
+    reload page
+    sleep  2
+
+Search and Check Item Quantity for Wipitem
+    [Arguments]  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    open warehouse
+    ${item1_found}    Search For WIPItem    ${itemName}
+    Run Keyword If    not ${item1_found}    Inward when item zero for WIPitem  ${itemName}  ${itemquantity}  ${inspector}  ${patner}
+    sleep  1
+
+
+search WIPname in warehouse for validation
+    [Arguments]  ${itemName}
+    Wait Until Element Is Not Visible    css=.ant-spin-spinning    timeout=30s
+    click  //div[@id="live_inventory_item__tabs-tab-2"]
+    click  //div[@id="live_inventory_item__tabs-panel-2"]//*[@id="live_inventory_Item Details_search"]
+    Wait Until Element Is Visible  //input[@placeholder="Search Item Details"]  timeout=10s
+    press keys  //input[@placeholder="Search Item Details"]  CTRL+A  BACKSPACE
+    input  //input[@placeholder="Search Item Details"]  ${itemName}
+    click  ${searchicon}
+    sleep  2
+
+
+
+Search For WIPItem
+    [Arguments]  ${itemName}
+    search WIPname in warehouse for validation  ${itemName}
+    ${item_found}    Run Keyword And Return Status    Page Should Contain Element    //span[text() = "${itemName}"]
+    Run Keyword If    not ${item_found}    Set Variable    ${FALSE}
+    RETURN    ${item_found}

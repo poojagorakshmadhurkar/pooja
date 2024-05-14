@@ -17,8 +17,9 @@ Library    DateTime
 
 *** Test Cases ***
 IQC allok non rack case
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_automation_site2
+    select site  testingautomationsite2
     Search and Check Item Quantity with iqc  ${itemData1}[0]  ${itemData1}[1]  Test Customer-01  Vendor1113
     Search and Check Item Quantity with iqc  ${itemData2}[0]  ${itemData2}[1]  Test Customer-01  Vendor1113
     Search and Check Item Quantity with iqc  ${itemData3}[0]  ${itemData3}[1]  Test Customer-01  Vendor1113
@@ -46,7 +47,7 @@ IQC allok non rack case
     sleep  2
     inward tr status no method 2  IQC Pending  1
 # Validation for if IQc enble than without it should not get approved
-    click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]//button[@aria-label="Approve"]
+    click  //div[@id='item__tabs-panel-credit']//button//*[name()='svg'][@id="transaction_credit_approve"][1]
     wait until page contains    perform IQC first
 
     click  //div[@id = "item__tabs-panel-credit"]//tbody/tr[2]/td/div/span/a

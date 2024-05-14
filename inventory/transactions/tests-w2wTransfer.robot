@@ -10,14 +10,17 @@ Library  DateTime
 
 *** Variables ***
 
-@{itemData1}  235723  50
-@{edititemData1}  235723  50
+@{itemData1}  AAA-2010  50  2000
+@{edititemData1}  AAA-2010  50
 
 
 *** Test Cases ***
 W2W transfer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
+    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[2]  Test_Employee07  Vendor1113
+    sleep  2
     open warehouse
     ${save1}  item current stock  ${itemData1}[0]
     open trasactions page
@@ -33,7 +36,7 @@ W2W transfer
     click  ${outwardTab}
     sleep  2
     outward tr status no method 2  Pending  1
-    click  //div[@id = "item__tabs-panel-debit"]/div/div/div/div/div/div/div/div[2]/table/tbody/tr[2]/td[1]/div/span/a
+    click  //div[@id = "item__tabs-panel-debit"]//tr[2]//td[1]//a
     click  ${edit}
     edit ith item in outward  0  ${edititemData1}[0]  ${edititemData1}[1]
     click  ${submit}
@@ -58,8 +61,9 @@ W2W transfer
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
     #approve w2w transaction  HARIDWAR-
     sleep  2
-    select site  testing_automation_site2
+    select site  testingautomationsite2
     reload page
+    Search and Check Item Quantity  ${itemData1}[0]  ${itemData1}[2]  Test Customer-01  Vendor1113
     sleep  1
     open warehouse
     sleep  1

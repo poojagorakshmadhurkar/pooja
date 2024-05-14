@@ -17,7 +17,7 @@ ${inspectedByDropdown}  (//span[text()="Inspected By "])/../../../div[2]/div/spa
 ${inspectedByDropdownTIN}  (//span[text()="Inspected By "])/../../../div[2]/div/span[2]
 ${grnNumber}  //input[@placeholder = "GRN Number"]
 ${dropdownofpatner}  (//span[text()="Vendor *"])/../../../div[2]/div/span[2]
-${partnerDropdown}  //input[@id = "credit__form__partner"]
+${partnerDropdown}  //input[@id="inward__form__partner"]
 ${invoiceNumber}  //span[text() = "Invoice Number "]/../../input
 ${addDetailsInNote}  //div[text() = "Add Details to this Request"]/..
 ${inwardEdit}  //button[@id = "credit__rejections__edit"]
@@ -48,7 +48,7 @@ ${1stapprove}  (//button[@aria-label= "Approve"])[1]
 ${rackingEdit}   //button[@id = "credit__racking__edit"]
 ${approveButton}  //button[text()= "Approve"]
 ${approveRequest}  //span[text() = "Approve request"]/..
-${InwardGRNfield}  //input[@id = "credit__form__grn"]
+${InwardGRNfield}  //input[@id="inward__form__grn"]
 ${withdrawButton}  //button[normalize-space()='Withdraw Request']
 ${OutwardGRNfield}  //input[@id = "debit__form__grn"]
 ${addNewLot}  //button[@aria-label = "new reason"]
@@ -77,7 +77,7 @@ ${scrapTab}  //button[text() = "Scrap"]
 #${convQuan}  (//th[text() = "Total Quantity"]/../../../tbody/tr[${i}]/td)[2]/span/span/input
 ${outwardGrn}  //*[@id="enhanced-table-checkbox-0"]
 ${inwardGrn}  //tbody/tr[2]/th[1]
-${crossButton}  /html/body/div[4]/div[3]/div/span/button
+${crossButton}  //button[@class='MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge css-1w8s6so']
 ${autoSelectRack}  //button[@id = "credit__racking__autofill_rack"]
 ${itemFilter}  //button[@id ="item__filterBtn"]
 ${itemDetailsTextBox}  //input[@id = "item_details"]
@@ -92,8 +92,10 @@ ${DateInward2}  //input[@id = "credit__form__DateInward2"]
 ${qualityChecktab}  //span[text() = "Quality Check"]/..
 ${allOk}  //button[@id ="credit__rejections__all_ok"]
 ${addRejIcon}  //button[@id ="credit__rejections__0__add_reason"]
-${RMItemFilter}  //div[@id = "item__tabs-panel-1"]//span[text() = "Item Details"]/../../..//*[@data-testid="SearchOutlinedIcon"]
+${RMItemFilter}  //div[@id="live_inventory_item__tabs-panel-1"]//*[@id="live_inventory_Item Details_search"]
 ${RMitemName}  (//input[@placeholder = "Search Item Details"])[1]
 ${dateOutward}  //span[text() = "Date *"]/../../div[2]/div/input
 ${buttonSubmit}  //button[@type = "submit"]
 ${cross}  //*[@data-testid = "CancelIcon"]/..
+${materialnotesearchbuttonoutware}  //div[@id='item__tabs-panel-debit']//div//div//th[@aria-label="this column's title is Material Issue Note,this column is sortable"]//span[@role='button']
+${searchicon}  //button[@class='ant-btn ant-btn-circle ant-btn-primary ant-btn-sm ant-btn-icon-only']//*[name()='svg']

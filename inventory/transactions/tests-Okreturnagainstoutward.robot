@@ -14,8 +14,9 @@ Library    DateTime
 
 *** Test Cases ***
 Outward to customer
+    Set Selenium Speed    ${DELAY}
     login
-    select site  testing_site_automation
+    select site  testingsiteautomation
 #validation to check item is present in warehouse if not then inward it
     Search and Check Item Quantity  ${inwarditem1}[0]  ${inwarditem1}[1]  Test_Employee07  Vendor1113
     open warehouse
@@ -67,7 +68,7 @@ Outward to customer
     click  //input[@placeholder="Search Material Issue Note"]/../button[1]
     sleep   1
     #click on retrun click button
-    click  //a[text()="${shipmentnumber}"]/../../../../td[10]//button[@aria-label="Return"]
+    click  //a[text()="${shipmentnumber}"]/../../../../td[10]//button//*[name()='svg'][@id='transaction_debit_return']
     sleep  1
     #input good quantity text
     input text  (//input[@class="ant-input"])[2]  ${outwardnotevalue}

@@ -1,0 +1,22 @@
+*** Variables ***
+${newPO}  //button[@id = "Add New PO"]
+${newSO}  //button[@id = "Add New SO"]
+${poTab}  //button[@id = "PO Tracker"]
+${soTab}  //button[@id = "SO Tracker"]
+${customerName}  //span[text() = "Customer Name"]/../../div[3]/div/div[2]/div/input
+${poNumber}  //input[@id = "label"]
+${poIssueDate}  //span[text() = "PO Issue Date"]/../../div[2]/div/input
+${poExpiryDate}  //span[text() = "PO Expiry Date"]/../../div[2]/div/input
+${type}  //div[@id = "po_type"]
+${saveOrderButton}  //button[text() = "Save Order"]
+${planThisOrder}  //div[text() = "Plan This Order"]/..
+${createNewOrder}  //div[text() = "Create New Order"]/..
+${newSoButton}  //button[text() = "New SO"]
+${soStartDate}  //span[text() = "SO Start Date"]/../../../div[2]/div[2]/div/input
+${soDeliveryDate}  //span[text() = "SO Delivery Date"]/../../div[2]/div/input
+${soTrackerTab}  //button[text() = "SO Tracker"]
+${createWo}  //button[text() = " Create WO"]
+${woQuantity}  //input[@id = "label"]
+${previewWo}  //button[text() = "Preview"]
+${Create}  //button[text() = "Create"]
+${mrnRequest}  //button[@aria-label = "Material Request"]

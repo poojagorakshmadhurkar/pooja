@@ -29,6 +29,7 @@ item should be added
     click  ${searchItem}/../button[1]
     wait until page contains  ${itemCodeName}  timeout=10s
 
+
 #this still pending as a while loop
 #    [Arguments]  ${itemGroupname}
 #    click  //span[text() = "10 / page"]
@@ -108,15 +109,22 @@ edit item
 
 delete item
     [Arguments]  ${itemCodeName}
-#    click  //a[text() = "${itemCodeName}"]/../../../../../../../../../../td[7]
+    sleep  1
+    click  //a[text()="${itemCodeName}"]/../../../../../../../../../../td[8]
+    click  //button[@id="item__deactivate_btn"]
+    i should see text on page  Item deactivated successfully
+    reload page
     sleep  1
     click  //*[name()='path' and contains(@d,'M12 8c1.1 ')]
-    click  //div[normalize-space()='Deactivated items']
+    sleep  1
+    click  ${deactivate_item}
     sleep  3
-    click  (//span[@role='button'])[1]
-    input  //input[@placeholder='Search Item Details']  ${itemCodeName}
-    click  //input[@type="text"]/../..//button[1]
-    i should see text on page  Item deactivated successfully  ${itemCodeName}
+    click  //span[text() = "Item Details"]/../../../span[2]
+    input  ${searchItem}  ${itemCodeName}
+    click  ${searchItem}/../button[1]
+    wait until page contains  ${itemCodeName}  timeout=10s
+
+
 
 edit itemGroup
     [Arguments]  ${labelName}
@@ -149,6 +157,13 @@ edit itemGroup
 
 delete itemGroup
     [Arguments]  ${itemCodeName}
-    click  //a[text()='${itemCodeName}']/../../../../../../../../../../td[5]/div/button[3][@id = "itemGroup__Deactivate"]
+    click  //a[text()='${itemCodeName}']/../../../../../../../../../../td[5]//button[@id = "itemGroup__Deactivate"]
     click  ${deactivate_itemGroup}
     i should see text on page  Item Group deactivated successfully
+
+
+Select Value From Dropdown By Index
+    [Arguments]    ${dropdown}    ${dropdownwithindex}
+    Click Element    ${dropdown}    # Click to open the dropdown
+    Wait Until Element Is Visible    ${dropdownwithindex}   # Wait for the option to be visible
+    Click Element    ${dropdownwithindex}    # Click to select the option

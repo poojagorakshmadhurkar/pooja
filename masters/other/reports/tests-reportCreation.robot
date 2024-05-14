@@ -13,6 +13,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 creation of report page
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open reports page
@@ -37,7 +38,7 @@ creation of report page
 
 
 reports edition
-    edit reports  ${reportsData}[0]
+    edit reports  ${reportsData}[0]  ${editReportsData}
 
 delete reports
     delete reports  ${editReportsData}[0]

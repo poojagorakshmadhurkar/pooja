@@ -14,6 +14,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 open Employees page
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open Employees page

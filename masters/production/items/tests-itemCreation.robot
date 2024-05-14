@@ -13,8 +13,9 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 open item page
-    login
-    select site  smart_factory
+    Set Selenium Speed    0.1
+    login devsite
+    select site  testingsiteautomation
     open item page
     click  ${newIcon}
     sleep  2
@@ -22,13 +23,13 @@ open item page
     input  ${itemCode}  ${itemData}[0]
     ${randomItemName}=  generate random string  5-8  [LETTERS]
     input  ${itemName}  ${randomItemName}
-    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  8
+    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  2
 #    select option from dropdown using span  ${itemgroup}  Compounds
     click  ${Submit}
     i should see text on page  Item added
     click  ${backButton}
     reload page
-    sleep  1
+    sleep  2
     item should be added  ${itemData}[0]
 
 editing item
@@ -38,5 +39,5 @@ editing item
 
 deleting item
     reload page
-    sleep  3
+    sleep  5
     delete item  ${editItemData}[0]

@@ -49,8 +49,8 @@ edit random generated customer
     ${randomCustomerAddress}=  generate random string  5-15  [LETTERS]
     press keys  ${customerAddress}  CTRL+A  BACKSPACE  ${randomCustomerAddress}
     select option from dropdown using span  ${customerCountry}  India
-    select option from dropdown using span  ${customerState}  Assam
-    select option from dropdown using span  ${customerCity}  Baksa
+#    select option from dropdown using span  ${customerState}  Assam
+#    select option from dropdown using span  ${customerCity}  Baksa
     ${randomGSTN}=  generate random string  10-15  [NUMBERS]
     press keys  ${customerGSTN}  CTRL+A  BACKSPACE  ${randomGSTN}
 #    ${stateXpathCount}=  get element count  ${customerState}

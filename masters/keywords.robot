@@ -1,6 +1,6 @@
 *** Settings ***
 Library  SeleniumLibrary
-Resource  ../../../keywords.robot
+Resource  ./././keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
@@ -9,16 +9,16 @@ Library  Collections
 
 *** Variables ***
 #Reports
-@{reportsData}  report31  test10@gmail.com       #change data Here
-@{editReportsData}  edit_reports40  Daily  edit_test11@gmail.com
+@{reportsData}  report39  test39@gmail.com       #change data Here
+@{editReportsData}  edit_reports47  Daily  edit_test47@gmail.com
 
 #tagmanagement
-@{tagsMangementData}  tagsMangement_test10
+@{tagsMangementData}  tagsMangement_test14
 
 #Warehouse
-@{warehouseNameData}  mainSite24      #change name here
+@{warehouseNameData}  mainSite28      #change name here
 @{linkedPartnersData}  Dixit
-@{EditWarehouseData}  EditedMainSite13  Bajaj  Inward  Vendors  Validation of items
+@{EditWarehouseData}  EditedMainSite17  Bajaj  Inward  Vendors  Validation of items
 
 #fieldgroup
 @{actionData}  Production Reports
@@ -26,54 +26,54 @@ Library  Collections
 @{editFieldGroupsData}
 
 #customer    planning
-@{CustomerData1}  Pooja099
-@{CustomerData2}  Newpooj337777
+@{CustomerData1}  Pooja197
+@{CustomerData2}  Newpooj3635
 
 #vendor    planning
-@{VendorData2}  Newvendor115
-@{VendorData1}  Vendor118  test17@gmail.com  test47address
+@{VendorData2}  Newvendor209
+@{VendorData1}  Vendor210  test25@gmail.com  test63address
 
 #Site Sites
-@{SiteData1}  poojafactory_32  Test32_addresss  test32@gmail.com   gstnumber4  #change name only
-@{newSiteData}  poojafactory_34  edited address  Edited34@gmail.com
+@{SiteData1}  poojafactory_47  Test47_addresss  test47@gmail.com   gstnumber5  #change name only
+@{newSiteData}  poojafactory_48  edited address  Edited48@gmail.com
 
 #Employee sites
-@{EmployeeName}  Employeee_124  Planning  Supervisor  0809782124  poojaemail23@test.com     #for employee name firstletter is capital and other small
-@{EditEmployeeName}  Employee_51  Admin  Manager  0809782751  test_email51@test.com
+@{EmployeeName}  Employeee_128  Planning  Supervisor  0809782736  poojaemail28@test.com     #for employee name firstletter is capital and other small
+@{EditEmployeeName}  Employee_55  Admin  Manager  0809782755  test_email55@test.com
 
 #Shift site
-@{shiftData}  shift36  #change data here
-@{editShiftData}  edited_shift37  05:00  07:00  15
+@{shiftData}  shift45  #change data here
+@{editShiftData}  edited_shift46  05:00  07:00  15
 
 #production
 #Tools
-@{labelName}  labelName24  1     #change name here
-@{editToolsData}  editLabel25  1  editPart5
+@{labelName}  labelName34  1     #change name here
+@{editToolsData}  editLabel35  1  editPart10
 
 #Quality
-@{qualityData}  newIssue24  abc  Planning  Medium     #change name here
-@{EditQualityData}  editedIssue25  RM Group  Store  Low
+@{qualityData}  newIssue30  abc  Planning  Medium     #change name here
+@{EditQualityData}  editedIssue31  RM Group  Store  Low
 
 #production forms
-@{productionFormData}  productionForm17     #change name here
-@{EditProductionFormData}  EditproductionForm18
+@{productionFormData}  productionForm23     #change name here
+@{EditProductionFormData}  EditproductionForm24
 
 #machine
-@{MachineData1}  rinder05  kidder10       #change name Here
-@{ChildMachineData1}  kidder15  rider20
+@{MachineData1}  pencil01  Mixer12       #change name Here
+@{ChildMachineData1}  Pen16  rubber21
 
 #Downtime
-@{DowntimeData}  Main_powerCut11
-@{EditDowntimeData}  Powercut35  Admin  High  Material  Electronic
+@{DowntimeData}  Main_powerCut15
+@{EditDowntimeData}  Powercut39  Admin  High  Material  Electronic
 
 #Cycle Times Rule
 @{cycleTimeRulesData1}  WIP Section  Bottle(FG)  WIRING  32
 @{editCTR}  30
 
 #itemcreation
-@{itemData}  item-22  pencer22
-@{editItemData}  item23  censor23
+@{itemData}  item-54  pencer54
+@{editItemData}  item55  censor55
 
 #item group
-@{itemGroupData}  ItemGroupp18
-@{edititemGroupData}  editItemGroupp19  Raw Material  gram
+@{itemGroupData}  ItemGroupp26
+@{edititemGroupData}  editItemGroupp27  Raw Material  gram

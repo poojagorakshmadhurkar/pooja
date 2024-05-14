@@ -15,8 +15,9 @@ Resource  ../../keywords.robot
 *** Test Cases ***
 customer creation
     [Tags]  creation
-    login
-    select site  smart_factory
+    Set Selenium Speed    0.1
+    login devsite
+    select site  testingsiteautomation
     open customer page
     #wait until page contains  NEW  20
     click  ${addNewCustomer}
@@ -31,8 +32,8 @@ customer creation
     ${randomCustomerAddress}=  generate random string  5-15  [LETTERS]
     input  ${customerAddress}  ${randomCustomerAddress}
     select option from dropdown using span  ${customerCountry}  India
-    select option from dropdown using span  ${customerState}  Bihar
-    select option from dropdown using span  ${customerCity}  Arrah
+    select option from dropdown using div  ${customerState}  Bihar
+    select option from dropdown using div  ${customerCity}  Arrah
     ${randomGSTN}=  generate random string  10-15  [NUMBERS]
     input  ${customerGSTN}  ${randomGSTN}
 #    Get Random Value  ${customerCountry}

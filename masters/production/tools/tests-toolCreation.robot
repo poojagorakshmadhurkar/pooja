@@ -14,11 +14,13 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 tools creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open tools page
     click  ${addNewTools}
-    sleep  20
+    sleep  5
+    reload page
 ##    ${randomLabel}=  generate random string  5-10  [LETTERS]
 #    ${randomLabel}  FakerLibrary.Generate Random Data  name
 #    Log    Random Name: ${random_name}
@@ -35,12 +37,12 @@ tools creation
     input  ${partsLabel}  ${randompartsLabel}
     ${randomPartsLifetime}=  generate random string  1  [NUMBERS]
     input  ${partsLifetime}  ${labelName}[1]
-    Sleep  5
+    Sleep  10
     select option  ${toolCTR}
     sleep  5
-    select option  ${machineGroupTags}
-    select option  ${itemGroupTags}
-    select option  ${processTags}
+#    select option  ${machineGroupTags}
+#    select option  ${itemGroupTags}
+#    select option  ${processTags}
     click  ${Submit}
     i should see text on page  Tool Details Added Successfully
     open tools page

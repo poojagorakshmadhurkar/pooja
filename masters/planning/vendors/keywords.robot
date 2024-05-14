@@ -33,9 +33,9 @@ edit random generated vendor
     press keys  ${vendorEmail}  CTRL+A  BACKSPACE  ${randomVendorEmail}
     ${randomVendorAddress}=  generate random string  5-15  [LETTERS]
     press keys  ${vendorAddress}  CTRL+A  BACKSPACE  ${randomVendorAddress}
-     select option from dropdown using span  ${vendorCountry}  Albania
-    select option from dropdown using span  ${vendorState}  Berat District
-    select option from dropdown using span  ${vendorCity}  Banaj
+    select option from dropdown using div  ${vendorCountry}  Albania
+    select option from dropdown using div  ${vendorState}  Berat District
+    select option from dropdown using div  ${vendorCity}  Banaj
     ${randomGSTNnew}=  generate random string  10-15  [NUMBERS]
     press keys  ${vendorGSTN}  CTRL+A  BACKSPACE  ${randomGSTNnew}
     click  ${Submit}

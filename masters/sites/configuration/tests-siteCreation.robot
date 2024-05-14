@@ -13,6 +13,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 site creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open site page
@@ -20,9 +21,9 @@ site creation
     input  ${siteName}  ${SiteData1}[0]
     input  ${siteAddress}  ${SiteData1}[1]
     input  ${siteEmail}  ${SiteData1}[2]
-    select option from dropdown using span  ${siteCountry}  Albania
-    select option from dropdown using span  ${siteState}  Berat District
-    select option from dropdown using span  ${siteCity}  Banaj
+    select option from dropdown using div  ${siteCountry}  Afghanistan
+    select option from dropdown using div  ${siteState}  Badakhshan
+    select option from dropdown using div  ${siteCity}  Ashkāsham
 
     input  ${Gstnname}  ${SiteData1}[3]
     sleep  2

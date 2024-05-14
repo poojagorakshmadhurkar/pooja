@@ -42,11 +42,11 @@ edit tools
     press keys  ${partsLabel}  CTRL+A  BACKSPACE  ${editToolsData}[2]
     press keys  ${partsLifetime}  CTRL+A  BACKSPACE  ${editToolsData}[1]
     press keys  ${maintenanceCycle}  CTRL+A  BACKSPACE  ${editToolsData}[1]
-    sleep  20
+    sleep  5
     select option  ${toolCTR}
-    select option  ${machineGroupTags}
-    select option  ${itemGroupTags}
-    select option  ${processTags}
+#    select option  ${machineGroupTags}
+#    select option  ${itemGroupTags}
+#    select option  ${processTags}
     click  ${Submit}
     i should see text on page  Tool Details Edited Successfully
     open tools page

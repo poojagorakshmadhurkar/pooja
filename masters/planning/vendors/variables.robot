@@ -12,4 +12,4 @@ ${savePartner}  //button[text() = "Save Partner"]
 ${back}  //a[@aria-label = "back-button"]
 ${deactivate_vendor}  //button[@id = "vendors__deactivate_btn"]
 ${Submit}  //button[text() = "Submit"]
-${newRequest}  //div[text() = "New Request"]/..
+${newRequest}  //div[text() = "Create New"]/..

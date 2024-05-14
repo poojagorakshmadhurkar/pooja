@@ -13,12 +13,13 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 tools creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open productionForm page
     click  ${addNewproductionForm}
     input  ${title}  ${productionFormData}[0]
-    select option from dropdown using list  ${groupBy}  Item
+    select option from dropdown using span  ${groupBy}  Item
     add labels  0
     click  ${addMoreLabel}
     add labels  1

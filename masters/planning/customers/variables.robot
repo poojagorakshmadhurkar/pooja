@@ -13,6 +13,6 @@ ${customerState}  //span[text() = "State"]/../../../div[2]/div/span[2]
 ${customerCity}  //span[text() = "City"]/../../../div[2]/div/span[2]
 ${customerGSTN}  //input[@id='partner__gstin']
 ${Submit}  //button[text() = "Submit"]
-${newRequest}  //div[text() = "New Request"]/..
+${newRequest}  //div[text() = "Create New"]/..
 ${back}  //*[@id="back_btn"]
 ${deactivate_customer}  //button[@id = "customers__deactivate_btn"]

@@ -14,6 +14,7 @@ Resource  ../../keywords.robot
                       #change name here only
 *** Test Cases ***
 open warehouses page
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open warehouses page

@@ -12,6 +12,7 @@ Resource  ../../keywords.robot
 #@{editShiftData}  edited_shift33  05:00  07:00  15
 *** Test Cases ***
 shift creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open shifts page

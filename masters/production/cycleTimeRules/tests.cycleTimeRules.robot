@@ -14,6 +14,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 open cycleTimeRules page
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open cycleTimeRules page

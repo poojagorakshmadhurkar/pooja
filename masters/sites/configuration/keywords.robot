@@ -33,9 +33,10 @@ edit sites
     press keys  ${siteName}  CTRL+A  BACKSPACE  ${new_site_name}
     press keys  ${siteAddress}  CTRL+A  BACKSPACE  ${new_site_address}
     press keys  ${siteEmail}  CTRL+A  BACKSPACE  ${new_site_email}
-    select option from dropdown using span  ${siteCountry}  Algeria
-    select option from dropdown using span  ${siteState}  Adrar
-    select option from dropdown using span  ${siteCity}  Adrar
+    select option from dropdown using div  ${siteCountry}  Algeria
+    select option from dropdown using div  ${siteState}  Adrar
+    sleep  1
+    select option from dropdown using div  ${siteCity}  Aoulef
     click  ${woInProFalse}
     sleep  2
     click  ${costingFalse}

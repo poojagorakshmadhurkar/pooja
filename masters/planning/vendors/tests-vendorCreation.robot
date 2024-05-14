@@ -14,7 +14,9 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 vendorCreation
-    login
+    Set Selenium Speed    0.1
+    login devsite
+    select site  testingsiteautomation
     open vendor page
     wait until page contains  NEW  15
     click  ${addNewVendor}
@@ -22,9 +24,9 @@ vendorCreation
     select option from dropdown using span  ${typeOfPartner}  Vendor
     input  ${vendorEmail}  ${VendorData1}[1]
     input  ${vendorAddress}  ${VendorData1}[2]
-    select option from dropdown using span  ${vendorCountry}  Afghanistan
-    select option from dropdown using span  ${vendorState}  Badakhshan
-    select option from dropdown using span  ${vendorCity}  Jurm
+    select option from dropdown using div   ${vendorCountry}  Algeria
+    select option from dropdown using div   ${vendorState}  Adrar
+    select option from dropdown using div   ${vendorCity}  Timimoun
     ${randomGSTN}=  generate random string  10-15  [NUMBERS]
     input  ${vendorGSTN}  ${randomGSTN}
     click  ${Submit}

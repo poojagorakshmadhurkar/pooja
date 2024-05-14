@@ -13,6 +13,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 parent machine creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open machine page

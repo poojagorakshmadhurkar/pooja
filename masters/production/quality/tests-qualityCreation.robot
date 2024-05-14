@@ -13,6 +13,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 Quality creation
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open quality page

@@ -37,7 +37,7 @@ edit reports
 
 delete reports
     [Arguments]  ${editedReportName}
-    click  //a[text() = "${editedReportName}"]/../../../../../../../../../../td[6]/div/button[2]
+    click  //a[text() = "${editedReportName}"]/../../../../../../../../../../td[7]//button[@id="[object Object]__Deactivate"]
     click  ${deactivateReports}
     i should see text on page  Report deactivated successfully
 

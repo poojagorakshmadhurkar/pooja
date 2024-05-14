@@ -12,15 +12,19 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 downtime creation
-    login
-    select site  smart_factory
+    Set Selenium Speed    0.1
+    login devsite
+    select site  testingsiteautomation
     open downtime page
     click  //button[text() = "NEW"]
+    reload page
+    sleep  5
+
     input  ${downtimeName}  ${DowntimeData}[0]
-    sleep  1
+
     click  ${downtimeTags}
     sleep  1
-    click  //span[text()="150-III"]
+    click  //span[text()="P1"]
     press keys  ${downtimeTags}  TAB
     select option from dropdown using list  ${downtimeDepartment}  Planning
     sleep  1

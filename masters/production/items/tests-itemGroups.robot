@@ -7,14 +7,18 @@ Library  String
 Library  Collections
 Resource  ../../keywords.robot
 
-#*** Variables ***
+*** Variables ***
 #@{itemGroupData}  ItemGroupp15
 #@{edititemGroupData}  editItemGroupp15  Raw Material  gram
 
+${DROPDOWN_OPTION}  xpath=(//div[contains(@class, 'ant-select-item')])[${INDEX}]
+${INDEX}            2
+
 *** Test Cases ***
 itemGroup creation
-    login
-    select site  smart_factory
+    Set Selenium Speed    0.1
+    login devsite
+    select site  testingsiteautomation
     open item page
     click  //span[text() = "This is a testing Site"]
     sleep  1
@@ -27,16 +31,19 @@ itemGroup creation
     select option from dropdown using list  ${units}  gram
 #    select option from dropdown using span  ${sites}  Haridwar Unit
     click  ${addAttribute}
-    fill attribute  0  Length  Bagpack
+    sleep  10
+    fill attribute  0  Length  Itemgroup1
     click  ${addAttribute}
 #    fill attribute with new att value tag  1  Breadth  POIUYTT
 #    click  ${addAttribute}
-    fill attribute  1  Heigth  Compounds
+    fill attribute  1  Heigth  FGGROUP4
     click  ${setSelfTag}
     click  ${setNomenclature}
     input  ${codePrefix}  A
     input  ${namePrefix}  B
-    input  ${nameSeparator}  %
+    Select Value From Dropdown By Index    ${nameSeparator}    ${DROPDOWN_OPTION}
+    input  ${namesequence}  Length
+    press keys   ${namesequence}  ENTER
     click  ${Submit}
     i should see text on page  Item Group added
     click  ${back}
@@ -49,3 +56,33 @@ editing itemGroup
 
 deleting itemGroup
     delete itemGroup  ${edititemGroupData}[0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,6 +12,7 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 open tagsMangement page
+    Set Selenium Speed    0.1
     login
     select site  smart_factory
     open tagsMangement page
@@ -27,6 +28,6 @@ open tagsMangement page
 #    select site  Haridwar Unit
     open tagsMangement page
     reload page
-    sleep  5
+    sleep  2
     tagsMangement should be added  ${tagsMangementData}[0]
 

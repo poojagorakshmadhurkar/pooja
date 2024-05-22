@@ -7,12 +7,12 @@ Resource    ./././variable.robot
 Resource    ../../keywords.robot
 
 *** Test Cases ***
-Generate Random number
-    ${ran_int}=    Generate Random String    length=4    chars=[NUMBERS]
-    ${ran_int}=    Convert To Integer    ${ran_int}
-    log to console    This is a random number between 1000 and 9999: ${ran_int}
-#    RETURN    ${ran_int}
-#    Generate Random string
+#Generate Random number
+#    ${ran_int}=    Generate Random String    length=4    chars=[NUMBERS]
+#    ${ran_int}=    Convert To Integer    ${ran_int}
+#    log to console    This is a random number between 1000 and 9999: ${ran_int}
+##    RETURN    ${ran_int}
+##    Generate Random string
 
 
 
@@ -21,5 +21,10 @@ Generate Random number
 #    Log    Random String: ${random_string}
 #    log to console    Random String: ${random_string}
 
-
+Demo
+    Open Browser Site
+    Login To ManufApp Site
+    select site    testingsiteautomation  #Smart Factory
+    Landing On Purchase Order Page
+    Search Randonmly In Vendor Column
 

@@ -78,7 +78,7 @@ PO_Page Column_List
     Status column List
 #--------------------------- PO Table Heading List ------------------------------
 PO Table Heading List
-    log to console    -----------------PO Table Heading List ----------------------
+    log to console    --------------- PO Table Heading List ---------------------
     sleep    0.05s
     ${get_text_HeadingData}  get webelements    ${PO TABLE HEADING ELEMENTS2}
     FOR    ${Po_H_List}    IN     @{get_text_HeadingData}
@@ -87,7 +87,7 @@ PO Table Heading List
     sleep    0.05s
 #--------------------------- PO Number column List ------------------------------
 PO Number column List
-    log to console    ----------------PO Number column Data List ------------------
+    log to console    -------------- PO Number column Data List -----------------
     ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
@@ -95,15 +95,15 @@ PO Number column List
     sleep    0.05s
 #--------------------------- Item Details column List ---------------------------
 Item Details column List
-    log to console    ----------------Item Details column Data List ------------------
+    log to console    --------------- Item Details column Data List ------------------
     ${get_text_colData}  get webelements    ${ITEM DETAILS COLUMN DATA}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
     END
     sleep    0.05s
-#--------------------------- Ordered column List --------------------------------
+#----------------------- Ordered column List ---------------------------
 Ordered column List
-    log to console    ----------------Ordered  column Data List ------------------
+    log to console    ------------ Ordered column Data List --------------
     ${get_text_colData}  get webelements    ${ORDERD COLUMN DATA}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
@@ -111,15 +111,15 @@ Ordered column List
     sleep    0.05s
 #--------------------------- Delivery column List -------------------------------
 Delivery column List
-    log to console    ----------------Delivery  column Data List ------------------
-    ${get_text_colData}  get webelements    ${DELIVERY COLUMN DATA}
+    log to console    --------------- Delivery column Data List ------------------
+    ${get_text_colData}  get webelements    ${DELIVERED COLUMN DATA}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
     END
     sleep    0.05s
 #--------------------------- Rejected column List -------------------------------
 Rejected column List
-    log to console    ----------------Rejected  column Data List ------------------
+    log to console    --------------- Rejected column Data List ------------------
     ${get_text_colData}  get webelements    ${REJECTED COLUMN DATA}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
@@ -127,7 +127,7 @@ Rejected column List
     sleep    0.05s
 #--------------------------- Remaining column List ------------------------------
 Remaining column List
-    log to console    ----------------Remaining  column Data List ------------------
+    log to console    --------------- Remaining column Data List ------------------
     ${get_text_colData}  get webelements    ${REMAINING COLUMN DATA}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
@@ -135,9 +135,9 @@ Remaining column List
     sleep    0.05s
 #--------------------------- Vender column List ---------------------------------
 Vender column List
-    log to console    ----------------Vender Column Data List ----------------------
+    log to console    --------------- Vender Column Data List ----------------------
 #    sleep   0.05s
-    ${get_text_colData}  get webelements     ${VENDER COLUMN DATA1}     #//td[@class="ant-table-cell"][1]
+    ${get_text_colData}  get webelements     ${VENDER COLUMN DATA}     #//td[@class="ant-table-cell"][1]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
 
     Log To Console   ✅ ${Po_no_List.text}
@@ -145,10 +145,10 @@ Vender column List
     sleep   0.05s
 #--------------------------- Issue Date column List -----------------------------
 Issue Date column List
-    log to console    -----------------Issue Date Column Data List ------------------
+    log to console    ---------------- Issue Date Column Data List ------------------
 #    sleep   0.05s
 #    get the Issue Date column list
-    ${get_text_colData}  get webelements     ${ISSUE DATE COLUMN LIST}      #//td[@class="ant-table-cell"][2]
+    ${get_text_colData}  get webelements     ${ISSUE DATE COLUMN DATA}      #//td[@class="ant-table-cell"][2]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
 
     Log To Console   ✅ ${Po_no_List.text}
@@ -156,7 +156,7 @@ Issue Date column List
     sleep   0.05s
 #--------------------------- Delivery Date column List --------------------------
 Delivery Date column List
-    log to console    -----------------Delivery Date Column Data List ----------------
+    log to console    ---------------- Delivery Date Column Data List ----------------
 #    sleep   0.05s
     ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA}   #//td[@class="ant-table-cell"][3]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
@@ -195,69 +195,61 @@ Status column List
     sleep   0.05s
 #--------------------------- Sorting --------------------------------------------
 Sorting
+    [Arguments]    ${col_xpath}  ${Col_Name}
     sleep    0.5s
     Wait Until Page Contains Element    ${PLANNING}    10s
     set selenium speed    0.05s
+    click   ${ITEM_VIEW_TOGGLE_BUTTON}
 
 #**************    PO Column    ******************************
     #sorting list PO number column
-    #Get text list
-    log to console    -------------------PO Number column Data List (Before clicking) --------------------------------
-    ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}   #--get the PO column Data list
-    FOR    ${Po_no_List}    IN     @{get_text_colData}
-    Log To Console    ${Po_no_List.text}
+    log to console    -------------------${Col_Name} column Data List (Before clicking) --------------------------------
+    ${get_text_colData}  get webelements    ${col_xpath}   #--get the PO column Data list
+    FOR    ${PO_no_List}    IN     @{get_text_colData}
+    Log To Console    ${PO_no_List.text}
     END
     sleep   0.5s
     #click PO Number Column
     click    ${SORT_PO}
     sleep   0.5s
 
-    log to console    -------------------PO Number column Data List (After clicking) --------------------------------
-    ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}
+    log to console  ------------- ${Col_Name} column Data List (After clicking) ------------
+    ${get_text_colData}  get webelements    ${col_xpath}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-    Log To Console    ✅ ${Po_no_List.text}
+    Log To Console    ✅ ${PO_no_List.text}
     END
-
-    log to console    ........👆 Please Verify PO Column Sorted Data below  .........................
     sleep   0.05s
+    click    refresh_purchase_order_page_list
 
-
-#--------------------------------------------------------------------------------
-
-#**************    click vender Column    ******************************
-
-    #sorting list click vender Column
-    #Get text list
-    log to console    -------------------Vender Column Data List (Before clicking) --------------------------------
-
-    sleep   0.5s
-    ${get_text_colData}  get webelements     //td[@class="ant-table-cell"][1]
-    FOR    ${Po_no_List}    IN     @{get_text_colData}
-
-    Log To Console   ✅ ${Po_no_List.text}
-    END
-
-    click    ${SORT_VENDER}
-    sleep   0.5s
-    log to console    -------------------Vender Column Data List (After clicking) --------------------------------
-    ${get_text_colData1}  get webelements    ${VENDER COLUMN DATA}
-    FOR    ${Vender_col_List}    IN     @{get_text_colData1}
-    Log To Console    ✅ ${Vender_col_List.text}
-    END
-
-    log to console    ........👆 Please Verify Vender Column Sorted Data below  ...................................
-    log to console    ........✅ Functionality of Sorting operation is sucessfully done😎.........................
-    sleep   0.05s
-
-#--------------------------------------------------------------------------------
-
-#click issue date Column
-    click   ${SORT_ISSUE_DATE}
-    click   ${SORT_ISSUE_DATE}
-
-#click delivery date Column
-    click   ${SORT_DELIVERY_DATE}
-    click   ${SORT_DELIVERY_DATE}
+##**************    sort vender Column    ******************************
+#    log to console    -------------------Vender Column Data List (Before clicking) --------------------------------
+#
+#    sleep   0.5s
+#    ${get_text_colData}  get webelements     //td[@class="ant-table-cell"][1]
+#    FOR    ${Po_no_List}    IN     @{get_text_colData}
+#
+#    Log To Console   ✅ ${Po_no_List.text}
+#    END
+#
+#    click    ${SORT_VENDER}
+#    sleep   0.5s
+#    log to console   -------Vender Column Data List (After clicking) ---------
+#    ${get_text_colData1}  get webelements    ${VENDER COLUMN DATA}
+#    FOR    ${Vender_col_List}    IN     @{get_text_colData1}
+#    Log To Console    ✅ ${Vender_col_List.text}
+#    END
+#    log to console    ........✅ Sorting sucessfully done😎...................
+#    sleep   0.05s
+#
+##--------------------------------------------------------------------------------
+#
+##click issue date Column
+#    click   ${SORT_ISSUE_DATE}
+#    click   ${SORT_ISSUE_DATE}
+#
+##click delivery date Column
+#    click   ${SORT_DELIVERY_DATE}
+#    click   ${SORT_DELIVERY_DATE}
 #--------------------------- Search in PO_Number Colomn -------------------------
 Search In PO_Number Column
     #%%%%%%%%%%%%%%%%%%    PO column Search    %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -294,6 +286,7 @@ Search In PO_Vendor Column
     set selenium speed    0.05sec
     click   ${Vendor SEARCH ICON}      #--extenal click icon
     click   ${Vendor SEARCH ICON INPUT FIELD}      #--search icon input field text box
+#    press keys   ${Vendor SEARCH ICON INPUT FIELD}  ARROW_DOWN     ENTER
     #Take randome value for searching
     ${value}  Evaluate  random.choice($Vendor_Col)  random             #<------- call data randomely
     log to console  \nvalue: ${value}
@@ -363,21 +356,7 @@ select Issue Date
     click   ${ISSUE_DATE_CALENDER}
     click    ${CURRENT_DATE}
     sleep    0.5s
-Select Itom Code_Quantity_Price
-    [Arguments]     ${i}  ${quantity}  ${price}
-#    click    ${ITEM_CODE}
-#    click    ${SELECT_ITEMTYPE}
-    Wait Until Element Is Clickable    ${SELECT_ITEMTYPE}   10s
-    press keys    //input[@id='purchase_order_${i}_sku']   ARROW_DOWN     ENTER
-    sleep    1s
-#    press keys    (//div[@class='ant-select-item ant-select-item-option'])[${i}]    ENTER
-    sleep   0.5s
-    click    ${INPUT_QUANTITY}
-    input text      ${INPUT_QUANTITY}    ${quantity}
-    sleep    0.5s
-    click    ${INPUT_PRICE}
-    sleep    0.5s
-    input text    ${INPUT_PRICE}  ${price}
+
 Select Multiple Itom_Code Quantity_Price
     [Arguments]     ${i}    ${j}  ${k}  ${quantity}  ${price}
 #    click    ${ITEM_CODE}
@@ -493,19 +472,24 @@ Search In PO
     input text    ${SEARCH ICON INPUT FIELD}   ${order_number}   #${ENTER SEARCH TEXT}   #--i.e "PO-000"        #--enter input for searching data PO-186
 
 #    ${search text}=    Get Text     ${SEARCH ICON INPUT FIELD}
-    log to console   .................. You search🔎[ ${order_number} ] in search box ...................
+    log to console   ....... You search🔎[ ${order_number} ] in search box ........
+    log   ....... You search🔎[ ${order_number} ] in search box ........
     click   ${CLICK ON SEARCH ICON}     #--intenal click icon
     sleep    0.07s
-
-    log to console  ................... Text Matching result ............................................    #after clicking search we get the list as per text input in the search box
+    log to console  ......... Text Matching result ..............    #after clicking search we get the list as per text input in the search box
     sleep    0.07s
     ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}
+#    FOR    ${Po_no_List}    IN     @{get_text_colData}
+#    Log To Console  ✅ ${Po_no_List}
+#    log  ✅ ${Po_no_List}
+#    END
+    ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-    Log To Console    ✅ ${Po_no_List}
-    log     ✅ ${Po_no_List}
+    Log To Console    ✅ ${Po_no_List.text}
+    log  ✅ ${Po_no_List}
     END
 #    sleep    0.07s
-    log to console    ........👆 Please Verify Search Data below  .......................................
+    log to console    ........👆 Please Verify Search Data below  .........
     sleep   1s
     RETURN    ${order_number}
 Search Randonmly In PO_Number Column
@@ -530,25 +514,29 @@ Search Randonmly In PO_Number Column
     ${get_text_colData}  get webelements    ${PO NUMBER COLUMN DATA LIST}
     FOR    ${Po_no_List}    IN     @{get_text_colData}
     Log To Console    ✅ ${Po_no_List.text}
-    log     ✅ ${Po_no_List.text}
+    log     ✅ ${Po_no_List}
     END
     sleep    0.05s
     log to console    ........👆 Please Verify Search Data below  ...................................................
 Search Randonmly In Vendor Column
 #%%%%%%%%%%%%%%%%%%    Vendor column Search    %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    sleep    2s
+    sleep    1s
     click   ${PO PAGINATION}
-    sleep    2s
+    sleep    1s
     click   ${PO PAGINATION 100}
     wait until page contains element    ${PO_HOLE_PAGE_HIGHLIGHT}   20s
-    set selenium speed    1sec
+    set selenium speed    0.5sec
     click   ${Vendor SEARCH ICON}      #--extenal click icon
     click   ${Vendor SEARCH ICON INPUT FIELD}
+#    press keys   ${Vendor SEARCH ICON INPUT FIELD}  ARROW_DOWN    ENTER
+    click    (//*[@id="purchase_order_Vendor_search"])[2]
     ${get_text_colData2}  get webelements    (//div[@class='rc-virtual-list-holder']//div)[2]      #${VENDER COLUMN DATA1}   #--get the PO column Data list -100 entries
     FOR    ${Vendor_Col_List}    IN     @{get_text_colData2}
-    sleep    0.05s
+    sleep    0.05s                                           #//*[@class="rc-virtual-list-holder-inner"]
     log to console    ${Vendor_Col_List.text}
     RETURN  ${get_text_colData2}
+    END
+
     sleep    1s
     click   ${Vendor SEARCH ICON INPUT FIELD}
     ${value}  Evaluate  random.choice($get_text_colData2)   random             #<------- call data randomely
@@ -575,66 +563,68 @@ Search Randonmly In Issue Date
     set selenium speed  1s
     click    //*[@id="purchase_order_Issue Date_search"]
     click    //input[@placeholder='Start date']
-    click    //span[text()='Today']
+    click    //span[text()='Last Week']     #//span[text()='Last Week']
     click    (//*[@id="purchase_order_Issue Date_search"])[2]
 Search Randonmly In Delivery Date
     set selenium speed  0.5s
     click    id:purchase_order_Delivery Date_search
     click    (//input[@placeholder='Start date'])[1]
-#    click    (//div[text()='7'])[3]
-#    click    (//span[text()='This Week'])[2]
-    click    (//li[@class='ant-picker-preset']//span)[2]
-#    click element    (//span[text()='This Week'])[2]
+#    click    //li[@class='ant-picker-preset']//span[text()='This Week']
+    click    //li[@class='ant-picker-preset']//span[text()='Last Week']
     click    (//button[contains(@class,'ant-btn ant-btn-circle')])[2]
-    sleep    1min
+    sleep    1s
 Searching Issue Date Column
      #sorting list PO number column
     #Get text list
-    log to console    -----------------Issue Date Column Data List ------------------
-    sleep   0.05s
+    log to console    ---------- Issue Date Column Data List (After Searching) ---------------
+    set selenium speed  0.05s
 #    get the Issue Date column list
     ${get_text_colData}  get webelements     ${ISSUE DATE COLUMN LIST}      #//td[@class="ant-table-cell"][2]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-
     Log To Console   ✅ ${Po_no_List.text}
     END
-    sleep    2s
     Search Randonmly In Issue Date
-    sleep    1s
-
-    log to console    -------------------Issue Date Column Data List (After Searching) --------------------------------
-    sleep   0.05s
+    ${search_date}    get text    //span[@class='ant-tag ant-tag-blue']//div[1]
+    log to console    You search🔎[ ✅ ${search_date} ] in Issue Date boxSearch
+    log to console    ------------ Issue Date Column Data List (After Searching) ---------------
 #    get the Issue Date column list
     ${get_text_colData}  get webelements     ${ISSUE DATE COLUMN LIST}      #//td[@class="ant-table-cell"][2]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-
     Log To Console   ✅ ${Po_no_List.text}
     END
-    sleep    2s
-
     log to console    ........👆 Please Verify PO Column Sorted Data below  .........................
-    sleep   0.05s
+#Searching
+#    [Arguments]    ${xpath}   ${column_name}
+#    #----------------------------Delivery Date column List--------------------------------
+#    log to console    ---------------- ${column_name} Column Data List (Before Searching)----------------
+#    set selenium speed  0.05s
+#    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA2}   #//td[@class="ant-table-cell"][3]
+#    FOR    ${Po_no_List}    IN     @{get_text_colData}
+#    Log To Console   ✅ ${Po_no_List.text}
+#    END
+#    Search Randonmly In Delivery Date
+#    log to console    ---------------- ${column_name} Column Data List (After Searching) ----------------
+#    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA2}   #//td[@class="ant-table-cell"][3]
+#    FOR    ${Po_no_List}    IN     @{get_text_colData}
+#    Log To Console   ✅ ${Po_no_List.text}
+#    END
+#    log to console    ........👆 Please Verify ${column_name} Column Sorted Data below  .........................
+
 Searching Delivery Date Column
     #----------------------------Delivery Date column List--------------------------------
-    log to console    -----------------Delivery Date Column Data List ----------------
-    sleep   0.05s
-    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA}   #//td[@class="ant-table-cell"][3]
+    log to console    -----------------Delivery Date Column Data List (Before Searching)----------------
+    set selenium speed  0.05s
+    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA2}   #//td[@class="ant-table-cell"][3]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-
     Log To Console   ✅ ${Po_no_List.text}
     END
-    sleep    1s
     Search Randonmly In Delivery Date
-    sleep    1s
-
     log to console    -----------------Delivery Date Column Data List (After Searching) ----------------
-    sleep   0.05s
-    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA}   #//td[@class="ant-table-cell"][3]
+    ${get_text_colData}  get webelements     ${DELIVERY DATE COLUMN DATA2}   #//td[@class="ant-table-cell"][3]
     FOR    ${Po_no_List}    IN     @{get_text_colData}
-
     Log To Console   ✅ ${Po_no_List.text}
     END
-    sleep   0.05s
+    log to console    ........👆 Please Verify PO Column Sorted Data below  .........................
 Searching Item Details Column
     #----------------------------Item Details column List--------------------------------
     log to console    -----------------Item Details Column Data List ----------------
@@ -645,7 +635,7 @@ Searching Item Details Column
     Log To Console   ✅ ${Po_no_List.text}
     END
     sleep    1s
-    Search Randonmly In Delivery Date
+    Search Randonmly In Item Details columns
     sleep    1s
 
     log to console    -----------------Item Details Column Data List (After Searching) ----------------
@@ -659,9 +649,14 @@ Searching Item Details Column
 Search Randonmly In Item Details columns
     set selenium speed  0.5s
     click    id:purchase_order_Item Details_search
-#    press keys    //*[@class="ant-select-selection-overflow"]   ARROW_DOWN     ENTER
+#    click    (//input[@type='search'])[2]
+    sleep    0.05s
+    press keys    //*[@class="ant-select-selection-overflow"]   ARROW_DOWN     ENTER
+    sleep    0.05s
     click   (//*[@class="rc-virtual-list-holder-inner"])//div[7]
-    sleep    3s
+    sleep    0.05s
+    click    //*[@id="purchase_order_Item Details_search"]
+    sleep    1s
 Input Text Validation
 #    ${order_info}    Get Text    xpath://div[contains(@style, 'text-align: center;')]
 #    ${start_index}    Evaluate    "${order_info}".find("Order ") + len("Order ")
@@ -676,26 +671,54 @@ Verify Row Data
     ${rows1} =  get element count   ant-table-row ant-table-row-level-0
     sleep  2
     log to console   Total Rows= ${rows1}
+    log  ✅ ${rows1}
 
-    ${ItemDetails}    Get Text     //td[@class="ant-table-cell"][1]
-    log to console  Item Details is ✅ ${ItemDetails}}
+    ${get_text_colData}  get webelements  ant-table-row ant-table-row-level-0
+    FOR    ${getdata}  IN   @{get_text_colData}
+    sleep  0.05s
+    Log To Console  ✅ ${getdata}
+    log   ✅ ${getdata}
+    END
 
-    ${quantity}    Get Text     //td[@class="ant-table-cell"][2]
-    log to console  Item Details is ✅ ${quantity}
-    log to console    Item_Code, Quantity, Price editing successfully completed On PO Page
+
+#    ${ItemDetails}    Get Text     //td[@class="ant-table-cell"][1]
+#    log to console  Item Details is ✅ ${ItemDetails}}
+#
+#    ${quantity}    Get Text     //td[@class="ant-table-cell"][2]
+#    log to console  Item Details is ✅ ${quantity}
+    log to console    ✅ Item_Code, Quantity, Price editing successfully completed On PO Page
 Verify_ItemCode_Price_Quantity_ Should_Be_Edited
+    set selenium speed    0.5s
     [Arguments]    ${xpath}
     sleep   1s
     click   ${xpath}
     sleep   1s                                              #//input[@id="purchase_order_0_sku"]
     click   //button[text()='Edit']
-    press keys  (//span[@class='ant-select-selection-search'])[3]   ARROW_DOWN     ENTER
-    select itom code_quantity_price    0    200     30
-    sleep    0.5s
+    select itom code_quantity_price    0    5     3
     click   back_btn
     refresh_purchase_order_page_list    ${REFRESH_ELEMENT_LOCATOR}
-    sleep    0.5s
+    ${Po_num}=  get text    ${xpath}
+    log to console    ${Po_num}
+    click    (//*[@id="purchase_order_PO Number_search"])[1]
+    click   ${SEARCH ICON INPUT FIELD}
+    wait until element is visible    ${SEARCH ICON INPUT FIELD}     10s
+#    sleep   5s
+    input text    ${SEARCH ICON INPUT FIELD}   ${Po_num}
+    click    (//*[@id="purchase_order_PO Number_search"])[2]
     Verify Row Data
+Select Itom Code_Quantity_Price
+    set selenium speed    0.05s
+    [Arguments]     ${i}  ${quantity}  ${price}
+    Wait Until Element Is Clickable    ${SELECT_ITEMTYPE}   10s
+    press keys    //input[@id='purchase_order_${i}_sku']   ARROW_DOWN   ARROW_DOWN  ARROW_DOWN  ARROW_DOWN    ENTER
+    set selenium speed    0.05s
+    click   ${INPUT_QUANTITY}
+    Press Keys    ${INPUT_QUANTITY}    CTRL+a    BACKSPACE
+    input text  ${INPUT_QUANTITY}    ${quantity}
+    click   ${INPUT_PRICE}
+    Press Keys    ${INPUT_PRICE}    CTRL+a    BACKSPACE   ${INPUT_PRICE}
+    click       ${submit1}
+
 set ith item in PO
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}  ${price}
     press keys  //input[@id="purchase_order_${i}_sku"]/../../span[2]  CTRL+A  BACKSPACE  ${recievedName}
@@ -728,17 +751,13 @@ Multiple PO Creation
     click   ${SUBMIT}
     log to console    --- * PO creation Successfully done * --
     Verify Text
-
     ${order_info}    Get Text    xpath://div[contains(@style, 'text-align: center;')]
     ${start_index}    Evaluate    "${order_info}".find("Order ") + len("Order ")
     ${end_index}    Evaluate    "${order_info}".find(" has been created!")
     ${order_number}    Evaluate    "${order_info}"[${start_index}:${end_index}]
     log to console    --- * Multiple PO creation is Sucessfully done * --
-#    sleep   1s
     click    ${BACK}
-#    sleep   1s
     Search In PO    ${order_number}
-#    sleep   1s
     RETURN  ${order_number}
 
 Create_PO
@@ -766,14 +785,11 @@ Create_PO
 Text validation
     [Arguments]    ${expected_text}
     ${actual_text}    Get Text    (//span[@class='ant-tag ant-tag-yellow'])[1]
-    log to console    ${actual_text}
+    log to console    ✅ ${actual_text}
+    log   ${actual_text}
     IF    '${actual_text}' == '${expected_text}'
         Log    ✅ Status validation passed
         log to console  ✅ Status validation passed
-#    ELSE  '${actual_text}' Should Not Be Equal '${expected_text}'
-#        Log    ❌ Status validation failed
-#        log to console  ❌ Status validation failed
-
     END
 
 Verify PO Details
@@ -815,15 +831,28 @@ Verify Withdraw Status
     click    (//*[@id='undefined__deactivate_btn'])[2]
     sleep    1s
     ${Widthdraw_Note}   get text    //div[@class='MuiAlert-message css-1xsto0d']
+    sleep    1s
     log to console    ✅ ${Widthdraw_Note}
     element text should be    ${withdraw-Status}   Withdrawn
     ${Status}  get text    ${withdraw-Status}
     log    Status is ✅ ${Status}
     log to console    Status is ✅ ${Status}
     click   //*[@id='purchase_order_closed_filter_chip']
-    sleep    1s
-    ${search}=  Search In PO    ${order_number}
-    ${search}     ${order_number}
+    sleep   0.5s
+    click   (//*[@id="purchase_order_PO Number_search"])[1]
+    click   ${SEARCH ICON}      #--extenal click icon
+    sleep   1s
+    wait until element is visible    ${SEARCH ICON INPUT FIELD}
+    click   ${SEARCH ICON INPUT FIELD}      #--search icon input field text box
+    sleep   1s
+    input text  ${SEARCH ICON INPUT FIELD}   ${order_number}
+    sleep   0.5s
+    click    (//*[@id="purchase_order_PO Number_search"])[2]
+    sleep   1s
+    search in po    ${order_number}
+#
+#    ${search}=  Search In PO    ${order_number}
+#    ${search}     ${order_number}
 
 PO Inward_Flow
     set selenium speed   0.05s
@@ -834,9 +863,10 @@ PO Inward_Flow
     click   ${inward_button}
     ${text}=    get text    //span[text()='Inward Against ${order_number} / ${vendor}[3]']
     log to console    ✅ ${text}
+    log   ✅ ${text}
+    sleep    0.05s
     should contain    ${text}   ${order_number} / ${vendor}[3]
     Select from inspected by dropdown PO_inward   ${inspected_By}[0]
-#    sleep    1s
     ${randomrefNumber}=   Generate Random number_4_digit
     input   ${invoice_number}    ${randomrefNumber}
     ${random_string}=    Generate Random Number_String
@@ -848,23 +878,98 @@ PO Inward_Flow
     wait until element is visible   //input[@value='${ItemData1}[2]']
     wait until element is visible   //input[@value='${ItemData2}[2]']
     wait until element is visible   //input[@value='${ItemData3}[2]']
-    log    //input[@value='${ItemData}[2]']
-    log    //input[@value='${ItemData1}[2]']
-    log    //input[@value='${ItemData2}[2]']
-    log    //input[@value='${ItemData3}[2]']
+    log    ✅Entered Quantity = ${ItemData}[2]
+    log    ✅Entered Quantity = ${ItemData1}[2]
+    log    ✅Entered Quantity = ${ItemData2}[2]
+    log    ✅Entered Quantity = ${ItemData3}[2]
     sleep    0.05s
     unselect checkbox     ${checkbox}
-    sleep    0.5s
+    set selenium speed    0.5s
     select checkbox    (//input[@type="checkbox"])[5]       #${checkbox}[5]
-    sleep    0.5s
     click    ${Auto_fill}
-    sleep    1s
     click    ${move to top}
     click button    ${submit}
-    sleep    1s
+    sleep    0.5s
     ${inward_note}  get text  ${inward_note_msg}
-    log to console  ✅ ${inward_note}
+    log   ✅ ${inward_note}
     sleep    1s
+
+Inward from Inventory
+    [Arguments]    ${xpath}
+    set selenium speed    0.5s
+#    ${text}=    get text    //span[text()='Inward Against ${no} / ${vendor}[3]']
+#    log to console    ✅ ${text}
+#    log   ✅ ${text}
+#    sleep    0.05s
+#    should contain    ${text}   ${order_number} / ${vendor}[3]
+    click   ${xpath}
+    Select from inspected by dropdown PO_inward   ${inspected_By}[0]
+    ${randomrefNumber}=   Generate Random number_4_digit
+    input   ${invoice_number}    ${randomrefNumber}
+    ${random_string}=    Generate Random Number_String
+    input   ${truck_number}    ${random_string}
+#   selct all item details using checkbox
+    sleep    0.5s
+    select checkbox    (//input[@type='checkbox'])[2]
+    click    ${Auto_fill}
+
+    sleep    0.05s
+#    unselect checkbox     ${checkbox}
+    set selenium speed    0.5s
+#    select checkbox    (//input[@type="checkbox"])[5]       #${checkbox}[5]
+    click    //th[@class='ant-table-cell']//button[1]
+#    click    ${move to top}
+    click button    ${submit}
+    sleep    0.5s
+    ${inward_note}  get text  ${inward_note_msg}
+    log   ✅ ${inward_note}
+    sleep    1s
+
+    set selenium speed    1s
+    mouse over    //button[text()='Inventory']
+    click    //*[@id="transactions"]
+    click    //*[@id="transaction_refresh_icon"]
+
+#    Note:   ${T_Status2} means (Transaction status2)
+#    Note:   ${T_Status1} means (Transaction status1)
+    ${T_Status2}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    log    ✅ Before Approved Inward Request Status = ✅ ${T_Status2}
+#    ${Dquantity}   get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[5]
+    Click on Transaction Actions Buttons    //*[@id="transaction_credit_approve"]
+    ${ApprovedNote}  get text    //div[text()='MRN approved SuccesFully']
+    ${T_Status1}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    log    ✅ After Approved Inward Request Status = ✅ ${T_Status1}
+    ${GRN_No}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[1]
+    sleep    0.05s
+    set selenium speed    0.8s
+    log    ✅ ${ApprovedNote}
+    log    GRN = ✅ ${GRN_No}
+    sleep    0.05s
+    Landing On Purchase Order Page
+    click   (//*[@id="purchase_order_details"])[1]
+    set selenium speed    0.5s
+
+    log    Orderd Quantity = ✅ ${ItemData}[2] pallet
+    log    Delivered Quantity = ✅ ${ItemData}[2] pallet
+
+    wait until element is visible   //span[text()='${vendor}[0]']
+    wait until element is visible    (//*[text()="${order_number}"])[2]
+    wait until element is visible    //td[text()='${ItemData}[2] pallet']
+    wait until element is visible    (//td[text()='${ItemData}[2] pallet'])[2]
+    wait until element is visible    //a[contains(text(),'${ItemData}[0]')]
+
+    log    //span[text()='${vendor}[0]']
+    log    (//*[text()="${order_number}"])[2]
+    log    //td[text()='${ItemData}[2] pallet']
+    log    (//td[text()='${ItemData}[2] pallet'])[2]
+    log    //a[contains(text(),'${ItemData}[0]')]
+    sleep   0.05s
+    click    //*[@data-testid="CancelIcon"]
+#    Note:   ${P_Status} means (Purchase Order Page status)
+    ${P_Status}  get text    ((//tr[@class='ant-table-row ant-table-row-level-0'])//td[7])[1]
+    log   ✅ After Approved Inward Request Status = ✅ ${P_Status} (On PO Page)
+    sleep   0.05s
+
 
 Select from inspected by dropdown PO_inward
     [Arguments]  ${inspected_By}
@@ -880,8 +985,6 @@ Input into Truck Number PO_inward           #generate random no
     [Arguments]  ${Truck_Number}
     input  //input[@id='credit__form__truck_number']  ${Truck_Number}
 #    click  //span[text() = "${Truck_Number}"]
-
-
 Input into Deliverd_qnt inputBox
     [Arguments]  ${Deliverd_qnt}
     input  (//input[@class='ant-input'])[3]  ${Deliverd_qnt}
@@ -903,14 +1006,243 @@ Generate Random number_2_digit
     log to console    This is a random number between 10 and 99: ${ran_int}
     RETURN    ${ran_int}
 
+Generate Random number_1_digit
+    ${ran_int}=    Generate Random String    length=1    chars=[NUMBERS]
+    ${ran_int}=    Convert To Integer    ${ran_int}
+    log to console    This is a random number between 1 and 9: ${ran_int}
+    RETURN    ${ran_int}
+
 Generate Random Number_String
     ${random_string}=    Generate Random String    length=6    chars=[UPPER][NUMBERS]
     Log    Random String: ${random_string}
     log to console    Random String: ${random_string}
     RETURN    ${random_string}
 
+Verify Inward Request details(Withdraw)
+    set selenium speed   1s
+#    ${order_number}=    multiple po creation    ${vendor}  ${date}   ${ItemData}
+    ${order_number}=    Create_PO    ${ItemData}  ${vendor}   ${date}
+    wait until element is visible   ${inward_button}           #${inward_button}[1]   10s
+    element should be visible   ${inward_button}
+    element should be enabled   ${inward_button}
+    click   ${inward_button}
+    sleep    0.5s
+    select checkbox    ${checkbox}
+#    select checkbox    (//input[@type="checkbox"])[5]
+    ${order_qnt}    get text    //*[@class="ant-input-group-addon"]
+    log   ✅ ${order_qnt}
+    sleep    1s
+    ${qt}=    Generate Random number_1_digit
+    log to console    ${qt}
+    input text    (//*[@type="number"])[1]  ${qt}
+    click button    ${submit}
+    sleep    1s
+    ${inward_note}  get text  ${inward_note_msg}
+    log to console  ✅ ${inward_note}
+    set selenium speed    1s
+    mouse over    //button[text()='Inventory']
+    click    //*[@id="transactions"]
+    click    //*[@id="transaction_refresh_icon"]
+    click    (//*[@id="transaction_item_view"])
+    ${Dquantity}   get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[5]
+    sleep    0.5s
+    click    (//*[@id="transaction_item_view"])
+    click    (//td[@class='ant-table-cell'])[3]
+    sleep    0.5s
+      #${vendor}   ${date}[0]
+    wait until element is visible   //span[text()='${order_number}']
+    wait until element is visible   //span[text()='${vendor}[0]']
+    wait until element is visible    //a[contains(text(),'${ItemData}[0]')]
+    wait until element is visible    //td[contains(text(),'${Dquantity}')]
+#    wait until element is visible    (//span[contains(text(),'${date}[0] 10:28')])[2]
+    log    //span[text()='${order_number}']
+    log    //span[text()='${vendor}[0]']
+    log    (//a[contains(text(),'${ItemData}[1]')])
+    log     //td[contains(text(),'${Dquantity}')]
+    sleep    0.5s
+#    click    //button[text()='Withdraw']
+    Click on Transaction Actions Buttons    //button[text()='Withdraw']
+    ${disApprovedNote}  get text    //div[text()='Request note disapproved SuccesFully']
+    ${Status}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    ${GRN_No}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[1]
 
+    set selenium speed    0.8s
+    log     ✅ ${disApprovedNote}
+    log    Status = ✅ ${Status}
+    log    GRN = ✅ ${GRN_No}
+    click    transaction_GRN_search
+    input text    //input[@placeholder='Search GRN']    ${GRN_No}
+    click    (//*[@id="transaction_GRN_search"][1])[2]
+    Landing On Purchase Order Page
+    click   ${inward_button}
+#    sleep    0.5s
+    wait until element is visible    //span[text()='${order_qnt}']
+    log    ✅ ${order_qnt}
+    sleep    0.05s
+    close the browser
 
+Verify Inward Request details(Partially_Received)
+    set selenium speed   1s
+#    ${order_number}=    multiple po creation    ${vendor}  ${date}   ${ItemData}
+    ${order_number}=    Create_PO    ${ItemData}  ${vendor}   ${date}
+    wait until element is visible   ${inward_button}           #${inward_button}[1]   10s
+    element should be visible   ${inward_button}
+    element should be enabled   ${inward_button}
+    click   ${inward_button}
+    sleep    0.5s
+    select checkbox    ${checkbox}
+#    select checkbox    (//input[@type="checkbox"])[5]
+    ${order_qnt}    get text    //*[@class="ant-input-group-addon"]
+    log to console  ✅ ${order_qnt}
+#    sleep    1s
+    ${qt}=    Generate Random number_1_digit
+    input text    (//*[@type="number"])[1]  ${qt}
+    click button    ${submit}
+    sleep    1s
+    ${inward_note}  get text  ${inward_note_msg}
+    log to console  ✅ ${inward_note}
+    set selenium speed    1s
+    mouse over    //button[text()='Inventory']
+    click    //*[@id="transactions"]
+    click    //*[@id="transaction_refresh_icon"]
+    click    (//*[@id="transaction_item_view"])
+    ${Dquantity}   get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[5]
+#    sleep    0.5s
+    click    (//*[@id="transaction_item_view"])
+    Click on Transaction Actions Buttons    //*[@id="transaction_credit_approve"]
+    ${ApprovedNote}  get text    //div[text()='MRN approved SuccesFully']
+    ${Status}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    ${GRN_No}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[1]
+
+    set selenium speed    0.8s
+    log     ✅ ${ApprovedNote}
+    log    Status = ✅ ${Status}
+    log    GRN = ✅ ${GRN_No}
+    sleep    0.05s
+    Landing On Purchase Order Page
+    click   ${inward_button}
+    sleep    1s
+
+    ${remain}=  Evaluate  ${ItemData}[2] - ${qt}
+    log    ✅ ${remain}
+    wait until element is visible    //span[text()='/${remain} pallet']  10s
+    set selenium speed    0.5s
+    click    //*[@data-testid="CancelIcon"]
+    click    (//*[@id="purchase_order_details"])[1]
+    wait until element is visible    //td[text()='${ItemData}[2] pallet']
+    wait until element is visible    //td[text()='${qt} pallet']
+    log    Orderd Quantity = ✅ ${ItemData}[2] pallet
+    log    Delivered Quantity = ✅ ${qt} pallet
+    log    Remaining Quantity = ✅ /${remain} pallet
+
+    ${T_Status}  get text    ((//tr[@class='ant-table-row ant-table-row-level-0'])//td[7])[1]
+    log    Status = ✅ ${T_Status}
+
+Verify Inward Request details(Received)
+    set selenium speed   0.05s
+    ${order_number}=    Create_PO    ${ItemData}  ${vendor}   ${date}
+    ${P_Status}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[7]
+    log    ✅ After Create PO Status = ✅ ${P_Status}
+    wait until element is visible   ${inward_button}   10s        #${inward_button}[1]   10s
+    element should be visible   ${inward_button}
+    element should be enabled   ${inward_button}
+    click   ${inward_button}
+    sleep   0.5s
+    ${text}=    get text    //span[text()='Inward Against ${order_number} / ${vendor}[0]']
+    sleep    0.5s           #//span[text()='Inward Against ${order_number} / ${vendor}[0]']
+    log   ✅ ${text}
+    should contain  ${text}   ${order_number} / ${vendor}[0]
+    Select from inspected by dropdown PO_inward   ${inspected_By}[0]
+    ${randomrefNumber}=   Generate Random number_4_digit
+    input   ${invoice_number}    ${randomrefNumber}
+    ${random_string}=    Generate Random Number_String
+    input   ${truck_number}    ${random_string}
+#   selct all item details using checkbox
+    select checkbox    ${checkbox}
+#   select checkbox    (//input[@type="checkbox"])[5]
+    click    ${Auto_fill}
+#    sleep    1s
+    click button    ${submit}
+    sleep    1s
+    ${inward_note}  get text  ${inward_note_msg}
+    log   ✅ Inward Note Msg = ✅ ${inward_note}
+    set selenium speed    1s
+    mouse over    //button[text()='Inventory']
+    click    //*[@id="transactions"]
+    click    //*[@id="transaction_refresh_icon"]
+    ${T_StatusB}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    log    ✅ Before Approved Inward Request Status = ✅ ${T_StatusB}
+#    ${Dquantity}   get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[5]
+    Click on Transaction Actions Buttons    //*[@id="transaction_credit_approve"]
+    ${ApprovedNote}  get text    //div[text()='MRN approved SuccesFully']
+    ${T_StatusA}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[10]
+    log    ✅ After Approved Inward Request Status = ✅ ${T_StatusA}
+    ${GRN_No}  get text    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]//td[1]
+    sleep    0.05s
+    set selenium speed    0.8s
+    log    ✅ ${ApprovedNote}
+    log    GRN = ✅ ${GRN_No}
+    sleep    0.05s
+    Landing On Purchase Order Page
+    click   (//*[@id="purchase_order_details"])[1]
+    set selenium speed    0.5s
+
+    log    Orderd Quantity = ✅ ${ItemData}[2] pallet
+    log    Delivered Quantity = ✅ ${ItemData}[2] pallet
+
+    wait until element is visible   //span[text()='${vendor}[0]']
+    wait until element is visible    (//*[text()="${order_number}"])[2]
+    wait until element is visible    //td[text()='${ItemData}[2] pallet']
+    wait until element is visible    (//td[text()='${ItemData}[2] pallet'])[2]
+    wait until element is visible    //a[contains(text(),'${ItemData}[0]')]
+
+    log   ✅ ${vendor}[0] - ✅ ${order_number} - ✅ ${ItemData}[2] pallet - ✅ ${ItemData}[0]
+    sleep   0.05s
+    click    //*[@data-testid="CancelIcon"]
+    ${P_Status}  get text    ((//tr[@class='ant-table-row ant-table-row-level-0'])//td[7])[1]
+    log   ✅ After Approved Inward Request Status = ✅ ${P_Status} (On PO Page)
+    sleep   0.05s
+Click on Transaction Actions Buttons
+    [Arguments]    ${xpath}
+    click    ${xpath}
+#    (//*[@id="transaction_credit_approve"])[1]      approve
+Verify Status Column
+    [Arguments]    ${xpath}
+    ${Status}   get text    ${xpath}
+    log    ✅ ${Status}
+
+Verify transaction_Page Status
+#//tr[@data-row-key='124595']//td[1] grnnp
+#(//div[@class='ant-table-container']//div)[1]//col[10] status
+#(//div[@class='ant-table-container']//div)[1]//col[11] action column
+#//button[text()='Withdraw']
+#//div[text()='Request note disapproved SuccesFully']
+#//div[text()='MRN approved SuccesFully']
+
+PO_Row_data
+    set selenium speed    0.05s
+    click   //button[@id='purchase_order_item_view_switch']//div[1]
+    ${po_num}=  get text    (//a[@id='purchase_order_label'])[1]
+    ${item_Name}=  get text    (//span[text()='HR00004'])[1]
+    ${vendor_name}=  get text    (//tr[@class='ant-table-row ant-table-row-level-0']//td)[2]
+    ${I_date}=  get text    (//tr[@class='ant-table-row ant-table-row-level-0']//td)[3]
+    ${po_num}=  get text    (//a[@id='purchase_order_label'])[1]
+
+Click_On_Warehouse
+    set selenium speed    0.5s
+    mouse over    ${INVENTRY}
+    sleep    0.05s
+    click    //a[@id='warehouses']
+    click    (//*[@id="live_inventory_Item Details_search"])[1]
+    sleep    0.5s
+    input text    //input[@placeholder='Search Item Details']   LDPP STRETCH ROLL (FLEXIBLE PIPES) BLK
+    click    (//*[@id="live_inventory_Item Details_search"])[2]
+#    @{data}=  get webelements    (//tr[@class='ant-table-row ant-table-row-level-0'])[1]
+    ${itemName}   get text    (//td[@class='ant-table-cell'])[1]
+    ${Orderd_Qnt.}   get text    (//td[@class='ant-table-cell'])[6]
+    log   Item Name = ✅ ${itemName}
+    log   Initial Orderd Quantity = ✅ ${Orderd_Qnt.}
+    RETURN  ${Orderd_Qnt.}
 
 
 

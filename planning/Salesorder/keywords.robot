@@ -9,6 +9,7 @@ Resource  ../../keywords.robot
 Resource  ../../variables.robot
 Resource  ./variables.robot
 Library  DateTime
+Resource  ../../inventory/warehouses/keywords.robot
 
 *** Keywords ***
 open order tracker page
@@ -261,6 +262,28 @@ rejected current quantity of detailed view
     search rejectedquantity in warehouse summary view  ${itemName}
     ${quantityS}  Get Text  ((//span[text() = "${itemName}"]/ancestor::tr/td[5][text()="Production"])/../td[7][text()="${machine}"]/../td[8][text()="${reason}"])[2]/../td[9]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
+    ${integer_value}  Convert To Integer  ${Quantity_number}
+    RETURN  ${integer_value}
+
+#Get current Quantity of Booked Stock
+#    [Arguments]  ${itemName}
+#    search Fg in warehouse  ${itemName}
+#    sleep  2
+#    #scroll element into view  (//span[text() = "${itemName}"])[1]
+#    ${quantityS}  Get Text  (//span[text() = "${itemName}"]/ancestor::tr/td[4])[2]
+#    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
+#    ${integer_value}  Convert To Integer  ${Quantity_number}
+#    RETURN  ${integer_value}
+#
+
+
+
+Get current Quantity of Booked Stock
+    [Arguments]  ${itemName}
+    search Fg in warehouse  ${itemName}
+    sleep  2
+    ${quantityS}  Get Text  (//span[text() = "${itemName}"]/ancestor::tr/td[4])[2]
+    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit()) if ''.join(c for c in "${quantityS}" if c.isdigit()) else '0'
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}
 

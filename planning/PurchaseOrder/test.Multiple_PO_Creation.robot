@@ -6,7 +6,7 @@ Resource    ./././variable.robot
 Resource    ../../keywords.robot
 
 *** Variables ***
-@{date}   20-05-2024
+@{date}   ${D_Date}
 @{Item_Type}  Raw Material  FG
 @{Vendor}  Gupta Store  Nandu   Unnati  Newvendortest02
 @{ItemData}  0  HR00004   1000  25

@@ -7,7 +7,7 @@ Resource    ./././variable.robot
 Resource    ../../keywords.robot
 
 *** Variables ***
-@{date}   15-05-2024
+@{date}   ${D_Date}
 @{Item_TypeName}  Raw Material  FG
 @{Vendor}  Newvendortest01  Xyzzz   Nandu   Unnati  Vendor55
 @{ItemData}  0  LDPP STRETCH ROLL (FLEXIBLE PIPES) BLK    100   5
@@ -30,10 +30,10 @@ Verify PO Status
 #    wait until element is visible    //span[text()="${date}[0]"]    10s    date format space problem
     wait until element is visible  (//span[text()="${ItemData}[1]"])[2]
     wait until element is visible  (//td[text()="${ItemData}[2] kg"])[1]
-    log to console  //a[text()="${order_number}"]
-    log to console  //span[text()="${Vendor}[0]"]
-    log to console  (//span[text()="${ItemData}[1]"])[2]
-    log to console  (//td[text()="${ItemData}[2] kg"])[1]
+    log  ✅ ${order_number}
+    log  ✅ ${Vendor}[0]
+    log  ✅ ${ItemData}[1]
+    log  ✅ ${ItemData}[2] kg
 
 
 

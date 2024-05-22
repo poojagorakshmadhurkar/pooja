@@ -18,6 +18,7 @@ Resource    ././variable.robot
 Edit PO_ItemCode_Price_quantity
     Open Browser Site
     Login To ManufApp Site
+    select site    testingsiteautomation
     Landing On Purchase Order Page
     click    purchase_order_refresh
     Verify_ItemCode_Price_Quantity_ Should_Be_Edited    (//a[@id='purchase_order_label'])[1]

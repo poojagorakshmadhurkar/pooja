@@ -11,7 +11,7 @@ Resource  ../../inventory/transactions/keywords.robot
 
 
 *** Variables ***
-@{date}   15-05-2024
+@{date}   ${D_Date}
 @{Item_TypeName}  Raw Material  FG
 @{Vendor}  Newvendortest01  Xyzzz   Nandu   Unnati  Vendor55
 @{ItemData}  0  LDPP STRETCH ROLL (FLEXIBLE PIPES) BLK  150   30

@@ -47,3 +47,5 @@ ${rejectedsection}  //div[@id="live_inventory_item__tabs-tab-0"]
 ${rejectedsearchfilter}  (//div[@id="live_inventory_item__tabs-panel-0"]//*[name()='svg'][@id='live_inventory_Item Details_search'])
 ${rejectedfilterinput}  (//input[@placeholder='Search Item Details'])[1]
 ${detailedviewbutton}  //button[text()="Detailed View"]
+${bookedinventorybutton}  //button[text()=" Book Inventory"]
+${BookAllbutton}  //button[text()="Book All"]

@@ -1,7 +1,7 @@
 *** Variables ***
 ${addNewQuality}  //button[text() = "NEW"]
 ${qualityName}  //input[@id = "quality__label"]
-${qualityTags}  //input[@id='quality__tags']
+${qualityTags}  //input[@id="quality__tags"]
 ${Department}  //div[@id='quality__department']
 ${Severity}  //div[@id='quality__severity']
 ${Submit}  //button[text() = "Submit"]

@@ -97,20 +97,20 @@ edit item
     click  //a[text() = "${itemCodeName}"]
     sleep  2
     click  ${Edit}
-    press keys  ${itemCode}  CTRL+A  BACKSPACE  ${editItemData}[0]
-    press keys  ${itemName}  CTRL+A  BACKSPACE  ${editItemData}[1]
+    ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
+    press keys  ${itemCode}  CTRL+A  BACKSPACE  ${randomitemGroupname}
+    ${randomitemname}=  generate random string  5-10  [LETTERS]
+    press keys  ${itemName}  CTRL+A  BACKSPACE  ${randomitemname}
 #    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  8
     click  ${Submit}
     i should see text on page  Item edited
     open item page
     reload page
     sleep  3
-    item should be added  ${editItemData}[0]
-
-delete item
-    [Arguments]  ${itemCodeName}
-    sleep  1
-    click  //a[text()="${itemCodeName}"]/../../../../../../../../../../td[8]
+    item should be added  ${randomitemname}
+    reload page
+    sleep  5
+    click  //a[text()="${randomitemGroupname}"]/../../../../../../../../../../td[8]
     click  //button[@id="item__deactivate_btn"]
     i should see text on page  Item deactivated successfully
     reload page
@@ -120,9 +120,9 @@ delete item
     click  ${deactivate_item}
     sleep  3
     click  //span[text() = "Item Details"]/../../../span[2]
-    input  ${searchItem}  ${itemCodeName}
+    input  ${searchItem}  ${randomitemGroupname}
     click  ${searchItem}/../button[1]
-    wait until page contains  ${itemCodeName}  timeout=10s
+    wait until page contains  ${randomitemGroupname}  timeout=10s
 
 
 
@@ -132,9 +132,10 @@ edit itemGroup
     sleep  2
     click  ${Edit}
     press keys  ${itemGroupname}  CTRL+A  BACKSPACE
-    input  ${itemGroupname}  ${edititemGroupData}[0]
-    select option from dropdown using list  ${itemType}  ${edititemGroupData}[1]
-    select option from dropdown using list  ${units}  ${edititemGroupData}[2]
+    ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
+    input  ${itemGroupname}  ${randomitemGroupname}
+    select option from dropdown using list  ${itemType}  Raw Material
+    select option from dropdown using list  ${units}  gram
     click  //button[@id = "itemGroup__deleteRowBtn_1"]
     sleep  1
     click  //button[@id = "itemGroup__deleteRowBtn_0"]
@@ -153,11 +154,8 @@ edit itemGroup
     sleep  2
 #    click  (//button[contains(text(),'All Groups')])[1]
     sleep  2
-    itemGroup should be added  ${edititemGroupData}[0]
-
-delete itemGroup
-    [Arguments]  ${itemCodeName}
-    click  //a[text()='${itemCodeName}']/../../../../../../../../../../td[5]//button[@id = "itemGroup__Deactivate"]
+    itemGroup should be added  ${randomitemGroupname}
+    click  //a[text()='${randomitemGroupname}']/../../../../../../../../../../td[5]//button[@id = "itemGroup__Deactivate"]
     click  ${deactivate_itemGroup}
     i should see text on page  Item Group deactivated successfully
 
@@ -167,3 +165,7 @@ Select Value From Dropdown By Index
     Click Element    ${dropdown}    # Click to open the dropdown
     Wait Until Element Is Visible    ${dropdownwithindex}   # Wait for the option to be visible
     Click Element    ${dropdownwithindex}    # Click to select the option
+
+Generate Random 3-Digit Number
+    ${random_number}=  Evaluate  random.randint(100, 999)
+    [Return]  ${random_number}

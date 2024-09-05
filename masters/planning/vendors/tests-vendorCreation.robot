@@ -19,14 +19,18 @@ vendorCreation
     select site  testingsiteautomation
     open vendor page
     wait until page contains  NEW  15
+    ${VendorData1}=  Generate Random Customer Name
     click  ${addNewVendor}
-    input  ${vendorName}  ${VendorData1}[0]
+    input  ${vendorName}  ${VendorData1}
     select option from dropdown using span  ${typeOfPartner}  Vendor
-    input  ${vendorEmail}  ${VendorData1}[1]
-    input  ${vendorAddress}  ${VendorData1}[2]
-    select option from dropdown using div   ${vendorCountry}  Algeria
-    select option from dropdown using div   ${vendorState}  Adrar
-    select option from dropdown using div   ${vendorCity}  Timimoun
+    ${randomCustomerEmail}=  generate random string  5-10  [LETTERS]
+    input  ${vendorEmail}  ${randomCustomerEmail}
+#    select option from dropdown using span  ${customerSM}  Smart Admin
+    ${randomCustomerAddress}=  generate random string  5-15  [LETTERS]
+    input  ${vendorAddress}  ${randomCustomerAddress}
+    Select Option from Dropdown DIV value    ${customerCountryXpath}  Afghanistan
+    Select Option from Dropdown DIV value  ${customerStateXpath}  Badakhshan
+    Select Option from Dropdown Using Div  ${customerCityXpath}  Ashkāsham
     ${randomGSTN}=  generate random string  10-15  [NUMBERS]
     input  ${vendorGSTN}  ${randomGSTN}
     click  ${Submit}
@@ -35,14 +39,10 @@ vendorCreation
     click  ${back}
     reload page
     wait until page contains  NEW  15
-    vendor should be added  ${VendorData1}[0]
+    vendor should be added  ${VendorData1}
     sleep  3
-
-vendor edition
-    edit random generated vendor  ${VendorData1}[0]
-
-
-delete vendor
-    delete vendor  ${VendorData2}[0]
+    ${VendorData2}=  Generate Random Customer Name
+    edit random generated vendor  ${VendorData1}  ${VendorData2}
+    delete vendor  ${VendorData2}
     i should see text on page  Partner deactivated successfully
 #    vendor deletion check

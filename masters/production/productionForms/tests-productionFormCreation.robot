@@ -18,7 +18,8 @@ tools creation
     select site  smart_factory
     open productionForm page
     click  ${addNewproductionForm}
-    input  ${title}  ${productionFormData}[0]
+    ${randomproductiondata}=  generate random string  5-8  [LETTERS]
+    input  ${title}  ${randomproductiondata}
     select option from dropdown using span  ${groupBy}  Item
     add labels  0
     click  ${addMoreLabel}
@@ -34,10 +35,5 @@ tools creation
     open productionForm page
     reload page
     sleep  4
-    productionForm should be added  ${productionFormData}[0]
-
-editing productionForm
-    edit productionForm  ${productionFormData}[0]
-
-delete edited productionForm
-    delete productionForm  ${EditProductionFormData}[0]
+    productionForm should be added  ${randomproductiondata}
+    edit productionForm  ${randomproductiondata}

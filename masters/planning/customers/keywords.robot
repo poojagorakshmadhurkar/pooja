@@ -4,24 +4,27 @@ Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
+Library  BuiltIn
+Library  ../customkeyword.py
 
 
-#*** Variables ***
-#@{CustomerData2}  Newpooj8634637      #change name
+*** Variables ***
+#${CustomerData2}=  Generate Random Customer Name      #change name
 
 *** Keywords ***
 open customer page
     click  ${mastersDropdown}
     sleep  1
     click  ${mastersCustomers}
+    reload page
 
 customer should be added
-
     [Arguments]  ${customerName}
-    click  //*[name()='path' and contains(@d,'M10 18h4v-')]
+    click  (//*[name()='svg'][@id='customers_Name_search'])[1]
     sleep  3
-    press keys  //input[@id='name']  CTRL+A  BACKSPACE
-    input  //input[@id='name']  ${customerName}
+    press keys  (//input[@placeholder='Search Name'])[1]  CTRL+A  BACKSPACE
+    input  (//input[@placeholder='Search Name'])[1]  ${customerName}
+    press keys  (//input[@placeholder='Search Name'])[1]  ENTER
     wait until page contains element  //span[text() = "${customerName}"]  timeout=10s
 #
 #edit customer
@@ -38,19 +41,19 @@ customer should be added
 #    click  ${savePartner}
 
 edit random generated customer
-    [Arguments]  ${oldRandomCustomerName}
+    [Arguments]  ${oldRandomCustomerName}  ${CustomerData2}
     click  //span[text() = "${oldRandomCustomerName}"]/../span/span/span/a
-    click  ${Edit}
+    click  //button[text() = "Edit"][2]
 #    ${randomCustomerName}=  generate random string  5-10  [LETTERS]
-    press keys  ${customerName}  CTRL+A  BACKSPACE  ${CustomerData2}[0]
+    press keys  ${customerName}  CTRL+A  BACKSPACE  ${CustomerData2}
 #    select randomly from dropdown  ${typeOfPartner}
     ${randomCustomerEmail}=  generate random string  5-10  [LETTERS]
     press keys  ${customerEmail}  CTRL+A  BACKSPACE  ${randomCustomerEmail}
     ${randomCustomerAddress}=  generate random string  5-15  [LETTERS]
     press keys  ${customerAddress}  CTRL+A  BACKSPACE  ${randomCustomerAddress}
-    select option from dropdown using span  ${customerCountry}  India
-#    select option from dropdown using span  ${customerState}  Assam
-#    select option from dropdown using span  ${customerCity}  Baksa
+    Select Option from Dropdown DIV value  ${customerCountryXpath}  Albania
+    select option from dropdown DIV value  ${customerStateXpath}  Berat County
+#    select option from dropdown DIV value  ${customerCityXpath}  Baksa
     ${randomGSTN}=  generate random string  10-15  [NUMBERS]
     press keys  ${customerGSTN}  CTRL+A  BACKSPACE  ${randomGSTN}
 #    ${stateXpathCount}=  get element count  ${customerState}
@@ -65,12 +68,12 @@ edit random generated customer
     i should see text on page  Partner edited
     open customer page
     reload page
-    wait until page contains element  //button[@id='Add New Customer']  20
-    customer should be added  ${CustomerData2}[0]
+    wait until page contains element  //button[text() = "NEW"]  20
+    customer should be added  ${CustomerData2}
 
 delete customer
     [Arguments]  ${customerName}
-    click  //span[text() = "${customerName}"]/../../../../../../../td[7]/div/button
+    click  //span[text() = "${customerName}"]/../../../../../../td[8]//button
     click  ${deactivate_customer}
 
 customer deletion check
@@ -114,5 +117,21 @@ delete customer randomly
     click  ${deactivate_customer}
     [Return]  ${deletedCustomerName}
 
+Select Option from Dropdown DIV value
+    [Arguments]  ${dropdownXpath}  ${option}
+    Click  ${dropdownXpath}
+    Wait Until Element Is Visible  xpath=//div[@class="ant-select-item-option-content" and text()="${option}"]  timeout=10s
+    Scroll Element Into View  xpath=//div[@class="ant-select-item-option-content" and text()="${option}"]
+    Click  xpath=//div[@class="ant-select-item-option-content" and text()="${option}"]
 
-#robot .\Suite\masters\planning\customers\tests-customerCreation.robot
+Generate Random Customer Name
+    ${random_string}=  Generate Random String  7  [LOWER]
+    ${random_customer_name}=  Capitalize First Letter  ${random_string}
+    [Return]  ${random_customer_name}
+
+Extract Customer ID
+    [Arguments]  ${text}
+    ${pattern}=  Set Variable  CUST[0-9]+
+    ${customer_id}=  Get Regexp Matches  ${text}  ${pattern}
+    ${customer_id}=  Set Variable  ${customer_id[0]}
+    [Return]  ${customer_id}

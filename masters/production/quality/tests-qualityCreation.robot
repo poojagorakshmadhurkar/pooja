@@ -7,22 +7,23 @@ Library  String
 Library  Collections
 Resource  ../../keywords.robot
 
-#*** Variables ***
-#@{qualityData}  newIssue18  abc  Planning  Medium     #change name here
-#@{EditQualityData}  editedIssue19  RM Group  Store  Low      #change name here
+*** Variables ***
+
+@{qualityData}  Rawmaterial  Planning  Medium     #change name here
+@{EditQualityData}  RM Group  Store  Low      #change name here
 
 *** Test Cases ***
 Quality creation
     Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    logindevsite
+    select site  testingsiteautomation
     open quality page
     click  ${addNewQuality}
-#    ${randomQualityName}=  generate random string  5-10  [LETTERS]
-    input  ${qualityName}  ${qualityData}[0]
-#    enters quality tags  ${qualityData}[1]
-    select option from dropdown using list  ${Department}  ${qualityData}[2]
-    select option from dropdown using list  ${Severity}  ${qualityData}[3]
+    ${randomQualityName}=  generate random string  5-10  [LETTERS]
+    input  ${qualityName}  ${randomQualityName}
+    enters quality tags  ${qualityData}[0]
+    select option from dropdown using list  ${Department}  ${qualityData}[1]
+    select option from dropdown using list  ${Severity}  ${qualityData}[2]
     click  ${Submit}
     sleep  2
     i should see text on page  Issue added
@@ -30,14 +31,9 @@ Quality creation
     reload page
     sleep  4
     click  ${allIssues}
-    quality should be added  ${qualityData}[0]
+    quality should be added  ${randomQualityName}
+    quality edit  ${randomQualityName}
 
-editing quality
-    quality edit  ${qualityData}[0]
-
-
-delete edited quality
-    delete quality  ${EditQualityData}[0]
 
 
 

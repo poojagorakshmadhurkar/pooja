@@ -4,10 +4,16 @@ Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
+Library  String
+Library  Collections
+Resource  ../../keywords.robot
+Library  ../RandomEmailLibrary.py
 
 
 
-#*** Variables ***
+*** Variables ***
+${EMAIL_LENGTH}    8  # Length of the username part of the email
+${EMAIL_DOMAIN}   example.com
 #@{SiteData1}  poojafactory_28  Test28_addresss  test28@gmail.com   gstnumber3  #change name only
 #@{newSiteData}  poojafactory_29  edited address  Edited29@gmail.com    #change name    onlyr
 
@@ -18,14 +24,18 @@ site creation
     select site  smart_factory
     open site page
     click  ${newButton}
-    input  ${siteName}  ${SiteData1}[0]
-    input  ${siteAddress}  ${SiteData1}[1]
-    input  ${siteEmail}  ${SiteData1}[2]
+    ${randomsiteName}=  Generate Random string of name
+    input  ${siteName}  ${randomsiteName}
+    ${randomsiteaddress}=  Generate Random string of name
+    input  ${siteAddress}  ${randomsiteaddress}
+    ${random_siteemail}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
+    # Example of using the random email in a test case
+    Input Text    ${siteEmail}    ${random_siteemail}
     select option from dropdown using div  ${siteCountry}  Afghanistan
     select option from dropdown using div  ${siteState}  Badakhshan
     select option from dropdown using div  ${siteCity}  Ashkāsham
 
-    input  ${Gstnname}  ${SiteData1}[3]
+    input  ${Gstnname}  gstnumber
     sleep  2
     click  ${woInProTrue}
     sleep  2
@@ -43,14 +53,14 @@ site creation
     click  ${back}
     reload page
     sleep  3
-    site should be added  ${SiteData1}[0]
+    site should be added  ${randomsiteName}
 
 
-editing site configuration
-    edit sites  ${SiteData1}[0]  ${newSiteData}[0]  ${newSiteData}[1]  ${newSiteData}[2]
 
-deleting edited site
-    delete site  ${newSiteData}[0]
+    edit sites  ${randomsiteName}
+
+#deleting edited site
+#    delete site  ${newSiteData}[0]
 
 
 

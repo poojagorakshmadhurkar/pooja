@@ -6,10 +6,15 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library   ../RandomLibrary.py
+Library    String
 
-#*** Variables ***
-#@{shiftData}  shift32  #change data here
-#@{editShiftData}  edited_shift33  05:00  07:00  15
+*** Variables ***
+@{shiftData}    #change data here
+@{editShiftData}   05:00  07:00  15
+
+
+
 *** Test Cases ***
 shift creation
     Set Selenium Speed    0.1
@@ -20,7 +25,8 @@ shift creation
     sleep  3
 #    ${randomShiftName}=  generate random string  5-8  [LETTERS]
 #    input  ${shiftName}  ${randomShiftName}
-    input  ${shiftName}  ${shiftData}[0]
+    ${shiftData}=    Generate Random Customer Name
+    input  ${shiftName}  ${shiftData}
     press keys  ${shiftStartTime}  CTRL+A  DELETE  11:00
     #input  ${shiftStartTime}  0800a
     press keys  ${shiftEndTime}  CTRL+A  DELETE  23:00
@@ -32,22 +38,11 @@ shift creation
     click  ${back}
     reload page
     sleep  3
-    shifts should be added  ${shiftData}[0]
-#    sleep  2
-#    ${Save_RandomValue}=  Get text  //a[text() = "${randomShiftName}"]
-
-shift edition
-#    ${Save_RandomValue}=  Get text  //a[text() = "${randomShiftName}"]
-#       change 1st name as above,2nd name put new name
-    edit shift  ${shiftData}[0]  ${editShiftData}[0]  ${editShiftData}[1]  ${editShiftData}[2]  ${editShiftData}[3]
-
-
-delete shift
-    delete shift  ${editShiftData}[0]
-
-
-Reactivated Shifts
-    Reactivated Shifts   ${editShiftData}[0]
+    shifts should be added  ${shiftData}
+    ${editshiftDataname}=  Generate Random Customer Name
+    edit shift  ${shiftData}  ${editShiftDataname}  ${editShiftData}[0]  ${editShiftData}[1]  ${editShiftData}[2]
+    delete shift  ${editShiftDataname}
+    Reactivated Shifts   ${editShiftDataname}
 
 
 

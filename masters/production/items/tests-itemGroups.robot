@@ -25,8 +25,8 @@ itemGroup creation
     click  ${itemGroupHeader}
     sleep  1
     click  ${newIcon}
-#    ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
-    input  ${itemGroupname}  ${itemGroupData}[0]
+    ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
+    input  ${itemGroupname}  ${randomitemGroupname}
     select option from dropdown using list  ${itemType}  Raw Material
     select option from dropdown using list  ${units}  gram
 #    select option from dropdown using span  ${sites}  Haridwar Unit
@@ -49,13 +49,9 @@ itemGroup creation
     click  ${back}
     reload page
     sleep  4
-    itemGroup should be added  ${itemGroupData}[0]
+    itemGroup should be added  ${randomitemGroupname}
+    edit itemGroup  ${randomitemGroupname}
 
-editing itemGroup
-    edit itemGroup  ${itemGroupData}[0]
-
-deleting itemGroup
-    delete itemGroup  ${edititemGroupData}[0]
 
 
 

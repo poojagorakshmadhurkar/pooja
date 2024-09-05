@@ -38,4 +38,5 @@ ${deactivate_itemGroup}  //button[@id='itemGroup__deactivate_btn']
 ${deactivate_item}  //div[normalize-space()='Deactivated items']
 ${Edit}  //button[normalize-space()='Edit']
 ${searchItem}  //input[@placeholder='Search Item Details']
+${addattributebutton}  //span[normalize-space()='Add Attribute Tag']
 

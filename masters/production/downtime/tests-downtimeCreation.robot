@@ -19,8 +19,8 @@ downtime creation
     click  //button[text() = "NEW"]
     reload page
     sleep  5
-
-    input  ${downtimeName}  ${DowntimeData}[0]
+    ${randomdowntime}=  generate random string  5-8  [LETTERS]
+    input  ${downtimeName}  ${randomdowntime}
 
     click  ${downtimeTags}
     sleep  1
@@ -40,11 +40,5 @@ downtime creation
     reload page
     sleep  5
     click  ${allIssues}
-    downtime should be added  ${DowntimeData}[0]
-
-downtime edition
-    edit downtime  ${DowntimeData}[0]
-
-
-delete edited downtime
-    delete downtime  ${EditDowntimeData}[0]
+    downtime should be added  ${randomdowntime}
+    edit downtime  ${randomdowntime}

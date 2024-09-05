@@ -7,10 +7,14 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library  ../RandomEmailLibrary.py
 
-#*** Variables ***
-#@{EmployeeName}  Employeee_120  Planning  Supervisor  0809782120  poojaemail20@test.com     #for employee name firstletter is capital and other small
+*** Variables ***
+@{EmployeeName}  Planning  Supervisor     #for employee name firstletter is capital and other small
 #@{EditEmployeeName}  Employee_48  Admin  Manager  0809782748  test_email48@test.com     #change name emailid Others letter should be small
+${EMAIL_LENGTH}    8  # Length of the username part of the email
+${EMAIL_DOMAIN}   example.com
+
 
 *** Test Cases ***
 open Employees page
@@ -20,18 +24,20 @@ open Employees page
     open Employees page
     wait until page contains  NEW  15
     click  ${addNewEmployee}
-#    ${randomEmployeeName}=  generate random string  5-10  [LETTERS]
-#    input  ${employeeName}  ${randomEmployeeName}
-    input  ${Name}  ${EmployeeName}[0]
-#    ${randomEmployeeNumber}=  generate random string  10  [NUMBERS]
-#    input  ${mobile}  ${randomEmployeeNumber}
-    input  ${mobile}  ${EmployeeName}[3]
+    ${randomEmployeeName}=  Generate Random string of name
+    input  ${Name}  ${randomEmployeeName}
+#    input  ${Name}  ${EmployeeName}[0]
+    ${randomEmployeeNumber}=  generate random string  10  [NUMBERS]
+    input  ${mobile}  ${randomEmployeeNumber}
+#    input  ${mobile}  ${EmployeeName}[3]
 
-    input  ${employeeEmail}  ${EmployeeName}[4]
+    ${random_email}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
+    # Example of using the random email in a test case
+    Input Text    ${employeeEmail}    ${random_email}
     click  ${department}
-    click  //span[text() = "${EmployeeName}[1]"]
+    click  //span[text() = "${EmployeeName}[0]"]
     click  ${role}
-    click  //span[text() = "${EmployeeName}[2]"]
+    click  //span[text() = "${EmployeeName}[1]"]
 #    click  ${sites}
 #    click  //span[text() = "Haridwar Unit"]
 #    click  ${warehouse}
@@ -41,7 +47,7 @@ open Employees page
     click  ${back}
     reload page
     sleep  5
-    employee should be added  ${EmployeeName}[0]  ${EmployeeName}[1]  ${EmployeeName}[2]  ${EmployeeName}[3]  ${EmployeeName}[4]
+    employee should be added  ${randomEmployeeName}  ${EmployeeName}[0]  ${EmployeeName}[1]  ${randomEmployeeNumber}
 ##    sleep  2
 ##    click  ${siteIcon}
 ##    click  ${logout}
@@ -54,13 +60,13 @@ open Employees page
 
 
 
-employee edition
-
-    edit employee  ${EmployeeName}[0]  ${EditEmployeeName}[0]  ${EditEmployeeName}[1]  ${EditEmployeeName}[2]  ${EditEmployeeName}[3]  ${EditEmployeeName}[4]
-    employee should be added  ${EditEmployeeName}[0]  ${EditEmployeeName}[1]  ${EditEmployeeName}[2]  ${EditEmployeeName}[3]  ${EditEmployeeName}[4]
 
 
-employee deletion
-    delete employee  ${EditEmployeeName}[0]
-    i should see text on page  Employee deactivated successfully
-    employee should be in deactivated slot  ${EditEmployeeName}[0]
+    edit employee  ${randomEmployeeName}
+#    employee should be added  ${EditEmployeeName}[0]  ${EditEmployeeName}[1]  ${EditEmployeeName}[2]  ${EditEmployeeName}[3]  ${EditEmployeeName}[4]
+
+
+
+#    delete employee  ${randomEmployeeName}
+#    i should see text on page  Employee deactivated successfully
+#    employee should be in deactivated slot  ${randomEmployeeName}

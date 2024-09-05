@@ -38,7 +38,8 @@ edit productionForm
     click  //a[text() = "${oldProductionForm}"]
     click  ${Edit}
     sleep  1
-    Press keys  ${title}  CTRL+A  BACKSPACE  ${EditProductionFormData}[0]
+    ${randomproductionnewdata}=  generate random string  5-8  [LETTERS]
+    Press keys  ${title}  CTRL+A  BACKSPACE  ${randomproductionnewdata}
     add labels  0
     add labels  1
     add labels  2
@@ -49,11 +50,8 @@ edit productionForm
     open productionForm page
     reload page
     sleep  3
-    productionForm should be added  ${EditProductionFormData}[0]
-
-delete productionForm
-    [Arguments]  ${EditProductionFormName}
-    click  //a[text() = "${EditProductionFormName}"]/../../../../../../../../../../td[3]/div/button[@id = "customForms__Deactivate"]
+    productionForm should be added  ${randomproductionnewdata}
+    click  //a[text() = "${randomproductionnewdata}"]/../../../../../../../../../../td[3]/div/button[@id = "customForms__Deactivate"]
     click  ${deactivate_productionForm}
     i should see text on page  Custom Form deactivated successfully
 

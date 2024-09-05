@@ -5,8 +5,8 @@ Resource  ../../../variables.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
 
-#*** Variables ***
-#@{EditDowntimeData}  Powercut34  Admin  High  Material  Electronic    #Change first name
+*** Variables ***
+@{EditDowntimeData}  Powercut34  Admin  High  Material  Electronic    #Change first name
 
 *** Keywords ***
 open downtime page
@@ -30,7 +30,8 @@ edit downtime
     click  ${Edit}
     sleep  1
     Press keys  ${downtimeName}  CTRL+A  BACKSPACE
-    input  ${downtimeName}  ${EditDowntimeData}[0]
+    ${randomnewdowntime}=  generate random string  5-8  [LETTERS]
+    input  ${downtimeName}  ${randomnewdowntime}
     #select option from dropdown  ${downtimeTags}  ${newDowntimeTags}
     select option from dropdown using list  ${downtimeDepartment}  ${EditDowntimeData}[1]
     select option from dropdown using list  ${downtimeSeverity}  ${EditDowntimeData}[2]
@@ -43,10 +44,7 @@ edit downtime
     reload page
     sleep  4
     click  ${allIssues}
-    downtime should be added  ${EditDowntimeData}[0]
-
-delete downtime
-    [Arguments]  ${downtimeName}
+    downtime should be added  ${randomnewdowntime}
     click  ${deactivate_downtime}
     Click  ${deactivate_button}
     i should see text on page  Issue deactivated successfully

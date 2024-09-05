@@ -7,10 +7,10 @@ Library  String
 Library  Collections
 Resource  ../../keywords.robot
 
-#*** Variables ***
-#@{cycleTimeRulesData1}  WIP Section  Bottle(FG)  WIRING  13
-#@{editCTR}  30
-#Format MAchinegroup --item group tag-- process---time--edited time
+*** Variables ***
+@{cycleTimeRulesData1}  WIP Section  Bottle(FG)  WIRING  13
+@{editCTR}  30
+Format MAchinegroup --item group tag-- process---time--edited time
 
 *** Test Cases ***
 open cycleTimeRules page
@@ -19,12 +19,13 @@ open cycleTimeRules page
     select site  smart_factory
     open cycleTimeRules page
     click  ${addNewRule}
+    sleep  2
 #    select option from dropdown by inputting  ${machineGroup}/span[2]  ${cycleTimeRulesData1}[0]
-    click  ${machineGroup}/span[2]
+    click  ${machineGroup}/span[1]
     input  ${machineGroup}/span[1]/input  ${cycleTimeRulesData1}[0]
     wait until element is visible  //span[text() = "${cycleTimeRulesData1}[0]"]  30
     click  //span[text() = "${cycleTimeRulesData1}[0]"]/..
-    click  ${itemGrouptags}/span[2]
+    click  ${itemGrouptags}/span[1]
     input  ${itemGrouptags}/span[1]/input  ${cycleTimeRulesData1}[1]
     wait until element is visible  //span[text() = "${cycleTimeRulesData1}[1]"]  15
     click  //span[text() = "${cycleTimeRulesData1}[1]"]/..

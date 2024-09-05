@@ -18,7 +18,8 @@ open tagsMangement page
     open tagsMangement page
     click  ${addNewtagsMangement}
     select option from dropdown using list  ${tagType}  General
-    input  ${tagLabel}  ${tagsMangementData}[0]
+    ${randomTagName}=  Generate Random Tagnmanagement Name
+    input  ${tagLabel}  ${randomTagName}
 #    select option from dropdown using list  ${tagSites}  Haridwar Unit
 #    sleep  1
 #    press keys  ${tagSites}  Smart Factory  ESC
@@ -29,5 +30,5 @@ open tagsMangement page
     open tagsMangement page
     reload page
     sleep  2
-    tagsMangement should be added  ${tagsMangementData}[0]
+    tagsMangement should be added  ${randomTagName}
 

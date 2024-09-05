@@ -10,6 +10,8 @@ Resource  ../../keywords.robot
 #*** Variables ***
 #@{itemData}  item-11  pencer10
 #@{editItemData}  item11  censor11
+*** Variables ***
+${DROPDOWN_XPATH}    //span[text()="size "]/../../../div[2]//input
 
 *** Test Cases ***
 open item page
@@ -23,8 +25,15 @@ open item page
     input  ${itemCode}  ${randomItemCode}
     ${randomItemName}=  generate random string  5-8  [LETTERS]
     input  ${itemName}  ${randomItemName}
-    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  2
-#    select option from dropdown using span  ${itemgroup}  Compounds
+    select option from dropdown using span  ${itemgroup}  AI_AI_A
+    click  //span[text()="size "]/../../../div[2]//input
+    ${random_number}=  Generate Random 3-Digit Number
+    input  ${DROPDOWN_XPATH}  ${random_number}
+    click  ${addattributebutton}
+    click  (//button[@id="undefined__deactivate_btn"])[6]
+    i should see text on page    Tag Created Successfully
+    wait until element is visible    //span[text()="size "]/../../../div[2]//input/../../span[2][@title="${random_number}"]
+    sleep  2
     click  ${Submit}
     i should see text on page  Item added
     click  ${backButton}
@@ -33,6 +42,5 @@ open item page
     item should be added  ${randomItemName}
     sleep  3
     edit item  ${randomItemCode}
-
 
 

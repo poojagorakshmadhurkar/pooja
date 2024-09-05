@@ -3,6 +3,14 @@ Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
+Library   ../RandomLibrary.py
+Library    String
+
+
+
+
+
+
 
 *** Keywords ***
 
@@ -69,3 +77,7 @@ Reactivated Shifts
     shifts should be added  ${shiftName}
 
 
+Generate Random Customer Name
+    ${random_string}=  Generate Random String  7  [LOWER]
+    ${random_customer_name}=  Capitalize First Letter  ${random_string}
+    [Return]  ${random_customer_name}

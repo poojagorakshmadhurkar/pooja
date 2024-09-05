@@ -5,6 +5,11 @@ Resource  ../../../variables.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
 
+
+*** Variables ***
+     #change name here
+@{editToolsData}  editLabel19  1  editPart3
+
 *** Keywords ***
 open tools page
     click  ${mastersDropdown}
@@ -36,7 +41,8 @@ edit tools
     [Arguments]  ${labelName}
     click  //a[text() = "${labelName}"]
     sleep  2
-    press keys  ${label}  CTRL+A  BACKSPACE  ${editToolsData}[0]
+    ${randomnewlabel}=  generate random string  1  [NUMBERS]
+    press keys  ${label}  CTRL+A  BACKSPACE  ${randomnewlabel}
     press keys  ${multiplier}  CTRL+A  BACKSPACE  ${editToolsData}[1]
     press keys  ${lifetime}  CTRL+A  BACKSPACE  ${editToolsData}[1]
     press keys  ${partsLabel}  CTRL+A  BACKSPACE  ${editToolsData}[2]
@@ -52,10 +58,7 @@ edit tools
     open tools page
     reload page
     sleep  2
-    tools should be added  ${editToolsData}[0]
-
-delete tools
-    [Arguments]  ${labelDelete}
-    click   //a[text() = "${labelDelete}"]/../../../../../../../../../../td[7]/div/button[@id = "tools__Deactivate"]
+    tools should be added  ${randomnewlabel}
+    click   //a[text() = "${randomnewlabel}"]/../../../../../../../../../../td[7]/div/button[@id = "tools__Deactivate"]
     click  ${deactivate_downtime}
     i should see text on page  Tool deactivated successfully

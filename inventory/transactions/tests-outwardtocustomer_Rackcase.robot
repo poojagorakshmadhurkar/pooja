@@ -9,12 +9,12 @@ Library    DateTime
 
 
 *** Variables ***
-@{itemData1}  RM0002  20  5000
-@{itemData2}  RM0003  30  5000
+@{itemData1}  CR00011  20  5000
+@{itemData2}  CR00010  30  5000
 @{edititemData1}  ItemRM-10  11  5000
 @{edititemData2}  ItemRM-11  20  5000
-@{inwarditem1}  RM0002  500
-@{inwarditem2}  RM0003  500
+@{inwarditem1}  CR00011  500
+@{inwarditem2}  CR00010  500
 
 *** Test Cases ***
 Outward to customer

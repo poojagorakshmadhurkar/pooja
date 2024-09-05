@@ -67,6 +67,7 @@ Lot inward request for 1 item single lot
     ${finalvalue1}  item LOTforCase current stock  ${itemData1}[0]
     ${finalstock1}  Evaluate  eval("${save}+${itemData1}[1]")
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
+    sleep  1
     #get text from lotit and compare that value with send value
     ${lotidvalue}  Search LotID name in warehouse  ${itemData1}[0]  ${LOTIDitem1}
     Should Be Equal As Integers    ${itemData1}[1]   ${lotidvalue}
@@ -187,6 +188,7 @@ Lot inward request for 1 item single lot
 item LOTforCase current stock
     [Arguments]  ${itemName}
     search name in warehouse  ${itemName}
+    sleep  1
     scroll element into view  //span[text() = "${itemName}"]
     ${quantityS}  Get Text  //div[@id="live_inventory_item__tabs-panel-1"]//tr[2]//span[text()="${itemName}"]/../../../../../../../../../td[4]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
@@ -222,7 +224,7 @@ Search LotID name in warehouse
     input  //input[@placeholder="Search Lot Id"]  ${lotid}
     press keys  //input[@placeholder="Search Lot Id"]  ENTER
     WAIT UNTIL PAGE CONTAINS  ${lotid}
-    ${quantityS}  Get Text  (//div[@id="live_inventory_item__tabs-panel-1"]//tr[3]//tr[2]//td[text()="${lotid}"])/../td[2]
+    ${quantityS}  Get Text  //div[@id="live_inventory_item__tabs-panel-1"]//tr[3]//tr[2]//td[1][text()="${lotid}"]/../td[3]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}

@@ -26,8 +26,9 @@ outward to prod
     open trasactions page
     click  ${outwardTab}
     click  ${newOutwardNote}
+    reload page
     select outward to  Production
-    select machine  WIP Section
+    select machine  WIP MACHINE
     date entry
     set ith item in outward  0  ${itemData1}[0]  ${itemData1}[1]
     click  ${submit}

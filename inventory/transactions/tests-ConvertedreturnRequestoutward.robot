@@ -6,6 +6,7 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 Library    DateTime
+
 *** Variables ***
 @{itemData1}  ItemRM-11  20  10
 

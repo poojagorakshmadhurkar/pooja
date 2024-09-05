@@ -14,8 +14,8 @@ Library  DataDriver
 
 *** Variables ***
 
-@{itemData1}  WIP_194  1205             #warehouse value is 270   #20 inward note
-@{itemData2}  WIP_193  1000              #warehouse value is 170     #10 outward note
+@{itemData1}  WIP_194  960             #warehouse value is 270   #20 inward note
+@{itemData2}  WIP_193  2000              #warehouse value is 170     #10 outward note
 ${keyword1_count}    0
 ${keyword2_count}    0                                                             #issue :When two inward note created than approve button not visible error comes
                                      #always ensure 1st option is doing outward and second inward

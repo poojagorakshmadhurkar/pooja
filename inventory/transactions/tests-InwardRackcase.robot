@@ -45,7 +45,7 @@ inward request with rack on
     click  ${newRequest}
     click  ${inventoryDropdown}
     click  ${inventoryTransactions}
-    reload page
+#    reload page
     sleep  2
 #    inward tr status no method 2  Pending  1
 #    Wait Until Page Contains Element  ${newInwardNote}  10

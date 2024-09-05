@@ -4,6 +4,11 @@ Resource  ../../keywords.robot
 Resource  ../../variables.robot
 Resource  ./variables.robot
 Library  DateTime
+Resource  Suite/masters/production/items/keywords.robot
+Resource  Suite/masters/production/items/variables.robot
+
+*** Variables ***
+${DIV_ID}    credit_table
 
 *** Keywords ***
 open transactions page
@@ -40,9 +45,10 @@ select partner
 
 set ith item in inward
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
-    click  //input[@id = "credit__details__${i}__sku"]/../../span[2]
+    click  //input[@id = "credit__details__${i}__sku"]
     input  //input[@id = "credit__details__${i}__sku"]  ${recievedName}
-    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
+    sleep  1
+    Wait Until Page Contains Element  (//*[text() = "${recievedName}"])[1]  20
     click  //*[text() = "${recievedName}"]
     sleep  1
     input  (//input[@id = "credit__details__${i}__quantity"])  ${recievedQuantity}
@@ -85,9 +91,11 @@ set ith item in Lot case
     Wait Until Page Contains Element  //*[text() = "${recievedName}"]  10
     press keys  //input[@id = "credit__details__${i}__sku"]  ENTER
     sleep  1
-    press keys  (//input[@id = "credit__details__0__${i}__sku"])  CTRL+A  BACKSPACE  ${recievedQuantity}
+    press keys  //input[@id="credit__details__${i}__0__sku"]  CTRL+A  BACKSPACE  ${recievedQuantity}
     sleep  1
-    #input  (//input[@type = "number"])[${i}]  ${itemData}[2]---lot slot id
+    ${lot_id}=    Get Value    xpath=//input[@id="credit__details__${i}__0__bundle"]
+    RETURN  ${lot_id}
+
 
 set ith item in costing
     [Arguments]  ${i}  ${itemData}
@@ -304,6 +312,8 @@ open warehouse
     sleep  2
     click  ${inventoryWarehouses}
     wait until page contains  Live Inventory  timeout=30s
+    click  //span[text()="Live Inventory"]
+#    reload page
 
 open trasactions page
     click  ${inventoryDropdown}
@@ -674,3 +684,65 @@ Search For WIPItem
     ${item_found}    Run Keyword And Return Status    Page Should Contain Element    //span[text() = "${itemName}"]
     Run Keyword If    not ${item_found}    Set Variable    ${FALSE}
     RETURN    ${item_found}
+
+item should be added
+    [Arguments]  ${itemCodeName}
+    wait until page contains element  //span[text() = "Item Details"]/../../../span[2]  timeout=15s
+    click  //span[text() = "Item Details"]/../../../span[2]
+    input  ${searchItem}  ${itemCodeName}
+    click  ${searchItem}/../button[1]
+    wait until page contains  ${itemCodeName}  timeout=10s
+
+
+edit item inventory
+    [Arguments]  ${itemCodeName}
+    click  //a[text() = "${itemCodeName}"]
+    sleep  2
+    click  ${Edit}
+
+Set Ith Item In Lot Case With Vendor LotID
+    [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
+    # Input received name and confirm selection
+    Press Keys  //input[@id="credit__details__${i}__sku"]  CTRL+A  BACKSPACE  ${recievedName}
+    Wait Until Page Contains Element  //*[text()="${recievedName}"]  30
+    Press Keys  //input[@id="credit__details__${i}__sku"]  ENTER
+    # Input received quantity
+    Press Keys  //input[@id="credit__details__${i}__0__sku"]  CTRL+A  BACKSPACE  ${recievedQuantity}
+    # Retrieve lot ID
+    ${lot_id}=  Get Value  xpath=//input[@id="credit__details__${i}__0__bundle"]
+    # Generate random vendor lot ID (8-digit number) and input
+    ${vendor_lot_id}=  Evaluate  str(random.randint(10000000, 99999999))  random
+    Log  Generated Vendor Lot ID: ${vendor_lot_id}
+    Execute JavaScript  window.scrollTo(document.body.scrollWidth, 0);
+    # Scroll the second scrollbar to the right end
+     Wait Until Element Is Visible    //div[@id="${DIV_ID}"]    timeout=10s
+
+    # Execute JavaScript to scroll the element to the right end
+    Execute JavaScript    var element = document.getElementById('${DIV_ID}'); if (element) { element.scrollLeft = element.scrollWidth; }
+    sleep  2
+    Current Date Entry  //input[@id="credit__details__${i}__0__manufacturing__date"]
+    Current Date Entry  //input[@id="credit__details__${i}__0__expiry__date"]
+    sleep  1
+    # Log the expiry date in "12 Aug 2024" format
+    ${expiry_date}=  Get Value  xpath=//input[@id="credit__details__${i}__0__expiry__date"]
+    ${formatted_expiry_date}=  Evaluate  datetime.datetime.strptime('${expiry_date}', '%d-%m-%Y').strftime('%d %b %Y')  datetime
+    Log  Expiry Date: ${formatted_expiry_date}
+
+    Press Keys  //input[@id="credit__details__${i}__0__vendor__lot_id"]  CTRL+A  BACKSPACE  ${vendor_lot_id}
+    Press Keys  //input[@id="credit__details__${i}__0__vendor__lot_id"]  ENTER
+    RETURN  ${lot_id}  ${vendor_lot_id}  ${formatted_expiry_date}
+
+
+
+Current Date Entry
+    [Arguments]  ${Datefieldxpath}
+    sleep  1
+    ${today1}    Get Current Date  result_format=%d-%m-%Y
+#    ${today1}=    Evaluate    datetime.datetime.now().strftime('%d-%m-%Y')
+#    Log To Console    Current Date: ${today1}
+#    BuiltIn.Sleep    1
+    click  ${Datefieldxpath}
+    input  ${Datefieldxpath}  ${today1}
+    sleep  1
+    press keys  ${Datefieldxpath}  ENTER
+    sleep  1

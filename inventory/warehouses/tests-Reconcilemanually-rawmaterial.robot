@@ -15,8 +15,8 @@ Library  BuiltIn
 
 *** Variables ***
 
-@{itemData1}  RawmaterialA  3001             #warehouse value is 700   #20 outward note
-@{itemData2}  RawmaterialB  1302              #warehouse value is 850     #20 inward note
+@{itemData1}  RawmaterialA  4000             #warehouse value is 700   #20 outward note
+@{itemData2}  RawmaterialB  2000              #warehouse value is 850     #20 inward note
 ${keyword1_count}    0
 ${keyword2_count}    0                           #issue :When two inward note created than approve button not visible error comes
                                      #always ensure 1st option is doing outward and second inward

@@ -75,7 +75,7 @@ W2W transfer
     inward tr status no method 2  Pending  1
     #wait until element is visible  //span[text() = "Item View"]
     inward approve number  1
-    select inspector while TIN  Test Customer-01
+#    select inspector while TIN  Test Customer-01
     click  ${approveButton}
     i should see text on page  IQC approved SuccesFully
     sleep  2

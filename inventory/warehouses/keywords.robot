@@ -51,7 +51,8 @@ search rawmaterailname in warehouse
 
 Form row
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
-    click  //form//tbody//tr[${i}]//td[1]//input[@type = "search"]/../../span[2]
+    sleep  1
+    Click  //form//tbody//tr[${i}]//td[1]//input[@type = "search"]/../../span[1]
     input  //form//tbody//tr[${i}]//td[1]//input[@type = "search"]  ${recievedName}
     Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
    # click  //*[text() = "${recievedName}"]
@@ -146,8 +147,10 @@ item onhand stock(Fg)
 search Fg in warehouse
     [Arguments]  ${itemName}
     click  //div[@id="live_inventory_item__tabs-tab-3"]
+    sleep  1
     click  //div[@id="live_inventory_item__tabs-panel-3"]//*[@id="live_inventory_Item Details_search"]
-    sleep  3
+    sleep  2
+    Wait Until Page Contains Element    //input[@placeholder='Search Item Details']    10s
     press keys  ${warehouseFilterItemName}  CTRL+A  BACKSPACE
     input  ${warehouseFilterItemName}  ${itemName}
     press keys  ${searchicon}  ENTER

@@ -8,9 +8,9 @@ Library  Collections
 Library    DateTime
 
 *** Variables ***
-@{itemData1}  RM00010  49  10
-@{itemData2}  RM00012  60  10
-@{itemData3}  RM00013  510
+@{itemData1}  RM0001  49  10
+@{itemData2}  RM0002  60  10
+@{itemData3}  RM0003  510
 #@{edititemData1}  RM0001  56
 #@{edititemData2}  RM0002  32
 #@{edititemData3}  RM0003  65

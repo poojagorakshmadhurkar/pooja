@@ -6,23 +6,22 @@ Resource  ./variables.robot
 Library  String
 Library  Collections
 
-
 *** Variables ***
-@{itemData1}  RackTest1123  10  5
+@{itemData1}  RackTest1123  10  40
 @{itemData2}  Am_testing1  50  67
-@{itemData3}  CAP  100  90
-@{itemData4}  C1-22-404  11   12
-@{itemData5}  Compound1  13  14
-@{itemData6}  Compound2  15  16
+${SLIDER_HANDLE_XPATH}    //div[@class='slider-handle']
+${SLIDER_CONTAINER_XPATH}  //div[@class='slider-container']
+
+
 
 *** Test Cases ***
 #Validation lot case with IQC
-Lot inward request for 1 item single lot
-    Set Selenium Speed    ${DELAY}
+Lot inward request for for Vendorlot id with manufacturing date
+    Set Selenium Speed    0.1s
     login
     select site  testingsiteautomationlotcase4
     open warehouse
-    sleep  1
+    sleep  2
     ${save}  item LOTforCase current stock  ${itemData1}[0]
     sleep  2
     open trasactions page
@@ -33,15 +32,17 @@ Lot inward request for 1 item single lot
 #   input  ${grnNumber}  ${randomGrn}
     select partner  Pooja01
     input  ${invoiceNumber}  inv1001
-    set ith item in Lot case  0  ${itemData1}[0]  ${itemData1}[1]
-    sleep  2
-    wait until element is visible  //input[@id="credit__details__0__0__bundle"]
-    #FetchGRN Value
-    ${LOTIDitem1}=  Get Element Attribute And Log  0  ${itemData1}[0]
-    click  ${submit}
+    ${lot_id}  ${vendor_lot_id}  ${formatted_expiry_date} =    Set Ith Item In Lot Case With Vendor LotID    0    ${itemData1}[0]    ${itemData1}[1]
     click  ${newRequest}
     open transactions page
     sleep  2
+    open inward tr note  1
+    #click on expand button of lot
+    click  (//span[@class='MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorDefault PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorDefault MuiCheckbox-root MuiCheckbox-colorDefault css-1rlbz42'])[1]
+    wait until element is visible  //a[text()="${itemData1}[0]"]/../../../../../../../../../../td[text()="${itemData1}[1] kg"]
+    wait until element is visible  //span[text()="${lot_id}"]/../../td[text()="${vendor_lot_id}"]/..//td[text()="${formatted_expiry_date}"][1]
+    sleep  1
+    click  //button[@class='MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeLarge css-1w8s6so']
     inward tr status no method 2  IQC Pending  1
     # Validation for if IQc enble than without it should not get approved
     click  (//div[@id='item__tabs-panel-credit']//button//*[name()='svg'][@id="transaction_credit_approve"])[1]
@@ -50,8 +51,8 @@ Lot inward request for 1 item single lot
     click  ${qualityChecktab}
     sleep  2
     click  ${inwardEdit}
-    rejection reason  BUBBLES  ${itemData1}[0]  ${itemData1}[2]
-    click  //button[@id="credit__rejections__submit"]
+    click  ${allOk}
+    wait until element is visible  //span[text() = "No Rejections"]
     i should see text on page  Transaction Edited SuccesFully
     open transactions page
     wait until element is visible  ${newInwardNote}
@@ -66,15 +67,16 @@ Lot inward request for 1 item single lot
     open warehouse
     sleep  2
     ${finalvalue1}  item LOTforCase current stock  ${itemData1}[0]
-    ${increment1}  Set Variable  ${itemData1}[1]-${itemData1}[2]
-    ${increment_main1}  Evaluate  eval("${increment1}")
-    ${value1}  Set Variable  ${save}+${increment_main1}
-    ${finalstock1}  Evaluate  eval("${value1}")
+    ${finalstock1}  Evaluate  eval("${save}+${itemData1}[1]")
     Should Be Equal As Integers    ${finalvalue1}    ${finalstock1}
-    sleep  1
     #get text from lotit and compare that value with send value
-    ${lotidvalue}  Search LotID name in warehouse  ${itemData1}[0]  ${LOTIDitem1}
-    Should Be Equal As Integers    ${increment_main1}   ${lotidvalue}
+    ${lotidvalue}  Search LotID name in warehouse  ${itemData1}[0]  ${lot_id}
+    wait until element is visible    //td[text()="${lot_id}"]/../..//td[text()="${vendor_lot_id}"]/../..//td[text()="${formatted_expiry_date}"][3]
+    sleep  1
+    Should Be Equal As Integers    ${itemData1}[1]   ${lotidvalue}
+
+
+
 
 
 
@@ -102,7 +104,7 @@ Get Element Attribute And Log
 search name in warehouse
     [Arguments]  ${itemName}
     Wait Until Element Is Visible  (//span[@role='button'])[1]  timeout=30s
-
+    sleep  2
     click element  (//span[@role='button'])[1]
     sleep  2
     press keys  ${RMitemName}  CTRL+A  BACKSPACE
@@ -127,6 +129,6 @@ Search LotID name in warehouse
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}
 
-
-
-
+Close Overlay If Present
+    [Arguments]    ${overlay_xpath}
+    Run Keyword If    Element Is Visible    ${overlay_xpath}    Click Element    ${overlay_xpath}

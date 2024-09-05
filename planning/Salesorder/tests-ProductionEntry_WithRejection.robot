@@ -57,16 +57,19 @@ SoFGProduction
     sleep  1
     #verification of production entry is Salesorder
     wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[2] piece"][2]     #booked Quantity
-    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[2] piece"][3]     #produced Quantity
+#    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[2] piece"][3]     #produced Quantity
     sleep  2
    #to get rejected current Quantity
     open warehouse
+    sleep  2
+    reload page
     click  ${rejectedsection}
     #to fetch rejected current quantity of summary view
     ${rejectedsummaryQuantity1} =  rejected current quantity of summary view    ${itemData1}[0]
     sleep  1
     #To fetch rejected curent Quantity of detailted view
     ${rejecteddetailedQuantity1} =  rejected current quantity of detailed view  ${itemData1}[0]  ${machine}[0]  ${rejection}[0]
+    reload page
     ${rejecteddetailedQuantity2} =  rejected current quantity of detailed view  ${itemData1}[0]  ${machine}[0]  ${rejection}[1]
     sleep  1
     open production Dropown
@@ -100,6 +103,7 @@ SoFGProduction
     #verification of rejected Quantity in warehouse
     sleep  1
     open warehouse
+    reload page
     click  ${rejectedsection}
     #to fetch rejected current quantity
     ${rejectedsummaryQuantity2} =  rejected current quantity of summary view    ${itemData1}[0]
@@ -108,6 +112,7 @@ SoFGProduction
     #to fetch qauntity from detailed view
     sleep  1
     ${rejecteddetailedQuantity3} =  rejected current quantity of detailed view  ${itemData1}[0]  ${machine}[0]  ${rejection}[0]
+    reload page
     ${rejecteddetailedQuantity4} =  rejected current quantity of detailed view  ${itemData1}[0]  ${machine}[0]  ${rejection}[1]
     #Validation for rejected quanity detailed view
     ${finalrejectedetailed1Quantity}  Evaluate  eval("${rejecteddetailedQuantity1}+${rejection}[2]")

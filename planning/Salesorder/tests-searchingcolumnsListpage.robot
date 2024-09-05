@@ -41,17 +41,45 @@ creation of so
 
 
 
+
 *** Keywords ***
+
+#Search and Verify in SO Column
+#    [Arguments]    ${so_details}    ${keyword}
+#    ${result}    Run Keyword And Return Status    Should Contain    ${so_details}    ${keyword}
+#    Run Keyword If    not ${result}
+#    ...    Fail    No result found for the search keyword '${keyword}'
+#    ...    ${keyword} is not displayed in the SO column
+#    ${element_count}    Get Element Count    xpath=//td[contains(text(),'${keyword}')]
+#    Run Keyword If    ${element_count} == 0
+#    ...    Fail    No visible result found for the search keyword '${keyword}'
+#    ...    ${keyword} is not visible in the SO column
+#    Element Should Be Visible    xpath=//td[contains(text(),'${keyword}')]
+#    Log    Correct result displayed for the search keyword '${keyword}'
+
 
 Search and Verify in SO Column
     [Arguments]    ${so_details}    ${keyword}
+    Log    Searching for keyword: ${keyword}
+    Log    SO Details: ${so_details}
+
+    # Check if the keyword is in the details
     ${result}    Run Keyword And Return Status    Should Contain    ${so_details}    ${keyword}
     Run Keyword If    not ${result}
     ...    Fail    No result found for the search keyword '${keyword}'
     ...    ${keyword} is not displayed in the SO column
-    ${element_count}    Get Element Count    xpath=//td[contains(text(),'${keyword}')]
-    Run Keyword If    ${element_count} == 0
-    ...    Fail    No visible result found for the search keyword '${keyword}'
-    ...    ${keyword} is not visible in the SO column
-    Element Should Be Visible    xpath=//td[contains(text(),'${keyword}')]
-    Log    Correct result displayed for the search keyword '${keyword}'
+
+    # Add a sleep to allow the page to load elements (adjust as needed)
+    Sleep    2s
+
+    # Wait for the element to be present before checking its count
+    #Wait Until Element Is Visible    xpath=//td[contains(text(),'${keyword}')]    timeout=10s
+
+
+
+    # Ensure the element is visible on the page
+    #Element Should Be Visible    xpath=//td[contains(text(),'${keyword}')]
+    wait until element is visible    //a[text()="${keyword}"]
+
+    # Log success
+

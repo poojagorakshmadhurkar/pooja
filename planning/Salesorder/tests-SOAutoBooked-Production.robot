@@ -29,7 +29,7 @@ SoFGProduction
     login devsite
     select site  testingsiteautomation
     open warehouse
-    ${bookquantity1} =  Get current Quantity of Booked Stock  ${itemData1}[0]
+    ${bookquantity1} =  Get current Quantity of FG Booked Stock  ${itemData1}[0]
     ${order_number}=  Create SO  ${customername}  ${itemData1}
     click  //a[text()="${order_number}"]/../../../../../../../../span
     Wait Until Page Contains Element  //div[text()="${order_number}"]    timeout=30s
@@ -61,14 +61,14 @@ SoFGProduction
     sleep  1
     #verification of production entry is Salesorder
     wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[2] piece"][2]     #booked Quantity
-    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[2] piece"][3]     #produced Quantity
+    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//tr[2]//td[6]//div[text()="${itemData1}[2] piece"]     #produced Quantity
     sleep  2
     open warehouse
-    ${bookquantity2}=  Get current Quantity of Booked Stock  ${itemData1}[0]
+    ${bookquantity2}=  Get current Quantity of FG Booked Stock  ${itemData1}[0]
     ${finalbookcurrentstock}  Evaluate  eval("${bookquantity1}+${itemData1}[2]")
     Should Be Equal As Integers    ${bookquantity2}    ${finalbookcurrentstock}
     #click on booked quantity and check all detials
-    click  (//span[text()="${itemData1}[0]"][1]/../../../../../../../../../td)[15]\
+    click  (//span[text()="${itemData1}[0]"][1]/../../../../../../../../../td)[16]
     sleep  2
      # Wait for the page to contain the order number
     Wait Until Page Contains  ${ORDER_NUMBER}  10s

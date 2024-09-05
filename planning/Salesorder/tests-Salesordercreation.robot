@@ -42,7 +42,7 @@ Creation of SO
 
     #validation for so creation search
     search Sonumber in SoListpage for validation  ${order_number}
-    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
+    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
 
 
 

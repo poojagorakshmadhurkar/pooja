@@ -7,32 +7,36 @@ Library  Collections
 Resource  ../../inventory/transactions/keywords.robot
 Resource  ../../variables.robot
 Resource  ./variables.robot
+Resource  ../../inventory/warehouses/keywords.robot
+
 
 *** Variables ***
 @{customername}  Test01
 @{itemData1}  Fgitem1  100
-@{itemData2}  FGitem2  100
+
+${xpath}  //span[contains(@class, 'ant-tree-title')]
+${machine}  P2
+${shift}  Morning Shift
 
 
 
 
 *** Test Cases ***
-SO Edition
+
+SO Close
     Set Selenium Speed    0.1
     login devsite
     select site  testingsiteautomation
     ${order_number}=  Create SO  ${customername}  ${itemData1}
     click  //a[text()="${order_number}"]/../../../../../../../../span
     Wait Until Page Contains Element  //div[text()="${order_number}"]    timeout=30s
-    sleep  2
+    sleep  1
     click  (//*[name()='svg'][@id='so_details_menu'])[1]
-    click  ${EditSobutton}
-    Wait Until Page Contains Element  //span[text()="${order_number}"]    timeout=30s
+    click  ${closebutton}
+    wait until element is visible    (//a[text()="${itemData1}[0]"])[2]
+    input  ${closereasoninput}  Notgood
+    sleep  1
+    click  //button[text()="Close ${order_number}"]
+#    Wait Until Page Contains  "SO Closed Successfully"  timeout=10s
 
-    click  ${Editbutton}
-    click  ${AddnewRow}
-    set ith item in so  1  ${itemData2}[0]  ${itemData2}[1]
-    click  ${submit}
-    click  ${Editbackbutton}
-    Wait Until Page Contains Element  //div[text()="${order_number}"]    timeout=30s
-    Wait Until Page Contains Element    //a[text()="${itemData2}[0]"]  timeout=30s
+    wait until element is visible  //span[text()="Closed"]

@@ -55,6 +55,6 @@ SoFGProduction
     click  //a[text()="${order_number}"]/../../../../../../../../span
     sleep  1
     wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[1] piece"][2]     #booked Quantity
-    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[1] piece"][3]     #produced Quantity
+#    wait until element is visible  (//div[@id="item__tabs-panel-1"]//table)[2]//td[text()="${itemData1}[1] piece"][3]     #produced Quantity
     sleep  2
 

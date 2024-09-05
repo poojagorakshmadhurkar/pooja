@@ -33,6 +33,6 @@ Verify List Page Columns
         Append To List    ${actual_columns}    @{column_text_lines}
     END
     Log Many    ${actual_columns}
-    ${expected_columns}=    Create List    SO Details    Ref #    Customer    SO Start Date    Delivery Date    Demanded Status Actions
+    ${expected_columns}=    Create List    SO Details    Ref #    Customer    SO Start Date    Delivery Date    Demanded    Production planned    Produced   Actions
     Lists Should Be Equal    ${expected_columns}    ${actual_columns}
     Close Browser

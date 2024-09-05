@@ -12,6 +12,7 @@ Library  DateTime
 Resource  ../../inventory/warehouses/keywords.robot
 
 *** Keywords ***
+
 open order tracker page
     click  ${planningDropdown}
     sleep  2
@@ -37,7 +38,7 @@ Create SO
     click  ${createNewOrder}
     click  ${backbutton}
     search Sonumber in SoListpage for validation  ${order_number}
-    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
+    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
     RETURN  ${order_number}
 
 
@@ -96,7 +97,7 @@ delivery date entry
 set ith item in SO
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
     press keys  //input[@id="so_details_${i}_sku"]/../../span[2]  CTRL+A  BACKSPACE  ${recievedName}
-    Sleep  2
+    Sleep  1
     Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
     press keys  //input[@id="so_details_${i}_sku"]  ENTER
     sleep  1
@@ -105,8 +106,11 @@ set ith item in SO
 
 search Sonumber in SoListpage for validation
     [Arguments]  ${soordernumber}
+    wait until element is visible  //h5[text()="sales orders"]  timeout=30s
+    click  //h5[text()="sales orders"]
     Wait Until Element Is Not Visible    css=.ant-spin-spinning    timeout=30s
     Wait Until Element Is Clickable  ${SOdetailsFilter}  timeout=30s
+    sleep  2
     click element  ${SOdetailsFilter}
     sleep  1
     click  ${Soinputfield}
@@ -155,7 +159,7 @@ Create SO with multiple items
     click  ${createNewOrder}
     click  ${backbutton}
     search Sonumber in SoListpage for validation  ${order_number}
-    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
+    wait until page contains element  //a[text()="${order_number}"]/../../../../../../../../../../td[2][text()="${randomrefNumber}"]/../td[3][text()="${customername}[0]"]  timeout=30s
     RETURN  ${order_number}
 
 
@@ -224,7 +228,7 @@ set ith item in productionForm
     [Arguments]  ${i}  ${recievedName}  ${recievedQuantity}
     press keys  //input[@id="production_sku_${i}"]/../../span[2]  CTRL+A  BACKSPACE  ${recievedName}
     Sleep  2
-    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
+#    Wait Until Page Contains Element  //*[text() = "${recievedName}"]  20
     press keys  //input[@id="production_sku_${i}"]  ENTER
     sleep  1
     press keys    //input[@id="production_qty_${i}"]  CTRL+A  BACKSPACE  ${recievedQuantity}
@@ -246,6 +250,42 @@ search rejectedquantity in warehouse summary view
     press keys  ${rejectedfilterinput}  ENTER
     wait until page contains element  //span[text() = "${itemName}"]  20
 
+search rejectedquantity in warehouse detailed view
+    [Arguments]  ${itemName}  ${machine}  ${reason}
+    Wait Until Element Is Not Visible    css=.ant-spin-spinning    timeout=30s
+    click  //button[text()="Detailed View"]
+    Wait Until Element Is Visible  ${rejectedsearchfilter}  timeout=10s
+    click  ${rejectedsearchfilter}
+    click  ${rejectedfilterinput}
+    Wait Until Element Is Visible  ${rejectedfilterinput}  timeout=10s
+    press keys  ${rejectedfilterinput}  CTRL+A  BACKSPACE
+    input  ${rejectedfilterinput}  ${itemName}
+    press keys  ${rejectedfilterinput}  ENTER
+    wait until page contains element  //span[text() = "${itemName}"]  20
+    sleep  2
+    click  (//*[name()='svg'][@id='live_inventory_Machines_search'])[2]
+    click  (//input[@id='rc_select_1'])[1]
+    Wait Until Element Is Visible  (//input[@id='rc_select_1'])[1]  timeout=10s
+    press keys  (//input[@id='rc_select_1'])[1]  CTRL+A  BACKSPACE
+    input  (//input[@id='rc_select_1'])[1]  ${machine}
+    Press Keys  (//input[@id='rc_select_1'])[1]  ARROW_DOWN  ENTER
+    Sleep  1
+    click  (//*[name()='svg'][@id='live_inventory_Machines_search'])[3]
+    sleep  1
+    Execute JavaScript  document.evaluate("(//div[@class='ant-table-body'])[2]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollLeft = document.evaluate("(//div[@class='ant-table-body'])[2]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.scrollWidth;
+#    Drag And Drop By Offset  (//div[@class='ant-table-body'])[2]  100  0
+    click  ${rejectedreasonfiltersearchbar}
+    click  ${rejectedreasoninputsearch}
+    Wait Until Element Is Visible  ${rejectedreasoninputsearch}  timeout=10s
+    press keys  ${rejectedreasoninputsearch}  CTRL+A  BACKSPACE
+    input  ${rejectedreasoninputsearch}  ${reason}
+    Press Keys  ${rejectedreasoninputsearch}  ARROW_DOWN  ENTER
+    Sleep  1
+    click  (//*[name()='svg'][@id='live_inventory_Rejection Reason_search'])[3]
+    sleep  1
+
+
+
 rejected current quantity of summary view
     [Arguments]  ${itemName}
     search rejectedquantity in warehouse summary view  ${itemName}
@@ -254,16 +294,19 @@ rejected current quantity of summary view
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}
+    reload page
 
 
 rejected current quantity of detailed view
     [Arguments]  ${itemName}  ${machine}  ${reason}
     click  //button[text()="Detailed View"]
-    search rejectedquantity in warehouse summary view  ${itemName}
-    ${quantityS}  Get Text  ((//span[text() = "${itemName}"]/ancestor::tr/td[5][text()="Production"])/../td[7][text()="${machine}"]/../td[8][text()="${reason}"])[2]/../td[9]
+    search rejectedquantity in warehouse detailed view  ${itemName}  ${machine}  ${reason}
+    ${quantityS}  Get Text  (//span[text()="${itemName}"])[5]/../../../../../../../../../td[9]
+#    ${quantityS}  Get Text  (//tr[@class="ant-table-measure-row"])[2]/../tr[2]//td[9]
     ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit())
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}
+    reload page
 
 #Get current Quantity of Booked Stock
 #    [Arguments]  ${itemName}
@@ -278,7 +321,7 @@ rejected current quantity of detailed view
 
 
 
-Get current Quantity of Booked Stock
+Get current Quantity of FG Booked Stock
     [Arguments]  ${itemName}
     search Fg in warehouse  ${itemName}
     sleep  2
@@ -287,3 +330,57 @@ Get current Quantity of Booked Stock
     ${integer_value}  Convert To Integer  ${Quantity_number}
     RETURN  ${integer_value}
 
+Get current Quantity of Rawmaterail Booked Stock
+    [Arguments]  ${itemName}
+    search rawmaterailname in warehouse  ${itemName}
+    sleep  2
+    ${quantityS}  Get Text  //span[text() = "${itemName}"]/ancestor::tr/td[4]
+    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit()) if ''.join(c for c in "${quantityS}" if c.isdigit()) else '0'
+    ${integer_value}  Convert To Integer  ${Quantity_number}
+    RETURN  ${integer_value}
+
+Get current Quantity of WIP Booked Stock
+    [Arguments]  ${itemName}
+    search WIPname in warehouse  ${itemName}
+    sleep  2
+    ${quantityS}  Get Text  (//span[text() = "${itemName}"]/ancestor::tr/td[4])[2]
+    ${Quantity_number}  Evaluate  ''.join(c for c in "${quantityS}" if c.isdigit()) if ''.join(c for c in "${quantityS}" if c.isdigit()) else '0'
+    ${integer_value}  Convert To Integer  ${Quantity_number}
+    RETURN  ${integer_value}
+
+
+
+
+
+
+Book Quantity If OnHand Greater Than Ordered
+    [Arguments]    ${item_name}
+    ${ORDERED_QUANTITY_XPATH}    Set Variable    //td[.//span[contains(text(),"${item_name}")]]/following-sibling::td[1]
+    ${ON_HAND_QUANTITY_XPATH}    Set Variable    //td[.//span[contains(text(),"${item_name}")]]/following-sibling::td[3]
+    ${BOOKED_QUANTITY_INPUT_XPATH}    Set Variable    //td[.//span[contains(text(),"${item_name}")]]/following-sibling::td[4]//input
+
+    # Extract the on-hand quantity and ordered quantity
+    ${ordered_quantity_text}    Get Text    ${ORDERED_QUANTITY_XPATH}
+    ${onhand_quantity_text}    Get Text    ${ON_HAND_QUANTITY_XPATH}
+
+    # Log the quantities for debugging purposes
+    Log    Ordered quantity: ${ordered_quantity_text}
+    Log    On-hand quantity: ${onhand_quantity_text}
+
+    # Extract numerical values using Evaluate
+    ${ordered_quantity}    Evaluate    "${ordered_quantity_text.split(' ')[0] if ' ' in '${ordered_quantity_text}' else '${ordered_quantity_text}'}"
+    ${onhand_quantity}    Evaluate    "${onhand_quantity_text.split(' ')[0] if ' ' in '${onhand_quantity_text}' else '${onhand_quantity_text}'}"
+
+    # Convert quantities to integers
+    ${ordered_quantity}    Convert To Integer    ${ordered_quantity}
+    ${onhand_quantity}    Convert To Integer    ${onhand_quantity}
+
+    # Compare quantities and handle accordingly
+    Run Keyword If    ${onhand_quantity} >= ${ordered_quantity}    Input Booked Quantity    ${BOOKED_QUANTITY_INPUT_XPATH}    ${ordered_quantity}
+    ...    ELSE    Fail    On-hand quantity (${onhand_quantity}) is less than ordered quantity (${ordered_quantity}).
+
+Input Booked Quantity
+    [Arguments]    ${xpath}    ${quantity}
+    # Input the quantity in the booked quantity field
+    Input Text    ${xpath}    ${quantity}
+    Log    Booked quantity input: ${quantity}

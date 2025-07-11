@@ -1,11 +1,11 @@
 *** Settings ***
 Library  SeleniumLibrary
 Resource  ../keywords.robot
-Resource  ../planning/Salesorder/variables.robot
+#Resource  ../orders/Salesorder/variables.robot
 Library  String
 Library  Collections
-Resource  ../variables.robot
-Resource  ../planning/Salesorder/keywords.robot
+#Resource  ../variables.robot
+#Resource  ../orders/Salesorder/keywords.robot
 Resource   ./variables.robot
 Resource   ./keyword.robot
 Library    CustomSeleniumKeywords.py

@@ -1,5 +1,5 @@
 *** Variables ***
-${newButton}  //button[@id = "Add New Site"]
+${newButton}  //button[@id="undefined_add"]
 ${siteName}  //input[@id = "site__label"]
 ${siteAddress}  //input[@id = "site__address"]
 ${siteEmail}  //input[@id = "site__email"]
@@ -21,7 +21,7 @@ ${rackFalse}  //input[@id = "site__rackTrackingFalseCheckbox"]/..
 ${Submit}  //button[@id = "site__submitBtn"]
 ${back}  //a[@aria-label = "back-button"]
 ${site_deactivate}  //button[text() = "Deactivate"]
-${Edit}  //button[text() = "Edit"]
+${siteEdit}  //button[@id='__edit']
 
 
 

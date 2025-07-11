@@ -1,9 +1,10 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
+Library    Browser
 
 #*** Variables ***
 #${max_attempts}    10
@@ -17,17 +18,18 @@ open item page
 
 itemGroup should be added
     [Arguments]  ${labelName}
-    click  //button[@id='itemGroup__filterBtn']//*[name()='svg']
-    input  //input[@id='title']  ${labelName}
-    wait until page contains  ${labelName}  timeout=10
+    click  (//*[name()='svg'][@id='item_Item Details_search'])[1]
+    input  //input[@placeholder='Search Item Details']  ${labelName}
+    browser.Press keys  //input[@placeholder='Search Item Details']  Enter
+    Wait For Elements State      //a[text()="${labelName}"]
 
 item should be added
     [Arguments]  ${itemCodeName}
-    wait until page contains element  //span[text() = "Item Details"]/../../../span[2]  timeout=15s
-    click  //span[text() = "Item Details"]/../../../span[2]
+    click  (//*[name()='svg'][@id='item_Item Details_search'])[1]
+    click  ${searchItem}
     input  ${searchItem}  ${itemCodeName}
-    click  ${searchItem}/../button[1]
-    wait until page contains  ${itemCodeName}  timeout=10s
+    Click    (//*[name()='svg'][@id='item_Item Details_search'])[2]
+#    Wait For Elements State      //a[text()="${itemCodeName}"]
 
 
 #this still pending as a while loop
@@ -64,7 +66,6 @@ create bom
     [Arguments]  ${fgName}
     click  ((//span[text() = "${fgName}"]/../../../../../../../../../../td)[6]/div/button)[1]
     click  ${addBom}
-    sleep  1
     #clear element text  ${bomQuantity}
     press keys  ${bomQuantity}  CTRL+A  BACKSPACE  1.5
     #input  ${bomQuantity}  1.5
@@ -95,51 +96,46 @@ fill attribute with new att value tag
 edit item
     [Arguments]  ${itemCodeName}
     click  //a[text() = "${itemCodeName}"]
-    sleep  2
-    click  ${Edit}
+    click  ${itemcodeedit}
     ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
-    press keys  ${itemCode}  CTRL+A  BACKSPACE  ${randomitemGroupname}
+    Clear Text    ${itemCode}
+    input  ${itemCode}  ${randomitemGroupname}
     ${randomitemname}=  generate random string  5-10  [LETTERS]
-    press keys  ${itemName}  CTRL+A  BACKSPACE  ${randomitemname}
-#    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  8
+    Clear Text    ${itemName}
+    input  ${itemName}  ${randomitemname}
     click  ${Submit}
     i should see text on page  Item edited
     open item page
-    reload page
-    sleep  3
+    Reload
+    Wait For Elements State    (//div[@class='ant-spin-container'])[1]  hidden    timeout=60s
     item should be added  ${randomitemname}
-    reload page
-    sleep  5
+    Reload
+    Wait For Elements State    (//div[@class='ant-spin-container'])[1]  hidden    timeout=60s
     click  //a[text()="${randomitemGroupname}"]/../../../../../../../../../../td[8]
     click  //button[@id="item__deactivate_btn"]
     i should see text on page  Item deactivated successfully
-    reload page
-    sleep  1
+    Reload
+    Wait For Elements State    (//div[@class='ant-spin-container'])[1]  hidden    timeout=60s
     click  //*[name()='path' and contains(@d,'M12 8c1.1 ')]
-    sleep  1
     click  ${deactivate_item}
-    sleep  3
     click  //span[text() = "Item Details"]/../../../span[2]
     input  ${searchItem}  ${randomitemGroupname}
     click  ${searchItem}/../button[1]
-    wait until page contains  ${randomitemGroupname}  timeout=10s
+
 
 
 
 edit itemGroup
     [Arguments]  ${labelName}
     click  //a[text() = "${labelName}"]
-    sleep  2
-    click  ${Edit}
-    press keys  ${itemGroupname}  CTRL+A  BACKSPACE
+    click  ${itemcodeedit}
+    Clear Text   ${itemGroupname}
     ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
     input  ${itemGroupname}  ${randomitemGroupname}
-    select option from dropdown using list  ${itemType}  Raw Material
+    select option from dropdown using list  ${itemType}  RM
     select option from dropdown using list  ${units}  gram
-    click  //button[@id = "itemGroup__deleteRowBtn_1"]
-    sleep  1
-    click  //button[@id = "itemGroup__deleteRowBtn_0"]
-    sleep  1
+#    click  //button[@id = "itemGroup__deleteRowBtn_1"]
+#    click  //button[@id = "itemGroup__deleteRowBtn_0"]
 #    click  ${addAttribute}
 #    fill attribute  0  Length_edit  AI_AI_A
 #    press keys  ${codePrefix}  CTRL+A  BACKSPACE  A_edit
@@ -148,14 +144,11 @@ edit itemGroup
     click  ${Submit}
     i should see text on page  Item Group edited
     open item page
-    reload page
-    sleep  3
+    Reload
     click  ${itemGroupHeader}
-    sleep  2
 #    click  (//button[contains(text(),'All Groups')])[1]
-    sleep  2
     itemGroup should be added  ${randomitemGroupname}
-    click  //a[text()='${randomitemGroupname}']/../../../../../../../../../../td[5]//button[@id = "itemGroup__Deactivate"]
+    click  //a[text()='${randomitemGroupname}']/../../../../../../../../../td[6]//*[name()='svg'][@class='MuiSvgIcon-root MuiSvgIcon-colorSecondary MuiSvgIcon-fontSizeMedium css-al619y']
     click  ${deactivate_itemGroup}
     i should see text on page  Item Group deactivated successfully
 
@@ -163,9 +156,9 @@ edit itemGroup
 Select Value From Dropdown By Index
     [Arguments]    ${dropdown}    ${dropdownwithindex}
     Click Element    ${dropdown}    # Click to open the dropdown
-    Wait Until Element Is Visible    ${dropdownwithindex}   # Wait for the option to be visible
+#    Wait For Elements State     (//div[contains(@class, 'ant-select-item')])[${index}]   # Wait for the option to be visible
     Click Element    ${dropdownwithindex}    # Click to select the option
 
 Generate Random 3-Digit Number
     ${random_number}=  Evaluate  random.randint(100, 999)
-    [Return]  ${random_number}
+    RETURN    ${random_number}

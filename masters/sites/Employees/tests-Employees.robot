@@ -1,6 +1,6 @@
 *** Settings ***
 
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
@@ -8,6 +8,7 @@ Library  String
 Library  Collections
 Resource  ../../keywords.robot
 Library  ../RandomEmailLibrary.py
+Library  Browser
 
 *** Variables ***
 @{EmployeeName}  Planning  Supervisor     #for employee name firstletter is capital and other small
@@ -18,22 +19,20 @@ ${EMAIL_DOMAIN}   example.com
 
 *** Test Cases ***
 open Employees page
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    login devsite
+    select site  testingsiteautomation
     open Employees page
-    wait until page contains  NEW  15
     click  ${addNewEmployee}
     ${randomEmployeeName}=  Generate Random string of name
-    input  ${Name}  ${randomEmployeeName}
+    Fill Text    ${Name}  ${randomEmployeeName}
 #    input  ${Name}  ${EmployeeName}[0]
     ${randomEmployeeNumber}=  generate random string  10  [NUMBERS]
-    input  ${mobile}  ${randomEmployeeNumber}
+    Fill Text    ${mobile}  ${randomEmployeeNumber}
 #    input  ${mobile}  ${EmployeeName}[3]
 
     ${random_email}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
     # Example of using the random email in a test case
-    Input Text    ${employeeEmail}    ${random_email}
+    Fill Text     ${employeeEmail}    ${random_email}
     click  ${department}
     click  //span[text() = "${EmployeeName}[0]"]
     click  ${role}
@@ -45,8 +44,7 @@ open Employees page
     click  ${Submit}
     i should see text on page  Employee added
     click  ${back}
-    reload page
-    sleep  5
+    Reload
     employee should be added  ${randomEmployeeName}  ${EmployeeName}[0]  ${EmployeeName}[1]  ${randomEmployeeNumber}
 ##    sleep  2
 ##    click  ${siteIcon}

@@ -1,5 +1,5 @@
 *** Variables ***
-${addNewEmployee}  //button[text() = "NEW"]
+${addNewEmployee}  //button[@id="undefined_add"]
 ${Name}  //input[@id = "employee__name"]
 ${mobile}  //input[@id = "employee__mobile"]
 ${employeeEmail}  //input[@id = "employee__email"]

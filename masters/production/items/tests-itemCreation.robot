@@ -1,11 +1,12 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library    Browser
 
 #*** Variables ***
 #@{itemData}  item-11  pencer10
@@ -13,25 +14,22 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 open item page
-    Set Selenium Speed    0.1
     login devsite
-    select site  testingsiteautomation
     open item page
+    sleep  1
     click  ${newIcon}
-    sleep  2
     ${randomItemCode}=  generate random string  5-8  [LETTERS]
     input  ${itemCode}  ${randomItemCode}
     ${randomItemName}=  generate random string  5-8  [LETTERS]
     input  ${itemName}  ${randomItemName}
-    select randomly from dropdown  ${itemgroup}  item__itemGroup_list  2
+    select option from dropdown by inputting   //input[@id='item__itemGroup']  Itemgroup1
 #    select option from dropdown using span  ${itemgroup}  Compounds
     click  ${Submit}
     i should see text on page  Item added
-    click  ${backButton}
-    reload page
-    sleep  2
+    click  (//button[@aria-label='back-button'])[2]
+    Reload
+    Wait For Elements State    (//div[@class='ant-spin-container'])[1]  hidden    timeout=60s
     item should be added  ${randomItemName}
-    sleep  3
     edit item  ${randomItemCode}
 
 

@@ -25,11 +25,11 @@ Library  Collections
 #@{fieldData}  Text Field  Document Field  Date  System Entity  List Field
 #@{editFieldGroupsData}
 
-#customer    planning
+#customer    orders
 #@{CustomerData1}  Pooja19019
 #@{CustomerData2}  Newpooja0387890
 
-#vendor    planning
+#vendor    orders
 #@{VendorData2}  Newvendor02784834
 #@{VendorData1}  Vendor27  test28@gmail.com  test82address
 

@@ -1,11 +1,12 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library    Browser
 
 *** Variables ***
 #@{itemGroupData}  ItemGroupp15
@@ -16,22 +17,18 @@ ${INDEX}            2
 
 *** Test Cases ***
 itemGroup creation
-    Set Selenium Speed    0.1
     login devsite
-    select site  testingsiteautomation
     open item page
     click  //span[text() = "This is a testing Site"]
-    sleep  1
     click  ${itemGroupHeader}
     sleep  1
     click  ${newIcon}
     ${randomitemGroupname}=  generate random string  5-10  [LETTERS]
-    input  ${itemGroupname}  ${randomitemGroupname}
-    select option from dropdown using list  ${itemType}  Raw Material
+    Fill Text    ${itemGroupname}  ${randomitemGroupname}
+    select option from dropdown using list  ${itemType}  RM
     select option from dropdown using list  ${units}  gram
 #    select option from dropdown using span  ${sites}  Haridwar Unit
     click  ${addAttribute}
-    sleep  10
     fill attribute  0  Length  Itemgroup1
     click  ${addAttribute}
 #    fill attribute with new att value tag  1  Breadth  POIUYTT
@@ -41,14 +38,14 @@ itemGroup creation
     click  ${setNomenclature}
     input  ${codePrefix}  A
     input  ${namePrefix}  B
-    Select Value From Dropdown By Index    ${nameSeparator}    ${DROPDOWN_OPTION}
+    select option from dropdown by inputting    //input[@id='name_seprator']    (/) Slash
     input  ${namesequence}  Length
-    press keys   ${namesequence}  ENTER
+    browser.press keys   ${namesequence}  Enter
     click  ${Submit}
     i should see text on page  Item Group added
     click  ${back}
-    reload page
-    sleep  4
+    Reload
+    sleep  2
     itemGroup should be added  ${randomitemGroupname}
     edit itemGroup  ${randomitemGroupname}
 

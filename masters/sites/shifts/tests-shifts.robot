@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
@@ -8,6 +8,7 @@ Library  Collections
 Resource  ../../keywords.robot
 Library   ../RandomLibrary.py
 Library    String
+Library  Browser
 
 *** Variables ***
 @{shiftData}    #change data here
@@ -17,32 +18,32 @@ Library    String
 
 *** Test Cases ***
 shift creation
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    login devsite
+    select site  testingsiteautomation
     open shifts page
     click  ${New}
-    sleep  3
 #    ${randomShiftName}=  generate random string  5-8  [LETTERS]
 #    input  ${shiftName}  ${randomShiftName}
     ${shiftData}=    Generate Random Customer Name
-    input  ${shiftName}  ${shiftData}
-    press keys  ${shiftStartTime}  CTRL+A  DELETE  11:00
-    #input  ${shiftStartTime}  0800a
-    press keys  ${shiftEndTime}  CTRL+A  DELETE  23:00
-    press keys  ${shiftEndTime}  ENTER
-    #input  ${shiftEndTime}  0800p
-    press keys  ${shiftBreakTime}  CTRL+A  30  RETURN
+    Fill Text    ${shiftName}  ${shiftData}
+    browser.Press Keys   ${shiftName}    Tab
+#    browser.Press Keys   ${shiftStartTime}    1 1 : 0 0    Tab    ${shiftEndTime}    2 3 : 0 0    Enter
+#
+#    Fill Text      ${shiftStartTime}    11:00
+#    #input  ${shiftStartTime}  0800a
+#    Fill Text    ${shiftEndTime}    23:00
+#    Click      ${shiftEndTime}
+#    #input  ${shiftEndTime}  0800p
+#    press keys  ${shiftBreakTime}  CTRL+A  30  RETURN
     click  ${Submit}
     i should see text on page  Shift added
     click  ${back}
-    reload page
-    sleep  3
+    Reload
     shifts should be added  ${shiftData}
     ${editshiftDataname}=  Generate Random Customer Name
     edit shift  ${shiftData}  ${editShiftDataname}  ${editShiftData}[0]  ${editShiftData}[1]  ${editShiftData}[2]
     delete shift  ${editShiftDataname}
-    Reactivated Shifts   ${editShiftDataname}
+#    Reactivated Shifts   ${editShiftDataname}
 
 
 

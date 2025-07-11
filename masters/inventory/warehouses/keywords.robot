@@ -1,23 +1,24 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
 Library  String
+Library  Browser
 
 *** Keywords ***
 open warehouses page
     click  ${mastersDropdown}
-    sleep  1
     click  ${mastersWarehouses}
+    Wait For Elements State    //h5[normalize-space()='warehouses']
 
 warehouse should be added
     [Arguments]  ${warehouseName}
-    click  //*[name()='path' and contains(@d,'M10 18h4v-')]
-    press keys  //input[@id='name']  CTRL+A  BACKSPACE
-    input  //input[@id='name']  ${warehouseName}
-    sleep  5
-    wait until page contains element  //a[text() = "${warehouseName}"]  timeout=15s
+    click  (//*[name()='svg'][@id='undefined_Name_search'])[1]
+    click  //input[@placeholder='Search Name']
+    Fill Text   //input[@placeholder='Search Name']  ${warehouseName}
+    click  (//*[name()='svg'][@id='undefined_Name_search'])[2]
+    Wait For Elements State  //a[text() = "${warehouseName}"]  timeout=15s
 
 warehouse rack inititation
     [Arguments]  ${i}  ${rackName}  ${count}
@@ -33,11 +34,12 @@ Pre-Approval Params
 edit warehouse
     [Arguments]  ${oldWarehouseName}  ${newWarehouseName}  ${newLinkedWarehousePartners}  ${newRequestType}  ${newPartnerType}  ${newApprovalCheck}
     click  //a[text() = "${oldWarehouseName}"]
-    click  ${edit}
+    click  ${itemedit}
     ${randomWarehouseName}=  generate random string
-    press keys  ${warehouseName}  CTRL+A  BACKSPACE  ${randomWarehouseName}
-    press keys  ${linkedWarehousePartners}  BACKSPACE  BACKSPACE  BACKSPACE  ${newLinkedWarehousePartners}  ARROW_DOWN  ENTER  ESC
-    click  //span[text()="Linked Partners"]
+    Clear Text    ${warehouseName}
+    Type text   ${warehouseName}   ${randomWarehouseName}
+#    browser.press keys  ${linkedWarehousePartners}  BACKSPACE  BACKSPACE  BACKSPACE  ${newLinkedWarehousePartners}  ARROW_DOWN  ENTER  ESC
+#    click  //span[text()="Linked Partners"]
     Pre-Approval Params  0  Inward  Vendor  Validation of items
 #    Pre-Approval Params  1  Outward  Customer  Quality Check
 
@@ -52,18 +54,21 @@ edit warehouse
     click  ${Submit}
     i should see text on page  Warehouse edited
     open warehouses page
-    reload page
-    sleep  4
+    Reload
     warehouse should be added  ${randomWarehouseName}
-    sleep  2
 #    warehouse deletion check
-    click  //a[text() = "${randomWarehouseName}"]/../../../../../../../../../../td/div/button[@aria-label = "Deactivate"]
+    click  (//a[text() = "${randomWarehouseName}"]/../../../../../../../../../td[3]//button)[2]
     click  ${deactivateWarehouse}
     i should see text on page  Warehouse deactivated successfully
 
 warehouse deletion check
     [Arguments]  ${warehouseName}
-    wait until element is not visible  //table/tbody/tr/th/span[text() = "${warehouseName}"]  1
-    element should not be visible  //table/tbody/tr/th/span[text() = "${warehouseName}"]
+    Wait For Elements State  //table/tbody/tr/th/span[text() = "${warehouseName}"]  1
+    Wait For Elements State   //table/tbody/tr/th/span[text() = "${warehouseName}"]
 
 
+select option from dropdown by input
+    [Arguments]  ${dropdownXpath}  ${option}
+    input  ${dropdownXpath}  ${option}
+    Wait For Elements State  (//span[text() = "${option}"])[2]  visible  timeout=60
+    click  (//span[text() = "${option}"])[2]

@@ -1,44 +1,36 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library    Browser
 
 #*** Variables ***
 #@{DowntimeData}  Main_powerCut09       #change name here
 
 *** Test Cases ***
 downtime creation
-    Set Selenium Speed    0.1
     login devsite
     select site  testingsiteautomation
     open downtime page
+    sleep  1
     click  //button[text() = "NEW"]
-    reload page
-    sleep  5
     ${randomdowntime}=  generate random string  5-8  [LETTERS]
     input  ${downtimeName}  ${randomdowntime}
-
-    click  ${downtimeTags}
-    sleep  1
-    click  //span[text()="P1"]
-    press keys  ${downtimeTags}  TAB
-    select option from dropdown using list  ${downtimeDepartment}  Planning
-    sleep  1
-    select option from dropdown using list  ${downtimeSeverity}  Medium
-    sleep  1
-    select option from dropdown using list  ${downtimeBlame}  Machine
-    sleep  1
-    select option from dropdown using list  ${downtimeNature}  Mechanical
-    sleep  1
+    enters downtime tags  P2
+    select option from dropdown using div   ${downtimeDepartment}  Planning
+    select option from dropdown using div  ${downtimeSeverity}  Medium
+    select option from dropdown using div  ${downtimeBlame}  Machine
+    select option from dropdown using div  ${downtimeNature}  Mechanical
     click  ${Submit}
     i should see text on page  Issue added
+    sleep  1
     click  ${back}
-    reload page
-    sleep  5
+    Reload
+    sleep  1
     click  ${allIssues}
     downtime should be added  ${randomdowntime}
     edit downtime  ${randomdowntime}

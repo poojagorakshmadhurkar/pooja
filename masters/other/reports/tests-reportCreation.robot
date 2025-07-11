@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
@@ -7,6 +7,7 @@ Library  String
 Library  Collections
 Library  ../../RandomEmailLibrary.py
 Library   ../../customkeyword1capitalletter.py
+Library  Browser
 
 
 *** Variables ***
@@ -16,29 +17,27 @@ ${EMAIL_DOMAIN}   example.com
 
 *** Test Cases ***
 creation of report page
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    login devsite
+#    select site  testingsiteautomation
     open reports page
     click  ${addNewReports}
+    Wait For Elements State    //span[text()="Add New Report"]
     ${name}=  Generate Random reports Name
-    input  ${reportName}  ${name}
-    press keys  ${parameter}  ARROW_DOWN  ENTER  ARROW_DOWN  ENTER  ARROW_DOWN  ENTER  ESC
-    click  ${frequency}
-    sleep  1
-    click  //div[text() = "Shift"]
-    sleep  1
-    press keys  ${shiftDropdown}  ARROW_DOWN  ENTER  ESC
-    press keys  ${startTime}  CTRL+A  BACKSPACE  01:00  ENTER
-    press keys  ${endTime}  CTRL+A  BACKSPACE  04:00  ENTER
-    press keys  ${scheduledTime}  CTRL+A  BACKSPACE  02:00  ENTER
+    Fill Text   ${reportName}  ${name}
+    Click  //input[@id="report__Periodic" and @type="radio"]
+    select option from dropdown using div  ${parameter}  DPR
+    select option From dropdown using div  ${frequency}  Shift
+    click  (//span[normalize-space()='Frequency'])[1]
+    select option From dropdown using div   ${shiftDropdown}  Morning Shift
+#    select option from dropdown by inputting  ${startTime}    09:00
+#    select option From dropdown using div  ${endTime}   04:00
+#    select option From dropdown using div  ${scheduledTime}    02:00
     ${random_reportemail}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
-    Input Text    ${report_email}    ${random_reportemail}
+    Fill Text     ${report_email}    ${random_reportemail}
     click  ${Submit}
     i should see text on page  Report added
     open reports page
-    reload page
-    sleep  3
+    Reload
     reports should be added  ${name}
     edit reports  ${name}
 

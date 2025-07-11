@@ -1,9 +1,10 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
 Resource  ../../keywords.robot
+Library    Browser
 
 *** Keywords ***
 open cycleTimeRules page
@@ -19,15 +20,14 @@ cycleTimeRules should be added
     input  ${itemFilter}  ${itemName}
     input  ${processFilter}  ${processName}
     input  ${valueFilter}  ${seconds}
-    sleep  10
+
     i should see row in table  ${cycleTimeRulesData1}[0]  ${cycleTimeRulesData1}[1]  ${cycleTimeRulesData1}[2]
 
 edit cycleTimeRules
     [Arguments]  ${machineGroup}  ${newSeconds}
     click  //span[text() = "${machineGroup}"]/../../td[5]/div/button[@id = "rules__Edit"]
-    sleep  1
     click  ${Edit}
-    press keys  ${Seconds}  CTRL+A  BACKSPACE  ${newSeconds}
+    Fill Text      ${Seconds}   ${newSeconds}
     click  ${Submit}
 
 i should see row in table

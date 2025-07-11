@@ -1,35 +1,35 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
-Resource  ../../keywords.robot
+Library    Browser
+#Resource  ../../keywords.robot
 
 *** Variables ***
 
-@{qualityData}  Rawmaterial  Planning  Medium     #change name here
+@{qualityData}  A  Planning  Medium     #change name here
 @{EditQualityData}  RM Group  Store  Low      #change name here
 
 *** Test Cases ***
 Quality creation
-    Set Selenium Speed    0.1
-    logindevsite
+    login devsite
     select site  testingsiteautomation
     open quality page
+    sleep  2
     click  ${addNewQuality}
     ${randomQualityName}=  generate random string  5-10  [LETTERS]
-    input  ${qualityName}  ${randomQualityName}
+    Fill Text   ${qualityName}  ${randomQualityName}
     enters quality tags  ${qualityData}[0]
-    select option from dropdown using list  ${Department}  ${qualityData}[1]
-    select option from dropdown using list  ${Severity}  ${qualityData}[2]
+    select option from dropdown using div  ${Department}  ${qualityData}[1]
+    select option from dropdown using div  ${Severity}  ${qualityData}[2]
     click  ${Submit}
-    sleep  2
     i should see text on page  Issue added
     open quality page
-    reload page
-    sleep  4
+    Reload
+    Wait For Elements State       //h5[text()="Quality issues"]
     click  ${allIssues}
     quality should be added  ${randomQualityName}
     quality edit  ${randomQualityName}

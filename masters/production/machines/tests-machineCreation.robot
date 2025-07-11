@@ -1,49 +1,52 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library    Browser
 
-#*** Variables ***
-#@{MachineData1}  llas01  llasj19       #change name Here
-#@{ChildMachineData1}  rtyen1  ksahdj1
 
-#*** Test Cases ***
-#parent machine creation
-#    Set Selenium Speed    0.1
-#    login
-#    select site  smart_factory
-#    open machine page
-#    wait until page contains element  ${addNewMachine}  15
-#    machine creation  ${MachineData1}[0]
-#
-#edit parent machine created by 1st method
-#    edit above machine  ${MachineData1}[0]
-#
-#child machine creation by creating a machine and re-parenting it
-#    machine creation  ${ChildMachineData1}[0]
-#
-#edit child machine created by 1st method
-#    edit above machine  ${ChildMachineData1}[0]
-#    reload page
-#    sleep  3
-#    machine re-parenting  ${ChildMachineData1}[0]
-#
-#delete machine created by 1st method
-#    delete parent machine along with child  ${MachineData1}[0]
-#
-#Creating Parent then child of that machine
-#    parent machine creation
-#    edit above machine  ${MachineData1}[1]
-#    child machine creation
-#    click  //a[text() = "${MachineData1}[1]"]/../../../../../../../../span[2]
-#    sleep  2
-#editing above child machine
-#    edit above machine  ${ChildMachineData1}[1]
-#delete machine created by second method
-#    reload page
-#    sleep  3
-#    delete parent machine along with child  ${MachineData1}[1]
+
+*** Test Cases ***
+parent machine creation
+    login devsite
+    select site   testingsite4
+    open machine page
+    sleep  1
+    click  ${addNewMachine}
+    ${machine1}=   Add Parent machine  1
+    Add child machine   2  1
+    Add child machine   3  2
+    click  ${addmachinebutton}
+    ${machine2} =  Add Parent machine  4
+    Add child machine   5  4
+    Add child machine   6  5
+    click  ${nextmachinebtn}
+    click  ${nextmachinebtn}
+    click   ${machinesubmitbtn}
+    I Should Not See Text On Page    Machine added
+    click  ${machinebackbtn}
+    Reload
+    Wait For Elements State    (//div[@class='ant-spin-container'])[1]  hidden    timeout=60s
+    Wait For Elements State    //h5[normalize-space()='machines']
+#    Scroll To Element    xpath=//div[@class='ant-table-body']//tr[last()]
+    Hover    xpath=//div[@class='ant-table-body']
+    Reload
+    Mouse Wheel    0    2000
+    sleep  1
+    Delete Machine   ${machine1}
+    Reload
+    Hover    xpath=//div[@class='ant-table-body']
+    Mouse Wheel    0    2000
+    Delete Machine   ${machine2}
+
+
+
+
+
+
+
+

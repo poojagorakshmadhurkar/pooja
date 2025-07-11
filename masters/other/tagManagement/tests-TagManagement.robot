@@ -1,34 +1,34 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
 Resource  ../../keywords.robot
+Library  Browser
 
 #*** Variables ***
 #@{tagsMangementData}  tagsMangement_test7
 
 *** Test Cases ***
 open tagsMangement page
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    login devsite
     open tagsMangement page
+    Wait For Elements State    //h5[normalize-space()='tags']   visible  timeout=120s
+    sleep  1
     click  ${addNewtagsMangement}
     select option from dropdown using list  ${tagType}  General
     ${randomTagName}=  Generate Random Tagnmanagement Name
-    input  ${tagLabel}  ${randomTagName}
+    Fill Text    ${tagLabel}  ${randomTagName}
 #    select option from dropdown using list  ${tagSites}  Haridwar Unit
 #    sleep  1
 #    press keys  ${tagSites}  Smart Factory  ESC
 #    sleep  1
-    click  ${Submit}
+    click  ${tagSubmit}
     i should see text on page  Tag Created Successfully
 #    select site  Haridwar Unit
     open tagsMangement page
-    reload page
-    sleep  2
+    Reload
     tagsMangement should be added  ${randomTagName}
 

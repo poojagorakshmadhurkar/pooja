@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
@@ -8,6 +8,7 @@ Library  String
 Library  Collections
 Resource  ../../keywords.robot
 Library  ../RandomEmailLibrary.py
+Library    Browser
 
 
 
@@ -19,43 +20,34 @@ ${EMAIL_DOMAIN}   example.com
 
 *** Test Cases ***
 site creation
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
+    login devsite
+    select site  testingsiteautomation
     open site page
     click  ${newButton}
     ${randomsiteName}=  Generate Random string of name
-    input  ${siteName}  ${randomsiteName}
-    ${randomsiteaddress}=  Generate Random string of name
-    input  ${siteAddress}  ${randomsiteaddress}
+    Fill Text      ${siteName}  ${randomsiteName}
+#    ${randomsiteaddress}=  Generate Random string of name
+#    input  ${siteAddress}  ${randomsiteaddress}
     ${random_siteemail}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
     # Example of using the random email in a test case
-    Input Text    ${siteEmail}    ${random_siteemail}
-    select option from dropdown using div  ${siteCountry}  Afghanistan
-    select option from dropdown using div  ${siteState}  Badakhshan
-    select option from dropdown using div  ${siteCity}  Ashkāsham
-
-    input  ${Gstnname}  gstnumber
-    sleep  2
+    Fill Text     ${siteEmail}    ${random_siteemail}
+#    select option from dropdown using div  ${siteCountry}  Afghanistan
+#    select option from dropdown using div  ${siteState}  Badakhshan
+#    select option from dropdown using div  ${siteCity}  Ashkāsham
+    Invoice address
+    Sleep   1
+    Shipment address
+    Fill Text      ${Gstnname}  gstnumber
     click  ${woInProTrue}
-    sleep  2
     click  ${costingTrue}
-    sleep  2
     click  ${mrnToIssueTrue}
-    sleep  2
     click  ${bundleTrue}
-    sleep  2
     click  ${rackFalse}
-    sleep  2
     click  ${Submit}
-    sleep  2
     i should see text on page  Site added
     click  ${back}
-    reload page
-    sleep  3
+#    reload page
     site should be added  ${randomsiteName}
-
-
 
     edit sites  ${randomsiteName}
 

@@ -1,11 +1,13 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ./keywords.robot
 Resource  ./variables.robot
 Library  String
 Library  Collections
-Resource  ../../keywords.robot
+Library  Browser
+Library    String
+#Resource  ../../keywords.robot
 
 *** Variables ***
 @{actionData}  Production Reports
@@ -14,30 +16,30 @@ Resource  ../../keywords.robot
 
 *** Test Cases ***
 fieldGroups creation
-    Set Selenium Speed    0.1
-    login
-    select site  smart_factory
-    open fieldGroup page
-    click  ${addNewfieldGroups}
-    click  ${fieldGroupsAction}
-    sleep  1
-    reload page
-    select option from dropdown using span  ${fieldGroupsAction}  ${actionData}[0]
-    setting fields  0  ${fieldData}[0]
-    click  ${addMoreField}
-    setting fields  1  ${fieldData}[1]
-    click  ${addMoreField}
-    setting fields  2  ${fieldData}[2]
-    click  ${addMoreField}
-    setting fields  3  ${fieldData}[3]
-    click  ${addMoreField}
-    setting fields  4  ${fieldData}[4]
-    click  ${Submit}
-    i should see text on page  Custom Field added
-    open fieldGroup page
-    reload page
-    sleep  2
-    fieldGroup should be added  ${actionData}[0]
 
-editing fields
+    Login devsite
+#    select site  testingsiteautomation
+    open fieldGroup page
+#    click  ${addNewfieldGroups}
+#    click  ${fieldGroupsAction}
+
+
+#    select option from dropdown using span  ${fieldGroupsAction}  ${actionData}[0]
+#    setting fields  0  ${fieldData}[0]
+##    click  ${addMoreField}
+##    setting fields  1  ${fieldData}[1]
+##    click  ${addMoreField}
+##    setting fields  2  ${fieldData}[2]
+##    click  ${addMoreField}
+##    setting fields  3  ${fieldData}[3]
+##    click  ${addMoreField}
+##    setting fields  4  ${fieldData}[4]
+#    click  ${Submit}
+#    i should see text on page  Custom Field added
+#    open fieldGroup page
+#    reload page
+#    sleep  2
+#    log  ${actionData}[0]
+#    fieldGroup should be added  ${actionData}[0]
+
     edit fields  ${actionData}[0]

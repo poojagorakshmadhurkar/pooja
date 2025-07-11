@@ -1,5 +1,5 @@
 *** Settings ***
-Library  SeleniumLibrary
+#Library  SeleniumLibrary
 Resource  ../../../keywords.robot
 Resource  ../../../variables.robot
 Resource  ./variables.robot
@@ -7,7 +7,7 @@ Library   ../../customkeyword1capitalletter.py
 Library  String
 Library  Collections
 Library  ../RandomEmailLibrary.py
-
+Library  Browser
 
 
 *** Variables ***
@@ -20,24 +20,17 @@ ${EMAIL_DOMAIN}   example.com
 open Employees page
     click  ${mastersDropdown}
     sleep  1
+    Wait For Elements State    ${mastersEmployees}
     click  ${mastersEmployees}
-    reload page
+    Reload
 
 employee should be added
     [Arguments]  ${employeeName}  ${Department}  ${Role}  ${Mobile}
-    click  //button[@id='employee__filterBtn']
-
-    press keys  //input[@id='name']  CTRL+A  BACKSPACE
-    input  //input[@id='name']  ${employeeName}
-
-#    press keys  (//span[contains(text(),'Mobile')])[1]  CTRL+A  BACKSPACE
-#    input  (//span[contains(text(),'Mobile')])[1]  ${Mobile}
-#
-#    press keys  (//span[contains(text(),'Email')])[1]  CTRL+A  BACKSPACE
-#    input  (//span[contains(text(),'Email')])[1]  ${Email}
-
-    wait until page contains element  //a[text()="${employeeName}"]/../../../../../../../../../../td[1][text()="${Department}"]/../td[2][text()="${Role}"]/../td[3][text()="${Mobile}"]  timeout=15s
-
+    click  (//*[name()='svg'][@id='undefined_Name_search'])[1]
+    Click    (//input[@placeholder='Search Name'])[1]
+    Fill Text    (//input[@placeholder='Search Name'])[1]  ${employeeName}
+    Browser.Press Keys    xpath=(//input[@placeholder='Search Name'])[1]    Enter
+    Wait For Elements State    //a[text()="${employeeName}"]
 
 
 #login for employee
@@ -51,21 +44,22 @@ employee should be added
 edit employee
     [Arguments]    ${oldEmployee}
     click  //a[text() = "${oldEmployee}"]
-    sleep  3
     click  //button[text() = "Edit"]
-    sleep  5
-    Wait Until Page Contains Element  //input[@value = "${oldEmployee}"]
+    Wait For Elements State    //input[@value = "${oldEmployee}"]
 #    Press keys  ${Name}  CTRL+A  BACKSPACE  ${newEmployee}
     ${randomnewEmployeeName}=  Generate Random string of name
-    Press keys  ${Name}  CTRL+A  BACKSPACE  ${randomnewEmployeeName}
+    Clear Text    ${Name}
+    Type Text    ${Name}    ${randomnewEmployeeName}
     ${randomnewEmployeeNumber}=  generate random string  10  [NUMBERS]
-    Press keys  ${mobile}  CTRL+A  BACKSPACE  ${randomnewEmployeeNumber}
+    Clear Text   ${mobile}
+    Type Text    ${mobile}   ${randomnewEmployeeNumber}
 #    Wait Until Page Contains Element  //input[@value = "${EmployeeName}[3]"]
 #    press keys  ${mobile}  CTRL+A  BACKSPACE  ${newMobile}
 #    Wait Until Page Contains Element  //input[@value = "${EmployeeName}[4]"]
     ${random_email}=    Generate Random Email    ${EMAIL_LENGTH}    ${EMAIL_DOMAIN}
     # Example of using the random email in a test case
-    press keys    ${employeeEmail}  CTRL+A  BACKSPACE   ${random_email}
+    Clear Text     ${employeeEmail}
+     Type Text    ${employeeEmail}   ${random_email}
 #    press keys  ${employeeEmail}  CTRL+A  BACKSPACE  ${newEmail}
 #    Wait Until Page Contains  ${EmployeeName}[1]
 #    Wait Until Page Contains  ${EmployeeName}[2]
@@ -78,8 +72,7 @@ edit employee
     click  ${Submit}
     i should see text on page  Employee edited
     open Employees page
-    reload page
-    sleep  5
+    Reload
     employee should be added  ${randomnewEmployeeName}  Admin  Manager  ${randomnewEmployeeNumber}
     delete employee  ${randomnewEmployeeName}
     i should see text on page  Employee deactivated successfully
@@ -87,17 +80,16 @@ edit employee
 
 delete employee
     [Arguments]  ${employeeName}
-    click  //a[text() = "${employeeName}"]/../../../../../../../../../../td[5]/div/button
+    click  //a[text() = "${employeeName}"]/../../../../../../../../../td[6]//button
     click  ${deactivate_employee}
 
 employee should be in deactivated slot
     [Arguments]  ${employeeName}
     open Employees page
-    reload page
-    sleep  3
+    Reload
     click  (//*[name()='svg'][@class='MuiSvgIcon-root MuiSvgIcon-fontSizeMedium ant-dropdown-trigger css-vubbuv'])[1]
     click  //div[contains(text(),'Deactivated employees')]
-    sleep  5
+
 #    employee should be added  ${employeeName}  ${Department}  ${Role}  ${Mobile}
 # TO REactivate the Employee
 
@@ -105,4 +97,4 @@ employee should be in deactivated slot
 Generate Random string of name
     ${random_string}=  Generate Random String  7  [LOWER]
     ${random_customer_name}=  Capitalize First Letter  ${random_string}
-    [Return]  ${random_customer_name}
+    RETURN  ${random_customer_name}

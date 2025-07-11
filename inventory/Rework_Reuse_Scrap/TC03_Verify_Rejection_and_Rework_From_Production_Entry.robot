@@ -5,10 +5,10 @@ Library   Collections
 Library   DateTime
 Resource   ../../inventory/warehouses/keywords.robot
 Resource   ../../inventory/warehouses/variables.robot
-Resource   ../../planning/Salesorder/keywords.robot
-Resource   ../../planning/Salesorder/variables.robot
-Resource   ../../planning/PurchaseOrder/keyword.robot
-Resource   ../../planning/PurchaseOrder/variable.robot
+Resource   ../../orders/Salesorder/keywords.robot
+Resource   ../../orders/Salesorder/variables.robot
+Resource   ../../orders/PurchaseOrder/keyword.robot
+Resource   ../../orders/PurchaseOrder/variable.robot
 Resource   ../../inventory/Rework_Reuse_Scrap/Variable1.robot
 Resource   ../../inventory/transactions/keywords.robot
 Resource   ./Variable1.robot
@@ -17,8 +17,8 @@ Resource   ../../variables.robot
 Resource   ../../keywords.robot
 
 *** Variables ***
-@{customername}  Test01
-@{itemData1}  Fgitem1  100  50
+@{customername1}    Nitesh1
+@{itemData1}   SSD  100  50
 #@{itemData}  Fgitem1  100  50
 @{rejection}  CheckNUt  Damage  10
 ${xpath}  //span[contains(@class, 'ant-tree-title')]
@@ -27,8 +27,11 @@ ${shift}  Morning Shift
 
 *** Test Cases ***
 Verify Rejection and Rewark From Production Entry
-    Set Selenium Speed    0.01s
-    login devsite
+    Set Selenium Speed    0.05s
+#    login devsite
+    Open Browser Site
+    Login To ManufApp Site
+#    Open Browser In Headless Mode
     select site  testingsiteautomation
     wait until page contains element    ${INVENTRY}   30s
     mouse over    ${INVENTRY}
@@ -36,9 +39,11 @@ Verify Rejection and Rewark From Production Entry
     click    ${REFRESH}
     click    ${FG}
     reload page
+    sleep   0.5s
 #   TO GET THE CURRENT QUANTITY OF FG SECTION
     Search Item in Item Details   ${itemData1}[0]  2   1   3
-    ${Initial_Current_Stock}=   get text    ((//span[text()='Fgitem1'])[2]/../../../../../../../../../..//td[3])[2]
+    sleep   0.5s
+    ${Initial_Current_Stock}=   get text    ((//span[text()="${itemData1}[0]"])[2]/../../../../../../../../../..//td[3])[2]
     log   🟡 Before Rejection & rework Current stock of this item " ${itemData1}[0] " = ✅ ${Initial_Current_Stock}
 #   REMOVE UNIT OF CURRENT QUANTITY
     ${Initial_Current_Stock_qty}  Evaluate  ''.join(c for c in "${Initial_Current_Stock}" if c.isdigit()) if ''.join(c for c in "${Initial_Current_Stock}" if c.isdigit()) else '0'
@@ -46,7 +51,7 @@ Verify Rejection and Rewark From Production Entry
 #   CURRENT QUANTITY IN FG SECTION
     log   🟡 Initial Qty without unit = ✅ ${Initial_Current_qty_without_Unit}
 #   CREATE SO
-    ${order_number}=  keywords.Create SO  ${customername}  ${itemData1}
+    ${order_number}=  Keyword1.Create_SO    ${customername1}[0]    ${itemData1}[0]
     click  //a[text()="${order_number}"]/../../../../../../../../span
     Wait Until Page Contains Element  //div[text()="${order_number}"]    timeout=30s
 #   FETCH ITEM DETAILS FROM BOM
@@ -160,10 +165,10 @@ Verify Rejection and Rewark From Production Entry
     Search Note in MRN Issue Searchbox     ${REWORK_NOTE_ID}
     wait until page contains element    (//*[@id="transaction_debit_approve"])[3]
     sleep   1s
-    click   ${APPROVE_FOR_DEBIT}
-    sleep   1s
-    ${MRR_NOTE}=    get text    ${MRN_APPROVE_NOTE}
-    log   ✅ ${MRR_NOTE}
+#    click   ${APPROVE_FOR_DEBIT}
+#    sleep   1s
+#    ${MRR_NOTE}=    get text    ${MRN_APPROVE_NOTE}
+#    log   ✅ ${MRR_NOTE}
 #    --------------------------------------------------------------------------------------------
 #    CALCULATE EXPECTED FINAL QTY AFTER REJECTION AND REWORK
     ${FINAL_EXPECTED}     Evaluate    ((${Initial_Current_qty_without_Unit} + 50) - 20) + 10

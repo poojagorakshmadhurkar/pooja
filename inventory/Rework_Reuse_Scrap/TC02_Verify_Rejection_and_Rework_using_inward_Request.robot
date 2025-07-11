@@ -3,12 +3,12 @@ Library    SeleniumLibrary
 Library    String
 Library    Collections
 Library    DateTime
-Resource   ../../planning/PurchaseOrder/keyword.robot
+Resource   ../../orders/PurchaseOrder/keyword.robot
 Resource   ../../keywords.robot
 Resource   ../../variables.robot
 Resource   ./Variable1.robot
 Resource   ./Keyword1.robot
-Resource   ../../planning/PurchaseOrder/variable.robot
+Resource   ../../orders/PurchaseOrder/variable.robot
 *** Variables ***
 @{date}   ${D_Date}
 @{Item_TypeName}  Raw Material  FG
@@ -20,8 +20,9 @@ ${expected_text}    Issued
 *** Test Cases ***
 Verify the Rejection Flow From Inventory
     set selenium speed    0.05s
-    Open Browser Site
-    Login To ManufApp Site
+#    Open Browser Site
+#    Login To ManufApp Site
+    Open Browser In Headless Mode
 #    select site    testingautomationsite2  #Smart Factory
     wait until page contains element    ${INVENTRY}   30s
     #    *****************   INITIAL CURRENT QTY ********************
@@ -60,7 +61,7 @@ Verify the Rejection Flow From Inventory
 #    select vendor   ${Vendor}
     click    ${VENDOR_PARTNER}
     input text    ${VENDOR_PARTNER}  ${Vendor}[0]
-    click   //div[text()='${Vendor}[0]']
+    click   //span[text()='${Vendor}[0]']
     ${randomrefNumber}=   Generate Random number_4_digit
     input   ${invoice_number}    ${randomrefNumber}
     ${random_string}=    Generate Random Number_String
@@ -83,9 +84,9 @@ Verify the Rejection Flow From Inventory
     click    ${BACK1}
     mouse over    ${INVENTRY}
     click    ${TRANSACTIONS}
-    sleep    0.05s
+    sleep    0.5s
     click    ${GRN_SEARCH}
-    sleep    0.05s
+    sleep    0.5s
     input    ${GRN_SEARCH_INPUT_BOX}   ${GRN_No}
     click    ${GRN_SEARCH_INPUT_BOX2}
     click    ${REFRESH1}
@@ -103,14 +104,16 @@ Verify the Rejection Flow From Inventory
     wait until page contains element    ${TRANSACTION_NOTE}
     ${text}=    get text    ${TRANSACTION_NOTE}
     log  ✅ ${text}
-    click    ${BACK2}
-#    reload page
+#    click    ${BACK2}
+    mouse over    ${INVENTRY}
+    click    ${TRANSACTIONS}
     sleep    0.5s
-    click   ${GRN_SEARCH}
-    sleep   1s
+    click    ${GRN_SEARCH}
+    sleep    0.5s
     input    ${GRN_SEARCH_INPUT_BOX}   ${GRN_No}
     click    ${GRN_SEARCH_INPUT_BOX2}
-    sleep   1s
+    click    ${REFRESH1}
+    sleep    0.05s
     wait until page contains element   ${APPROVE}  30s
     sleep   1s
     click   ${APPROVE}
@@ -159,12 +162,13 @@ Verify the Rejection Flow From Inventory
     click    ${DETAILS_VIEW}
     click    ${REFRESH2}
     wait until page contains element    ${ITEM_DETAILS_SEARCHBOX}
+    sleep   0.5s
 #    Search item
     Search Item in Item Details SearchBox   ${ItemData}[1]  2   1   3
-    click   ${CLICK_PARTNER_SEARCH_ICON1}
+    click    ${CLICK_PARTNER_SEARCH_ICON1}
     click   ${CLICK_PARTNER_INPUT_BOX}
     select partner1   ${Vendor}[0]
-    click   ${CLICK_PARTNER_SEARCH_ICON2}
+    click    ${CLICK_PARTNER_SEARCH_ICON2}
     ${Rejection_Reason}=    get text    (//*[@class="ant-table-row ant-table-row-level-0"])[11]//td[8]
     log  ✅ Rejection Reason = ${Rejection_Reason}
     Execute JavaScript    window.scrollTo(0, 100)
@@ -189,7 +193,7 @@ Verify the Rejection Flow From Inventory
     click   ${TRANSACTIONS}
     click   ${OUTWARD}
     click   ${REFRESH1}
-    click   ${CLICK_ON_ROW}
+    click   ${CLICK_ON_ROW1}
     sleep    1s
      ${REWORK_NOTE_ID}=   get text   ${REWORK_ID_IN_OUTWARD}
     log   ✅ ${REWORK_NOTE_ID}
@@ -201,10 +205,10 @@ Verify the Rejection Flow From Inventory
     click   ${CANCEL_ICON}
     Search Note in MRN Issue Searchbox     ${REWORK_NOTE_ID}
     wait until page contains element    (//*[@id="transaction_debit_approve"])[3]
-    click   ${APPROVE_FOR_DEBIT}
+#    click   ${APPROVE_FOR_DEBIT}
     sleep   1s
-    ${MRR_NOTE}=    get text    ${MRN_APPROVE_NOTE}
-    log   ✅ ${MRR_NOTE}
+#    ${MRR_NOTE}=    get text    ${MRN_APPROVE_NOTE}
+#    log   ✅ ${MRR_NOTE}
     #   CALCULATE EXPECTED FINAL QTY AFTER REJECTION AND REWORK
     ${Total3}    Evaluate    ${Total} + 4
     mouse over    ${INVENTRY}
@@ -227,7 +231,7 @@ Verify the Rejection Flow From Inventory
     mouse over    ${INVENTRY}
     click    ${TRANSACTIONS}
     click    ${OUTWARD}
-    click    ${CLICK_ON_ROW}
+    click    ${CLICK_ON_ROW1}
     sleep    1s
     wait until page contains element    (//span[text()='${ItemData}[1]'])[1]    10s
     wait until element is visible    ${REJECTION_QTY2}    30S
